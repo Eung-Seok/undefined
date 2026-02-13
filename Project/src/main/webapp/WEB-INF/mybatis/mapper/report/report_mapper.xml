@@ -27,7 +27,7 @@
 			CREATED_AT
 		)
 		VALUES(
-		#{id},
+		SEQ_TF_REPORT_PK.nextval,
 		#{projectId},
 		#{authorUserId},
 		#{periodType},

@@ -29,7 +29,7 @@
 			UPDATED_AT
 		)
 		VALUES(
-		#{id},
+		SEQ_TF_CALENDAR_EVENT_PK.nextval,
 		#{userId},
 		#{projectId},
 		#{taskId},

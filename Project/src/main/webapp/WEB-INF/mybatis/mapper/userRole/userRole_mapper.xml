@@ -25,7 +25,7 @@
 			CREATED_AT
 		)
 		 VALUES(
-		#{id},
+		SEQ_TF_USER_ROLE_PK.nextval,
 		#{userId},
 		#{roleId},
 		#{createdAt}

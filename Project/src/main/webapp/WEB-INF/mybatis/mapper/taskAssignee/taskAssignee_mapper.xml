@@ -24,11 +24,11 @@
 			JOINED_AT
 		)
 		VALUES(
-		#{id},
+		SEQ_TF_TASK_ASSIGNEE_PK.nextval,
 		#{taskId},
 		#{userId},
 		#{status},
-		#{joineAt}
+		#{joinedAt}
 		)
 	</insert>
 
@@ -45,7 +45,7 @@
 		TASK_ID = #{taskId},
 		USER_ID = #{userId},
 		STATUS = #{status},
-		JOIN_AT = #{joineAt}
+		JOINED_AT = #{joinedAt}
 		WHERE ID = #{id}
 	</update>
 	

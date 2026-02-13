@@ -20,14 +20,14 @@
 			ID,
 			POST_ID,
 			AUTHOR_USER_ID,
-			PARENT_COMMNET_ID,
+			PARENT_COMMENT_ID,
 			CONTENT,
 			CREATED_AT,
 			UPDATED_AT
 			
 		)
 		VALUES(
-		#{id},
+		SEQ_TF_COMMENT_PK.nextval,
 		#{postId},
 		#{authorUserId},
 		#{parentCommentId},

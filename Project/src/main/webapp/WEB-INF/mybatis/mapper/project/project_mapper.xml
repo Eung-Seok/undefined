@@ -28,7 +28,7 @@
 			UPDATED_AT
 		)
 		VALUES(
-		#{id},
+		SEQ_TF_PROJECT_PK.nextval,
 		#{ownerUserId},
 		#{name},
 		#{description},
@@ -55,7 +55,7 @@
 		START_DATE = #{startDate},
 		END_DATE = #{endDate},
 		STATUS = #{status},
-		CREATED_ AT = #{createdAt},
+		CREATED_AT = #{createdAt},
 		UPDATED_AT = #{updatedAt}
 		WHERE ID = #{id}
 	</update>

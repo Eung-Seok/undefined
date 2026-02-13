@@ -31,7 +31,7 @@
 			UPDATED_AT
 		)
 		VALUES(
-		#{id},
+		SEQ_TF_TASK_PK.nextval,
 		#{projectId},
 		#{parentTaskId},
 		#{name},

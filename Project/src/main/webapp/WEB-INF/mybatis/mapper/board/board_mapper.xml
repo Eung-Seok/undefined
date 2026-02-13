@@ -24,7 +24,7 @@
 			CREATED_AT
 		)
 		VALUES(
-		#{id},
+		SEQ_TF_BOARD_PK.nextval,
 		#{name},
 		#{projectId},
 		#{createdAt}

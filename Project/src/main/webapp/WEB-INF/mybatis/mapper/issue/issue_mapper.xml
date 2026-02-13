@@ -28,10 +28,10 @@
 			UPDATED_AT
 		)
 		VALUES(
-		#{id},
+		SEQ_TF_ISSUE_PK.nextval,
 		#{projectId},
 		#{taskId},
-		#{reporterUserID},
+		#{reporterUserId},
 		#{title},
 		#{content},
 		#{status},
@@ -51,7 +51,7 @@
 		SET
 		PROJECT_ID = #{projectId},
 		TASK_ID = #{taskId},
-		REPORTER_USER = #{reporterUserID},
+		REPORTER_USER_ID = #{reporterUserId},
 		TITLE = #{title},
 		CONTENT = #{content},
 		STATUS = #{status},

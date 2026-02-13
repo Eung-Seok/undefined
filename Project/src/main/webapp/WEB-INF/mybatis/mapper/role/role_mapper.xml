@@ -21,7 +21,7 @@
 			NAME
 		)
 		VALUES(
-		#{id},
+		SEQ_TF_ROLE_PK.nextval,
 		#{name}
 		)
 	</insert>

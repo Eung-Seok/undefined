@@ -28,7 +28,7 @@
 			CREATED_AT
 		)
 		VALUES(
-		#{id},
+		SEQ_TF_ATTACHMENT_PK.nextval,
 		#{uploaderUserId},
 		#{postId},
 		#{taskId},

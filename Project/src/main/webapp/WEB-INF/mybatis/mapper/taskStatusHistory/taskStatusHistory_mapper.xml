@@ -27,7 +27,7 @@
 			MEMO
 		)
 		VALUES(
-		#{id},
+		SEQ_TF_TASK_STATUS_HISTORY_PK.nextval,
 		#{taskId},
 		#{fromStatus},
 		#{toStatus},
