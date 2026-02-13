@@ -6,6 +6,6 @@ import lombok.Data;
 public class Board {
 	int id;
 	String name;
-	int projectId;
+	Integer projectId;
 	String createdAt;
 }

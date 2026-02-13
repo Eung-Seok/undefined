@@ -6,6 +6,7 @@ import lombok.Data;
 public class Report {
 	int id;
 	int projectId;
+	int authorUserId;
 	String periodType;
 	String periodStart;
 	String periodEnd;

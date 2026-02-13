@@ -21,5 +21,29 @@ public class NotificationDAOImpl implements NotificationDAO {
 		List<Notification> notificationList = sqlSessionTemplate.selectList("notification_mapper.findNotificationList");
 		return notificationList;
 	}
+
+	@Override
+	public int saveNotification(Notification notification) {
+		int result = sqlSessionTemplate.insert("notification_mapper.saveNotification", notification);
+		return result;
+	}
+
+	@Override
+	public Notification findNotificationById(int id) {
+		Notification notification = sqlSessionTemplate.selectOne("notification_mapper.findNotificationById", id);
+		return notification;
+	}
+
+	@Override
+	public int removeNotification(int id) {
+		int result = sqlSessionTemplate.delete("notification_mapper.removeNotification", id);
+		return result;
+	}
+
+	@Override
+	public int modifyNotification(Notification notification) {
+		int result = sqlSessionTemplate.update("notification_mapper.modifyNotification", notification);
+		return result;
+	}
 	
 }

@@ -20,4 +20,28 @@ public class DepartmentServiceImpl implements DepartmentService{
 		List<Department> departmentList = departmentDao.findDepartmentList();
 		return departmentList;
 	}
+
+	@Override
+	public int saveDepartment(Department department) {
+		int result = departmentDao.saveDepartment(department);
+		return result;
+	}
+
+	@Override
+	public Department findDepartmentById(int id) {
+		Department department = departmentDao.findDepartmentById(id);
+		return department;
+	}
+
+	@Override
+	public int removeDepartment(int id) {
+		int result = departmentDao.removeDepartment(id);
+		return result;
+	}
+
+	@Override
+	public int modifyDepartment(Department department) {
+		int result = departmentDao.modifyDepartment(department);
+		return result;
+	}
 }

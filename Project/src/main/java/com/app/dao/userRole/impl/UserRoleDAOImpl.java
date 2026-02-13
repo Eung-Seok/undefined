@@ -21,5 +21,29 @@ public class UserRoleDAOImpl implements UserRoleDAO {
 		List<UserRole> userRoleList = sqlSessionTemplate.selectList("userRole_mapper.findUserRoleList");
 		return userRoleList;
 	}
+
+	@Override
+	public int saveUserRole(UserRole userRole) {
+		int result = sqlSessionTemplate.insert("userRole_mapper.saveUserRole", userRole);
+		return result;
+	}
+
+	@Override
+	public UserRole findUserRoleById(int id) {
+		UserRole userRole = sqlSessionTemplate.selectOne("userRole_mapper.findUserRoleById",id);
+		return userRole;
+	}
+
+	@Override
+	public int removeUserRole(int id) {
+		int result = sqlSessionTemplate.delete("userRole_mapper.removeUserRole", id);
+		return result;
+	}
+
+	@Override
+	public int modifyUserRole(UserRole userRole) {
+		int result = sqlSessionTemplate.update("userRole_mapper.modifyUserRole", userRole);
+		return result;
+	}
 	
 }

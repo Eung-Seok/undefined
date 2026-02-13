@@ -20,4 +20,28 @@ public class AttachmentServiceImpl implements AttachmentService{
 		List<Attachment> attachmentList = attachmentDao.findAttachmentList();
 		return attachmentList;
 	}
+
+	@Override
+	public int saveAttachment(Attachment attachment) {
+		int result = attachmentDao.saveAttachment(attachment);
+		return result;
+	}
+
+	@Override
+	public Attachment findAttachmentById(int id) {
+		Attachment attachment = attachmentDao.findAttachmentById(id);
+		return attachment;
+	}
+
+	@Override
+	public int removeAttachment(int id) {
+		int result = attachmentDao.removeAttachment(id);
+		return result;
+	}
+
+	@Override
+	public int modifyAttachment(Attachment attachment) {
+		int result = attachmentDao.modifyAttachment(attachment);
+		return result;
+	}
 }

@@ -20,4 +20,28 @@ public class NotificationServiceImpl implements NotificationService{
 		List<Notification> notificationList = notificationDao.findNotificationList();
 		return notificationList;
 	}
+
+	@Override
+	public int saveNotification(Notification notification) {
+		int result = notificationDao.saveNotification(notification);
+		return result;
+	}
+
+	@Override
+	public Notification findNotificationById(int id) {
+		Notification notification = notificationDao.findNotificationById(id);
+		return notification;
+	}
+
+	@Override
+	public int removeNotification(int id) {
+		int result = notificationDao.removeNotification(id);
+		return result;
+	}
+
+	@Override
+	public int modifyNotification(Notification notification) {
+		int result = notificationDao.modifyNotification(notification);
+		return result;
+	}
 }

@@ -6,8 +6,8 @@ import lombok.Data;
 public class Attachment {
 	int id;
 	int uploaderUserId;
-	int postId;
-	int taskId;
+	Integer postId;
+	Integer taskId;
 	String fileName;
 	String originalFileName;
 	String fileUrl;

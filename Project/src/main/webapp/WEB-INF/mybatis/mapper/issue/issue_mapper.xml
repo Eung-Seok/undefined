@@ -3,4 +3,61 @@
 		   "-//mybatis.org//DTD Mapper 3.0//EN" 
 		   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="issue_mapper">
+
+	<select id="findIssueList" resultType="Issue">
+		SELECT *
+		FROM TF_ISSUE
+	</select>
+	
+	<select id="findIssueById" resultType="Issue" parameterType="int">
+		SELECT *
+		FROM TF_ISSUE
+		WHERE id = #{id}
+	</select>
+
+	<insert id="saveIssue" parameterType="Issue">
+		INSERT INTO TF_ISSUE(
+			ID,
+			PROJECT_ID,
+			TASK_ID,
+			REPORTER_USER_ID,
+			TITLE,
+			CONTENT,
+			STATUS,
+			CREATED_AT,
+			UPDATED_AT
+		)
+		VALUES(
+		#{id},
+		#{projectId},
+		#{taskId},
+		#{reporterUserID},
+		#{title},
+		#{content},
+		#{status},
+		#{createdAt},
+		#{updatedAt}
+		)
+	</insert>
+	
+	<delete id="removeIssue" parameterType="int">
+		DELETE FROM TF_ISSUE
+		WHERE
+		ID = #{id}
+	</delete>
+
+	<update id="modifyIssue" parameterType="Issue">
+		UPDATE TF_ISSUE
+		SET
+		PROJECT_ID = #{projectId},
+		TASK_ID = #{taskId},
+		REPORTER_USER = #{reporterUserID},
+		TITLE = #{title},
+		CONTENT = #{content},
+		STATUS = #{status},
+		CREATED_AT = #{createdAt},
+		UPDATED_AT = #{updatedAt}
+		WHERE ID = #{id}
+	</update>
+
 </mapper>

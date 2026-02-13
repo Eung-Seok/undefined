@@ -6,8 +6,8 @@ import lombok.Data;
 public class CalendarEvent {
 	int id;
 	int userId;
-	int projectId;
-	int taskId;
+	Integer projectId;
+	Integer taskId;
 	String name;
 	String startDate;
 	String endDate;

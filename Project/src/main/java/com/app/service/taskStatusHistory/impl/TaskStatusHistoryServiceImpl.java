@@ -20,4 +20,28 @@ public class TaskStatusHistoryServiceImpl implements TaskStatusHistoryService{
 		List<TaskStatusHistory> taskStatusHistoryList = taskStatusHistoryDao.findTaskStatusHistoryList();
 		return taskStatusHistoryList;
 	}
+
+	@Override
+	public int saveTaskStatusHistory(TaskStatusHistory taskStatusHistory) {
+		int result = taskStatusHistoryDao.saveTaskStatusHistory(taskStatusHistory);
+		return result;
+	}
+
+	@Override
+	public TaskStatusHistory findTaskStatusHistoryById(int id) {
+		TaskStatusHistory taskStatusHistory = taskStatusHistoryDao.findTaskStatusHistoryById(id);
+		return taskStatusHistory;
+	}
+
+	@Override
+	public int removeTaskStatusHistory(int id) {
+		int result = taskStatusHistoryDao.removeTaskStatusHistory(id);
+		return result;
+	}
+
+	@Override
+	public int modifyTaskStatusHistory(TaskStatusHistory taskStatusHistory) {
+		int result = taskStatusHistoryDao.modifyTaskStatusHistory(taskStatusHistory);
+		return result;
+	}
 }

@@ -20,4 +20,28 @@ public class BoardServiceImpl implements BoardService{
 		List<Board> boardList = boardDao.findBoardList();
 		return boardList;
 	}
+
+	@Override
+	public int saveBoard(Board board) {
+		int result = boardDao.saveBoard(board);
+		return result;
+	}
+
+	@Override
+	public Board findBoardById(int id) {
+		Board board = boardDao.findBoardById(id);
+		return board;
+	}
+
+	@Override
+	public int removeBoard(int id) {
+		int result = boardDao.removeBoard(id);
+		return result;
+	}
+
+	@Override
+	public int modifyBoard(Board board) {
+		int result = boardDao.modifyBoard(board);
+		return result;
+	}
 }

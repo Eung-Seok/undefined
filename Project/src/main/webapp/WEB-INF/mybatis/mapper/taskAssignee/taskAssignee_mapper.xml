@@ -3,4 +3,50 @@
 		   "-//mybatis.org//DTD Mapper 3.0//EN" 
 		   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="taskAssignee_mapper">
+
+	<select id="findTaskAssigneeList" resultType="TaskAssignee">
+		SELECT *
+		FROM TF_TASK_ASSIGNEE
+	</select>
+	
+	<select id="findTaskAssigneeById" resultType="TaskAssignee" parameterType="int">
+		SELECT *
+		FROM TF_TASK_ASSIGNEE
+		WHERE id = #{id}
+	</select>
+
+	<insert id="saveTaskAssignee" parameterType="TaskAssignee">
+		INSERT INTO TF_TASK_ASSIGNEE(
+			ID,
+			TASK_ID,
+			USER_ID,
+			STATUS,
+			JOINED_AT
+		)
+		VALUES(
+		#{id},
+		#{taskId},
+		#{userId},
+		#{status},
+		#{joineAt}
+		)
+	</insert>
+
+	
+	<delete id="removeTaskAssignee" parameterType="int">
+		DELETE FROM TF_TASK_ASSIGNEE
+		WHERE
+		ID = #{id}
+	</delete>
+
+	<update id="modifyTaskAssignee" parameterType="TaskAssignee">
+		UPDATE TF_TASK_ASSIGNEE
+		SET
+		TASK_ID = #{taskId},
+		USER_ID = #{userId},
+		STATUS = #{status},
+		JOIN_AT = #{joineAt}
+		WHERE ID = #{id}
+	</update>
+	
 </mapper>

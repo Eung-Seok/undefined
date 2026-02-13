@@ -20,4 +20,28 @@ public class UserRoleServiceImpl implements UserRoleService{
 		List<UserRole> userRoleList = userRoleDao.findUserRoleList();
 		return userRoleList;
 	}
+
+	@Override
+	public int saveUserRole(UserRole userRole) {
+		int result = userRoleDao.saveUserRole(userRole);
+		return result;
+	}
+
+	@Override
+	public UserRole findUserRoleById(int id) {
+		UserRole userRole = userRoleDao.findUserRoleById(id);
+		return userRole;
+	}
+
+	@Override
+	public int removeUserRole(int id) {
+		int result = userRoleDao.removeUserRole(id);
+		return result;
+	}
+
+	@Override
+	public int modifyUserRole(UserRole userRole) {
+		int result = userRoleDao.modifyUserRole(userRole);
+		return result;
+	}
 }

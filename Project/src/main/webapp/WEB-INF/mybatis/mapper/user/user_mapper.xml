@@ -5,42 +5,63 @@
 
 <mapper namespace="user_mapper">
 
-	<!-- <insert id="saveRoom" parameterType="com.app.dto.room.Room"> -->
-	<insert id="saveUser" parameterType="User">
-		INSERT INTO TF_USER VALUES(
-		#{empno},
-		#{email},
-		#{password},
-		#{name},
-		#{position},
-		#{departmentId},
-		#{status},
-		#{startedAt},
-		#{createdAt},
-		#{updatedAt}
-		 )
-	</insert>
-
 	<select id="findUserList" resultType="User">
 		SELECT *
 		FROM TF_USER
 	</select>
+	
+	<select id="findUserByEmpno" resultType="User" parameterType="int">
+		SELECT *
+		FROM TF_USER
+		WHERE EMPNO = #{empno}
+	</select>
+	
+	<insert id="saveUser" parameterType="User">
+		INSERT INTO TF_USER(
+			EMPNO, 
+			EMAIL, 
+			PASSWORD, 
+			NAME, 
+			POSITION,
+			DEPARTMENT_ID, 
+			STATUS, 
+			STARTED_AT, 
+			CREATED_AT, 
+			UPDATED_AT
+		) 
+		VALUES(
+			#{empno}, 
+			#{email}, 
+			#{password}, 
+			#{name}, 
+			#{position}, 
+			#{departmentId}, 
+			#{status}, 
+			#{startedAt}, 
+			#{createdAt},
+			#{updatedAt}
+		)
+	</insert>
 
 	<delete id="removeUser" parameterType="int">
-		DELETE FROM T_ROOM
+		DELETE FROM TF_USER
 		WHERE
-		room_id = #{roomId}
+		EMPNO = #{empno}
 	</delete>
 
 	<update id="modifyUser" parameterType="User">
-		UPDATE T_ROOM
+		UPDATE TF_USER
 		SET
-		BUILDING_NAME = #{buildingName},
-		ROOM_NUMBER = #{roomNumber},
-		FLOOR = #{floor},
-		MAX_GUEST_COUNT = #{maxGuestCount},
-		VIEW_TYPE = #{viewType}
-		WHERE ROOM_ID = #{roomId}
+		EMAIL = #{email},
+		PASSWORD = #{password},
+		NAME = #{name},
+		POSITION = #{position},
+		DEPARTMENT_ID = #{departmentId},
+		STATUS = #{status},
+		STARTED_AT = #{startedAt},
+		CREATED_AT = #{createdAt},
+		UPDATED_AT = #{updatedAt}
+		WHERE EMPNO = #{empno}
 
 	</update>
 	

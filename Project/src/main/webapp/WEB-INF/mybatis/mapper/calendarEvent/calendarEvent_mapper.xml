@@ -3,4 +3,64 @@
 		   "-//mybatis.org//DTD Mapper 3.0//EN" 
 		   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="calendarEvent_mapper">
+
+	<select id="findCalendarEventList" resultType="CalendarEvent">
+		SELECT *
+		FROM TF_CALENDAR_EVENT
+	</select>
+	
+	<select id="findCalendarEventById" resultType="CalendarEvent" parameterType="int">
+		SELECT *
+		FROM TF_CALENDAR_EVENT
+		WHERE id = #{id}
+	</select>
+
+	<insert id="saveCalendarEvent" parameterType="CalendarEvent">
+		INSERT INTO TF_CALENDAR_EVENT(
+			ID,
+			USER_ID,
+			PROJECT_ID,
+			TASK_ID,
+			NAME,
+			START_DATE,
+			END_DATE,
+			TYPE,
+			CREATED_AT,
+			UPDATED_AT
+		)
+		VALUES(
+		#{id},
+		#{userId},
+		#{projectId},
+		#{taskId},
+		#{name},
+		#{startDate},
+		#{endDate},
+		#{type},
+		#{createdAt},
+		#{updatedAt}
+		)
+	</insert>
+	
+	<delete id="removeCalendarEvent" parameterType="int">
+		DELETE FROM TF_CALENDAR_EVENT
+		WHERE
+		ID = #{id}
+	</delete>
+
+	<update id="modifyCalendarEvent" parameterType="CalendarEvent">
+		UPDATE TF_CALENDAR_EVENT
+		SET
+		USER_ID = #{userId},
+		PROJECT_ID = #{projectId},
+		TASK_ID = #{taskId},
+		NAME = #{name},
+		START_DATE = #{startDate},
+		END_DATE = #{endDate},
+		TYPE = #{type},
+		CREATED_AT = #{createdAt},
+		UPDATED_AT = #{updatedAt}
+		WHERE ID = #{id}
+	</update>
+	
 </mapper>

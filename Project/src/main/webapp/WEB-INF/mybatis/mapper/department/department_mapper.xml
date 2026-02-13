@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC
+		   "-//mybatis.org//DTD Mapper 3.0//EN" 
+		   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="department_mapper">
+
+	<select id="findDepartmentList" resultType="Department">
+		SELECT *
+		FROM TF_DEPARTMENT
+	</select>
+	
+	<select id="findDepartmentById" resultType="Department" parameterType="int">
+		SELECT *
+		FROM TF_DEPARTMENT
+		WHERE id = #{id}
+	</select>
+
+	<insert id="saveDepartment" parameterType="Department">
+		INSERT INTO TF_DEPARTMENT(
+			ID,
+			DEPTNO,
+			NAME,
+			PARENT_DEPARTMENT_ID,
+			CREATED_AT,
+			STARTED_AT,
+			UPDATED_AT
+		)
+		VALUES(
+		#{id},
+		#{deptno},
+		#{name},
+		#{parentDepartmentId},
+		#{createdAt},
+		#{startedAt},
+		#{updatedAt}
+		)
+	</insert>
+	
+	<delete id="removeDepartment" parameterType="int">
+		DELETE FROM TF_DEPARTMENT
+		WHERE
+		ID = #{id}
+	</delete>
+
+	<update id="modifyDepartment" parameterType="Department">
+		UPDATE TF_DEPARTMENT
+		SET
+		DEPTNO = #{deptno},
+		NAME = #{name},
+		PARENT_DEPARTMENT_ID = #{parentDepartmentId},
+		CREATED_AT = #{createdAt},
+		STARTED_AT = #{startedAt},
+		UPDATED_AT = #{updatedAt}
+		WHERE ID = #{id}
+	</update>
+
+</mapper>

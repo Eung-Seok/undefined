@@ -20,4 +20,28 @@ public class IssueServiceImpl implements IssueService{
 		List<Issue> issueList = issueDao.findIssueList();
 		return issueList;
 	}
+
+	@Override
+	public int saveIssue(Issue issue) {
+		int result = issueDao.saveIssue(issue);
+		return result;
+	}
+
+	@Override
+	public Issue findIssueById(int id) {
+		Issue issue = issueDao.findIssueById(id);
+		return issue;
+	}
+
+	@Override
+	public int removeIssue(int id) {
+		int result = issueDao.removeIssue(id);
+		return result;
+	}
+
+	@Override
+	public int modifyIssue(Issue issue) {
+		int result = issueDao.modifyIssue(issue);
+		return result;
+	}
 }

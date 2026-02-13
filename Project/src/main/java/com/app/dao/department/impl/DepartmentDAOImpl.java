@@ -20,5 +20,29 @@ public class DepartmentDAOImpl implements DepartmentDAO {
 		List<Department> departmentList = sqlSessionTemplate.selectList("department_mapper.findDepartmentList");
 		return departmentList;
 	}
+
+	@Override
+	public int saveDepartment(Department department) {
+		int result = sqlSessionTemplate.insert("department_mapper.saveDepartment", department);
+		return result;
+	}
+
+	@Override
+	public Department findDepartmentById(int id) {
+		Department department = sqlSessionTemplate.selectOne("department_mapper.findDepartmentById", id);
+		return department;
+	}
+
+	@Override
+	public int removeDepartment(int id) {
+		int result = sqlSessionTemplate.delete("department_mapper.removeDepartment", id);
+		return result;
+	}
+
+	@Override
+	public int modifyDepartment(Department department) {
+		int result = sqlSessionTemplate.update("department_mapper.modifyDepartment", department);
+		return result;
+	}
 	
 }

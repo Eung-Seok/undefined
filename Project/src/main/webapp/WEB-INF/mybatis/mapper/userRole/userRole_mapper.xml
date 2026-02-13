@@ -5,9 +5,26 @@
 
 <mapper namespace="userRole_mapper">
 
-	<!-- <insert id="saveRoom" parameterType="com.app.dto.room.Room"> -->
+	<select id="findUserRoleList" resultType="UserRole">
+		SELECT * 
+		FROM TF_USER_ROLE
+	</select>
+	
+	<select id="findUserRoleById" resultType="UserRole" parameterType="int">
+		SELECT *
+		FROM TF_USER_ROLE
+		WHERE id = #{id}
+	</select>
+	
+	
 	<insert id="saveUserRole" parameterType="UserRole">
-		INSERT INTO TF_USER VALUES(
+		INSERT INTO TF_USER_ROLE(
+			ID,
+			USER_ID,
+			ROLE_ID,
+			CREATED_AT
+		)
+		 VALUES(
 		#{id},
 		#{userId},
 		#{roleId},
@@ -15,27 +32,19 @@
 		 )
 	</insert>
 
-	<select id="findUserRoleList" resultType="UserRole">
-		SELECT *
-		FROM TF_USER
-	</select>
-
 	<delete id="removeUserRole" parameterType="int">
-		DELETE FROM T_ROOM
+		DELETE FROM TF_USER_ROLE
 		WHERE
-		room_id = #{roomId}
+		ID = #{id}
 	</delete>
 
 	<update id="modifyUserRole" parameterType="UserRole">
-		UPDATE T_ROOM
+		UPDATE TF_USER_ROLE
 		SET
-		BUILDING_NAME = #{buildingName},
-		ROOM_NUMBER = #{roomNumber},
-		FLOOR = #{floor},
-		MAX_GUEST_COUNT = #{maxGuestCount},
-		VIEW_TYPE = #{viewType}
-		WHERE ROOM_ID = #{roomId}
-
+		USER_ID = #{userId},
+		ROLE_ID = #{roleId},
+		CREATED_AT = #{createdAt}
+		WHERE ID = #{id}
 	</update>
 	
 </mapper>		  

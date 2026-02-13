@@ -3,4 +3,55 @@
 		   "-//mybatis.org//DTD Mapper 3.0//EN" 
 		   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="projectMember_mapper">
+
+	<select id="findProjectMemberList" resultType="ProjectMember">
+		SELECT *
+		FROM TF_PROJECT_MEMBER
+	</select>
+	
+	<select id="findProjectMemberById" resultType="ProjectMember" parameterType="int">
+		SELECT *
+		FROM TF_PROJECT_MEMBER
+		WHERE id = #{id}
+	</select>
+
+	<insert id="saveProjectMember" parameterType="ProjectMember">
+		INSERT INTO TF_PROJECT_MEMBER(
+			ID,
+			PROJECT_ID,
+			USER_ID,
+			PROJECT_ROLE,
+			STATUS,
+			JOINED_AT,
+			CREATED_AT
+		)
+		VALUES(
+		#{id},
+		#{projectId},
+		#{userId},
+		#{projectRole},
+		#{status},
+		#{joinedAt},
+		#{createdAt}
+		)
+	</insert>
+	
+	<delete id="removeProjectMember" parameterType="int">
+		DELETE FROM TF_PROJECT_MEMBER
+		WHERE
+		ID = #{id}
+	</delete>
+
+	<update id="modifyProjectMember" parameterType="ProjectMember">
+		UPDATE TF_PROJECT_MEMBER
+		SET
+		PROJECT_ID = #{projectId},
+		USER_ID = #{userId},
+		PROJECT_ROLE = #{projectRole},
+		STATUS = #{status},
+		JOINED_AT = #{joinedAt},
+		CREATED_AT = #{createdAt}
+		WHERE ID = #{id}
+	</update>
+
 </mapper>

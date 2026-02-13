@@ -20,5 +20,29 @@ public class BoardDAOImpl implements BoardDAO {
 		List<Board> boardList = sqlSessionTemplate.selectList("board_mapper.findBoardList");
 		return boardList;
 	}
+
+	@Override
+	public int saveBoard(Board board) {
+		int result = sqlSessionTemplate.insert("board_mapper.saveBoard", board);
+		return result;
+	}
+
+	@Override
+	public Board findBoardById(int id) {
+		Board board = sqlSessionTemplate.selectOne("board_mapper.findBoardById", id);
+		return board;
+	}
+
+	@Override
+	public int removeBoard(int id) {
+		int result = sqlSessionTemplate.delete("board_mapper.removeBoard", id);
+		return result;
+	}
+
+	@Override
+	public int modifyBoard(Board board) {
+		int result = sqlSessionTemplate.update("board_mapper.modifyBoard", board);
+		return result;
+	}
 	
 }

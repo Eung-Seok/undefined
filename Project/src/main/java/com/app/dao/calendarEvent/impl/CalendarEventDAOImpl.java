@@ -20,5 +20,29 @@ public class CalendarEventDAOImpl implements CalendarEventDAO {
 		List<CalendarEvent> commentList = sqlSessionTemplate.selectList("calendarEvent_mapper.findCalendarEventList");
 		return commentList;
 	}
+
+	@Override
+	public int saveCalendarEvent(CalendarEvent calendarEvent) {
+		int result = sqlSessionTemplate.insert("calendarEvent_mapper.saveCalendarEvent", calendarEvent);
+		return result;
+	}
+
+	@Override
+	public CalendarEvent findCalendarEventById(int id) {
+		CalendarEvent calendarEvent = sqlSessionTemplate.selectOne("calendarEvent_mapper.findCalendarEventById", id);
+		return calendarEvent;
+	}
+
+	@Override
+	public int removeCalendarEvent(int id) {
+		int result = sqlSessionTemplate.delete("calendarEvent_mapper.removeCalendarEvent",id);
+		return result;
+	}
+
+	@Override
+	public int modifyCalendarEvent(CalendarEvent calendarEvent) {
+		int result = sqlSessionTemplate.update("calendarEvent_mapper.modifyCalendarEvent", calendarEvent);
+		return result;
+	}
 	
 }

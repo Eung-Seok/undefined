@@ -20,4 +20,28 @@ public class ReportServiceImpl implements ReportService{
 		List<Report> reportList = reportDao.findReportList();
 		return reportList;
 	}
+
+	@Override
+	public int saveReport(Report report) {
+		int result = reportDao.saveReport(report);
+		return result;
+	}
+
+	@Override
+	public Report findReportById(int id) {
+		Report report = reportDao.findReportById(id);
+		return report;
+	}
+
+	@Override
+	public int removeReport(int id) {
+		int result = reportDao.removeReport(id);
+		return result;
+	}
+
+	@Override
+	public int modifyReport(Report report) {
+		int result = reportDao.modifyReport(report);
+		return result;
+	}
 }

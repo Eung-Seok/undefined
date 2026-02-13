@@ -6,14 +6,14 @@ import lombok.Data;
 public class Task {
 	int id;
 	int projectId;
-	int parentTaskId;
+	Integer parentTaskId;
 	String name;
 	String description;
 	String status;
 	String priority;
 	String startDate;
 	String dueDate;
-	int progressPercent;
+	Integer progressPercent;
 	String createdAt;
 	String updatedAt;
 }

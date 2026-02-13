@@ -3,4 +3,40 @@
 		   "-//mybatis.org//DTD Mapper 3.0//EN" 
 		   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="role_mapper">
+
+	<select id="findRoleList" resultType="Role">
+		SELECT *
+		FROM TF_ROLE
+	</select>
+	
+	<select id="findRoleById" resultType="Role" parameterType="int">
+		SELECT *
+		FROM TF_ROLE
+		WHERE id = #{id}
+	</select>
+
+	<insert id="saveRole" parameterType="Role">
+		INSERT INTO TF_ROLE(
+			ID,
+			NAME
+		)
+		VALUES(
+		#{id},
+		#{name}
+		)
+	</insert>
+	
+	<delete id="removeRole" parameterType="int">
+		DELETE FROM TF_ROLE
+		WHERE
+		ID = #{id}
+	</delete>
+
+	<update id="modifyRole" parameterType="Role">
+		UPDATE TF_ROLE
+		SET
+		NAME = #{name}
+		WHERE ID = #{id}
+	</update>
+	
 </mapper>

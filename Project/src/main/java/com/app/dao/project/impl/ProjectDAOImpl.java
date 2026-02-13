@@ -21,5 +21,29 @@ public class ProjectDAOImpl implements ProjectDAO {
 		List<Project> projectList = sqlSessionTemplate.selectList("project_mapper.findProjectList");
 		return projectList;
 	}
+
+	@Override
+	public int saveProject(Project project) {
+		int result = sqlSessionTemplate.insert("project_mapper.saveProject", project);
+		return result;
+	}
+
+	@Override
+	public Project findProjectById(int id) {
+		Project project = sqlSessionTemplate.selectOne("project_mapper.findProjectById", id);
+		return project;
+	}
+
+	@Override
+	public int removeProject(int id) {
+		int result = sqlSessionTemplate.delete("project_mapper.removeProject", id);
+		return result;
+	}
+
+	@Override
+	public int modifyProject(Project project) {
+		int result = sqlSessionTemplate.update("project_mapper.modifyProject", project);
+		return result;
+	}
 	
 }

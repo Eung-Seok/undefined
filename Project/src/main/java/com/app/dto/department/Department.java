@@ -7,7 +7,7 @@ public class Department {
 	int id;
 	int deptno;
 	String name;
-	int parentDepartmentId;
+	Integer parentDepartmentId;
 	String createdAt;
 	String startedAt;
 	String updatedAt;

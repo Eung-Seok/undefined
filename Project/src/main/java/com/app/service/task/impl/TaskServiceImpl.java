@@ -20,4 +20,28 @@ public class TaskServiceImpl implements TaskService{
 		List<Task> taskList = taskDao.findTaskList();
 		return taskList;
 	}
+
+	@Override
+	public int saveTask(Task task) {
+		int result = taskDao.saveTask(task);
+		return result;
+	}
+
+	@Override
+	public Task findTaskById(int id) {
+		Task task = taskDao.findTaskById(id);
+		return task;
+	}
+
+	@Override
+	public int removeTask(int id) {
+		int result = taskDao.removeTask(id);
+		return result;
+	}
+
+	@Override
+	public int modifyTask(Task task) {
+		int result = taskDao.modifyTask(task);
+		return result;
+	}
 }

@@ -21,5 +21,29 @@ public class PostDAOImpl implements PostDAO {
 		List<Post> postList = sqlSessionTemplate.selectList("post_mapper.findPostList");
 		return postList;
 	}
+
+	@Override
+	public int savePost(Post post) {
+		int result = sqlSessionTemplate.insert("post_mapper.savePost", post);
+		return result;
+	}
+
+	@Override
+	public Post findPostById(int id) {
+		Post post = sqlSessionTemplate.selectOne("post_mapper.findPostById", id);
+		return post;
+	}
+
+	@Override
+	public int removePost(int id) {
+		int result = sqlSessionTemplate.delete("post_mapper.removePost", id);
+		return result;
+	}
+
+	@Override
+	public int modifyPost(Post post) {
+		int result = sqlSessionTemplate.update("post_mapper.modifyPost", post);
+		return result;
+	}
 	
 }

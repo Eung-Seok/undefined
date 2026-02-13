@@ -1,9 +1,12 @@
 package com.app.dto.issue;
 
+import lombok.Data;
+
+@Data
 public class Issue {
 	int id;
 	int projectId;
-	int taskId;
+	Integer taskId;
 	int reporterUserId;
 	String title;
 	String content;

@@ -4,9 +4,29 @@
 		   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="taskStatusHistory_mapper">
 
-	<!-- <insert id="saveRoom" parameterType="com.app.dto.room.Room"> -->
+	
+	<select id="findTaskStatusHistoryList" resultType="TaskStatusHistory">
+		SELECT *
+		FROM TF_TASK_STATUS_HISTORY
+	</select>
+	
+	<select id="findTaskStatusHistoryById" resultType="TaskStatusHistory" parameterType="int">
+		SELECT *
+		FROM TF_TASK_STATUS_HISTORY
+		WHERE id = #{id}
+	</select>
+
 	<insert id="saveTaskStatusHistory" parameterType="TaskStatusHistory">
-		INSERT INTO TF_USER VALUES(
+		INSERT INTO TF_TASK_STATUS_HISTORY(
+			ID,
+			TASK_ID,
+			FROM_STATUS,
+			TO_STATUS,
+			CHANGED_BY,
+			CHANGED_AT,
+			MEMO
+		)
+		VALUES(
 		#{id},
 		#{taskId},
 		#{fromStatus},
@@ -14,29 +34,26 @@
 		#{changedBy},
 		#{changedAt},
 		#{memo}
-		 )
+		)
 	</insert>
 
-	<select id="findTaskStatusHistoryList" resultType="TaskStatusHistory">
-		SELECT *
-		FROM TF_USER
-	</select>
-
+	
 	<delete id="removeTaskStatusHistory" parameterType="int">
-		DELETE FROM T_ROOM
+		DELETE FROM TF_TASK_STATUS_HISTORY
 		WHERE
-		room_id = #{roomId}
+		ID = #{id}
 	</delete>
 
 	<update id="modifyTaskStatusHistory" parameterType="TaskStatusHistory">
-		UPDATE T_ROOM
+		UPDATE TF_TASK_STATUS_HISTORY
 		SET
-		BUILDING_NAME = #{buildingName},
-		ROOM_NUMBER = #{roomNumber},
-		FLOOR = #{floor},
-		MAX_GUEST_COUNT = #{maxGuestCount},
-		VIEW_TYPE = #{viewType}
-		WHERE ROOM_ID = #{roomId}
+		TASK_ID = #{taskId},
+		FROM_STATUS = #{fromStatus},
+		TO_STATUS = #{toStatus},
+		CHANGED_BY = #{changedBy},
+		CHANGED_AT = #{changedAt},
+		MEMO = #{memo}
+		WHERE ID = #{id}
 
 	</update>
 	

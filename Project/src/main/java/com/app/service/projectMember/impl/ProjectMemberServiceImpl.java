@@ -20,4 +20,28 @@ public class ProjectMemberServiceImpl implements ProjectMemberService{
 		List<ProjectMember> projectMemberList = projectMemberDao.findProjectMemberList();
 		return projectMemberList;
 	}
+
+	@Override
+	public int saveProjectMember(ProjectMember projectMember) {
+		int result = projectMemberDao.saveProjectMember(projectMember);
+		return result;
+	}
+
+	@Override
+	public ProjectMember findProjectMemberById(int id) {
+		ProjectMember projectMember = projectMemberDao.findProjectMemberById(id);
+		return projectMember;
+	}
+
+	@Override
+	public int removeProjectMember(int id) {
+		int result = projectMemberDao.removeProjectMember(id);
+		return result;
+	}
+
+	@Override
+	public int modifyProjectMember(ProjectMember projectMember) {
+		int result = projectMemberDao.modifyProjectMember(projectMember);
+		return result;
+	}
 }

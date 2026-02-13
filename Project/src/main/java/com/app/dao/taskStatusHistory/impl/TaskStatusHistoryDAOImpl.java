@@ -20,6 +20,31 @@ public class TaskStatusHistoryDAOImpl implements TaskStatusHistoryDAO {
 		List<TaskStatusHistory> taskStatusHistoryList = sqlSessionTemplate.selectList("taskStatusHistory_mapper.findTaskStatusHistoryList");
 		return taskStatusHistoryList;
 	}
+
+	@Override
+	public int saveTaskStatusHistory(TaskStatusHistory taskStatusHistory) {
+		int result = sqlSessionTemplate.insert("taskStatusHistory_mapper.saveTaskStatusHistory", taskStatusHistory);
+		return result;
+	}
+
+	@Override
+	public TaskStatusHistory findTaskStatusHistoryById(int id) {
+		TaskStatusHistory taskStatusHistory = sqlSessionTemplate.selectOne("taskStatusHistory_mapper.findTaskStatusHistoryById",id);
+		return taskStatusHistory;
+	}
+
+	@Override
+	public int removeTaskStatusHistory(int id) {
+		int result = sqlSessionTemplate.delete("taskStatusHistory_mapper.removeTaskStatusHistory", id);
+		return result;
+	}
+
+	@Override
+	public int modifyTaskStatusHistory(TaskStatusHistory taskStatusHistory) {
+		int result = sqlSessionTemplate.update("taskStatusHistory_mapper.modifyTaskStatusHistory", taskStatusHistory);
+		return result
+				;
+	}
 	
 }
 

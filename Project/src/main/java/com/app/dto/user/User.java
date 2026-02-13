@@ -9,7 +9,7 @@ public class User {
 	String password;
 	String name;
 	String position;
-	int department_id;
+	int departmentId;
 	String status;
 	String startedAt;
 	String createdAt;

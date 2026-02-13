@@ -20,4 +20,28 @@ public class ProjectServiceImpl implements ProjectService{
 		List<Project> projectList = projectDao.findProjectList();
 		return projectList;
 	}
+
+	@Override
+	public int saveProject(Project project) {
+		int result = projectDao.saveProject(project);
+		return result;
+	}
+
+	@Override
+	public Project findProjectById(int id) {
+		Project project = projectDao.findProjectById(id);
+		return project;
+	}
+
+	@Override
+	public int removeProject(int id) {
+		int result = projectDao.removeProject(id);
+		return result;
+	}
+
+	@Override
+	public int modifyProject(Project project) {
+		int result = projectDao.modifyProject(project);
+		return result;
+	}
 }

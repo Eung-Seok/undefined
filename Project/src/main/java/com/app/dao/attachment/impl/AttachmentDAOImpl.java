@@ -20,5 +20,29 @@ public class AttachmentDAOImpl implements AttachmentDAO {
 		List<Attachment> attachmentList = sqlSessionTemplate.selectList("attachment_mapper.findAttachmentList");
 		return attachmentList;
 	}
+
+	@Override
+	public int saveAttachment(Attachment attachment) {
+		int result = sqlSessionTemplate.insert("attachment_mapper.saveAttachment", attachment);
+		return result;
+	}
+
+	@Override
+	public Attachment findAttachmentById(int id) {
+		Attachment attachment = sqlSessionTemplate.selectOne("attachment_mapper.findAttachmentById", id);
+		return attachment;
+	}
+
+	@Override
+	public int removeAttachment(int id) {
+		int result = sqlSessionTemplate.delete("attachment_mapper.removeAttachment", id);
+		return result;
+	}
+
+	@Override
+	public int modifyAttachment(Attachment attachment) {
+		int result = sqlSessionTemplate.update("attachment_mapper.modifyAttachment", attachment);
+		return result;
+	}
 	
 }

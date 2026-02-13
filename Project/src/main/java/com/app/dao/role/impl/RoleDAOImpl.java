@@ -21,6 +21,30 @@ public class RoleDAOImpl implements RoleDAO {
 		List<Role> roleList = sqlSessionTemplate.selectList("role_mapper.findRoleList");
 		return roleList;
 	}
+
+	@Override
+	public int saveRole(Role role) {
+		int result = sqlSessionTemplate.insert("role_mapper.saveRole", role);
+		return result;
+	}
+
+	@Override
+	public Role findRoleById(int id) {
+		Role role = sqlSessionTemplate.selectOne("role_mapper.findRoleById",id);
+		return role;
+	}
+
+	@Override
+	public int removeRole(int id) {
+		int result = sqlSessionTemplate.delete("role_mapper.removeRole", id);
+		return result;
+	}
+
+	@Override
+	public int modifyRole(Role role) {
+		int result = sqlSessionTemplate.update("role_mapper.modifyRole", role);
+		return result;
+	}
 	
 }
 

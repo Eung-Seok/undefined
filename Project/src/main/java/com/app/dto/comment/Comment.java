@@ -7,7 +7,7 @@ public class Comment {
 	int id;
 	int postId;
 	int authorUserId;
-	int parentCommentId;
+	Integer parentCommentId;
 	String content;
 	String createdAt;
 	String updatedAt;

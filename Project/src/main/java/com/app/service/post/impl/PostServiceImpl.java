@@ -20,4 +20,28 @@ public class PostServiceImpl implements PostService{
 		List<Post> postList = postDao.findPostList();
 		return postList;
 	}
+
+	@Override
+	public int savePost(Post post) {
+		int result = postDao.savePost(post);
+		return result;
+	}
+
+	@Override
+	public Post findPostById(int id) {
+		Post post = postDao.findPostById(id);
+		return post;
+	}
+
+	@Override
+	public int removePost(int id) {
+		int result = postDao.removePost(id);
+		return result;
+	}
+
+	@Override
+	public int modifyPost(Post post) {
+		int result = postDao.modifyPost(post);
+		return result;
+	}
 }

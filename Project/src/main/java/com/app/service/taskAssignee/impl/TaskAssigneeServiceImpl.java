@@ -20,4 +20,28 @@ public class TaskAssigneeServiceImpl implements TaskAssigneeService{
 		List<TaskAssignee> taskAssigneeList = taskAssigneeDao.findTaskAssigneeList();
 		return taskAssigneeList;
 	}
+
+	@Override
+	public int saveTaskAssignee(TaskAssignee taskAssignee) {
+		int result = taskAssigneeDao.saveTaskAssignee(taskAssignee);
+		return result;
+	}
+
+	@Override
+	public TaskAssignee findTaskAssigneeById(int id) {
+		TaskAssignee taskAssignee = taskAssigneeDao.findTaskAssigneeById(id);
+		return taskAssignee;
+	}
+
+	@Override
+	public int removeTaskAssignee(int id) {
+		int result = taskAssigneeDao.removeTaskAssignee(id);
+		return result;
+	}
+
+	@Override
+	public int modifyTaskAssignee(TaskAssignee taskAssignee) {
+		int result = taskAssigneeDao.modifyTaskAssignee(taskAssignee);
+		return result;
+	}
 }
