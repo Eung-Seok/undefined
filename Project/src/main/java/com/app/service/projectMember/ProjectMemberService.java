@@ -1,0 +1,9 @@
+package com.app.service.projectMember;
+
+import java.util.List;
+
+import com.app.dto.projectMember.ProjectMember;
+
+public interface ProjectMemberService {
+	List<ProjectMember> findProjectMemberList();
+}

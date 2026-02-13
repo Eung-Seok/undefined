@@ -11,6 +11,22 @@
 
 	<typeAliases>
 		<typeAlias type="com.app.dto.user.User" alias="User" />
+		<typeAlias type="com.app.dto.userRole.UserRole" alias="UserRole" />
+		<typeAlias type="com.app.dto.taskStatusHistory.TaskStatusHistory" alias="TaskStatusHistory" />
+		<typeAlias type="com.app.dto.taskAssignee.TaskAssignee" alias="TaskAssignee" />
+		<typeAlias type="com.app.dto.task.Task" alias="Task" />
+		<typeAlias type="com.app.dto.role.Role" alias="Role" />
+		<typeAlias type="com.app.dto.report.Report" alias="Report" />
+		<typeAlias type="com.app.dto.projectMember.ProjectMember" alias="ProjectMember" />
+		<typeAlias type="com.app.dto.project.Project" alias="Project" />
+		<typeAlias type="com.app.dto.post.Post" alias="Post" />
+		<typeAlias type="com.app.dto.notification.Notification" alias="Notification" />
+		<typeAlias type="com.app.dto.issue.Issue" alias="Issue" />
+		<typeAlias type="com.app.dto.department.Department" alias="Department" />
+		<typeAlias type="com.app.dto.comment.Comment" alias="Comment" />
+		<typeAlias type="com.app.dto.calendarEvent.CalendarEvent" alias="CalendarEvent" />
+		<typeAlias type="com.app.dto.board.Board" alias="Board" />
+		<typeAlias type="com.app.dto.attachment.Attachment" alias="Attachment" />
 	</typeAliases>
 
 </configuration>

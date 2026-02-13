@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC
+		   "-//mybatis.org//DTD Mapper 3.0//EN" 
+		   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="userRole_mapper">
+
+	<!-- <insert id="saveRoom" parameterType="com.app.dto.room.Room"> -->
+	<insert id="saveUserRole" parameterType="UserRole">
+		INSERT INTO TF_USER VALUES(
+		#{id},
+		#{userId},
+		#{roleId},
+		#{createdAt}
+		 )
+	</insert>
+
+	<select id="findUserRoleList" resultType="UserRole">
+		SELECT *
+		FROM TF_USER
+	</select>
+
+	<delete id="removeUserRole" parameterType="int">
+		DELETE FROM T_ROOM
+		WHERE
+		room_id = #{roomId}
+	</delete>
+
+	<update id="modifyUserRole" parameterType="UserRole">
+		UPDATE T_ROOM
+		SET
+		BUILDING_NAME = #{buildingName},
+		ROOM_NUMBER = #{roomNumber},
+		FLOOR = #{floor},
+		MAX_GUEST_COUNT = #{maxGuestCount},
+		VIEW_TYPE = #{viewType}
+		WHERE ROOM_ID = #{roomId}
+
+	</update>
+	
+</mapper>		  

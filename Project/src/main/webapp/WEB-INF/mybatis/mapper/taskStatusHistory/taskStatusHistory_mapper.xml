@@ -2,3 +2,42 @@
 <!DOCTYPE mapper PUBLIC
 		   "-//mybatis.org//DTD Mapper 3.0//EN" 
 		   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="taskStatusHistory_mapper">
+
+	<!-- <insert id="saveRoom" parameterType="com.app.dto.room.Room"> -->
+	<insert id="saveTaskStatusHistory" parameterType="TaskStatusHistory">
+		INSERT INTO TF_USER VALUES(
+		#{id},
+		#{taskId},
+		#{fromStatus},
+		#{toStatus},
+		#{changedBy},
+		#{changedAt},
+		#{memo}
+		 )
+	</insert>
+
+	<select id="findTaskStatusHistoryList" resultType="TaskStatusHistory">
+		SELECT *
+		FROM TF_USER
+	</select>
+
+	<delete id="removeTaskStatusHistory" parameterType="int">
+		DELETE FROM T_ROOM
+		WHERE
+		room_id = #{roomId}
+	</delete>
+
+	<update id="modifyTaskStatusHistory" parameterType="TaskStatusHistory">
+		UPDATE T_ROOM
+		SET
+		BUILDING_NAME = #{buildingName},
+		ROOM_NUMBER = #{roomNumber},
+		FLOOR = #{floor},
+		MAX_GUEST_COUNT = #{maxGuestCount},
+		VIEW_TYPE = #{viewType}
+		WHERE ROOM_ID = #{roomId}
+
+	</update>
+	
+</mapper>		  
