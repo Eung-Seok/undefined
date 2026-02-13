@@ -45,7 +45,7 @@ http://www.springframework.org/schema/task http://www.springframework.org/schema
 	<bean class="org.mybatis.spring.SqlSessionFactoryBean"
 		id="sqlSessionFactory">
 		<property name="dataSource" ref="data_source"></property>
-		<!-- <property name="mapperLocations" value="/WEB-INF/mybatis/mapper/*.xml"></property> -->
+<!-- 		<property name="mapperLocations" value="/WEB-INF/mybatis/mapper/*.xml"></property> -->
 		<property name="mapperLocations"
 			value="/WEB-INF/mybatis/mapper/**/*_mapper.xml"></property>
 		<property name="configLocation"
