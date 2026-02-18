@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC
+		   "-//mybatis.org//DTD Mapper 3.0//EN" 
+		   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="user_mapper">
+
+	<select id="findUserList" resultType="User">
+		SELECT *
+		FROM TF_USER
+	</select>
+	
+	<select id="findUserByEmpno" resultType="User" parameterType="int">
+		SELECT *
+		FROM TF_USER
+		WHERE EMPNO = #{empno}
+	</select>
+	
+	<insert id="saveUser" parameterType="User">
+		INSERT INTO TF_USER(
+			EMPNO, 
+			EMAIL, 
+			PASSWORD, 
+			NAME, 
+			POSITION,
+			DEPARTMENT_ID, 
+			STATUS, 
+			STARTED_AT, 
+			CREATED_AT, 
+			UPDATED_AT
+		) 
+		VALUES(
+			#{empno}, 
+			#{email}, 
+			#{password}, 
+			#{name}, 
+			#{position}, 
+			#{departmentId}, 
+			#{status}, 
+			#{startedAt}, 
+			#{createdAt},
+			#{updatedAt}
+		)
+	</insert>
+
+	<delete id="removeUser" parameterType="int">
+		DELETE FROM TF_USER
+		WHERE
+		EMPNO = #{empno}
+	</delete>
+
+	<update id="modifyUser" parameterType="User">
+		UPDATE TF_USER
+		SET
+		EMAIL = #{email},
+		PASSWORD = #{password},
+		NAME = #{name},
+		POSITION = #{position},
+		DEPARTMENT_ID = #{departmentId},
+		STATUS = #{status},
+		STARTED_AT = #{startedAt},
+		CREATED_AT = #{createdAt},
+		UPDATED_AT = #{updatedAt}
+		WHERE EMPNO = #{empno}
+
+	</update>
+	
+</mapper>		  

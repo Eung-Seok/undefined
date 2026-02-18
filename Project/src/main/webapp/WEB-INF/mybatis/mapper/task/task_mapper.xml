@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC
+		   "-//mybatis.org//DTD Mapper 3.0//EN" 
+		   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="task_mapper">
+
+	<select id="findTaskList" resultType="Task">
+		SELECT *
+		FROM TF_TASK
+	</select>
+
+	<select id="findTaskById" resultType="Task" parameterType="int">
+		SELECT *
+		FROM TF_TASK
+		WHERE id = #{id}
+	</select>
+
+	<insert id="saveTask" parameterType="Task">
+		INSERT INTO TF_TASK(
+			ID,
+			PROJECT_ID,
+			PARENT_TASK_ID,
+			NAME,
+			DESCRIPTION,
+			STATUS,
+			PRIORITY,
+			START_DATE,
+			DUE_DATE,
+			PROGRESS_PERCENT,
+			CREATED_AT,
+			UPDATED_AT
+		)
+		VALUES(
+		SEQ_TF_TASK_PK.nextval,
+		#{projectId},
+		#{parentTaskId},
+		#{name},
+		#{description},
+		#{status},
+		#{priority},
+		#{startDate},
+		#{dueDate},
+		#{progressPercent},
+		#{createdAt},
+		#{updatedAt}
+		)
+	</insert>
+	
+	<delete id="removeTask" parameterType="int">
+		DELETE FROM TF_TASK
+		WHERE
+		ID = #{id}
+	</delete>
+
+	<update id="modifyTask" parameterType="Task">
+		UPDATE TF_TASK
+		SET
+		PROJECT_ID = #{projectId},
+		PARENT_TASK_ID = #{parentTaskId},
+		NAME = #{name},
+		DESCRIPTION = #{description},
+		STATUS = #{status},
+		PRIORITY = #{priority},
+		START_DATE = #{startDate},
+		DUE_DATE = #{dueDate},
+		PROGRESS_PERCENT = #{progressPercent},
+		CREATED_AT = #{createdAt},
+		UPDATED_AT = #{updatedAt}
+		WHERE ID = #{id}
+	</update>
+	
+</mapper>

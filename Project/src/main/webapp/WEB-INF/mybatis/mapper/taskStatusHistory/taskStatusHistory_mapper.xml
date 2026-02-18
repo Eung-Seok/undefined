@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC
+		   "-//mybatis.org//DTD Mapper 3.0//EN" 
+		   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="taskStatusHistory_mapper">
+
+	
+	<select id="findTaskStatusHistoryList" resultType="TaskStatusHistory">
+		SELECT *
+		FROM TF_TASK_STATUS_HISTORY
+	</select>
+	
+	<select id="findTaskStatusHistoryById" resultType="TaskStatusHistory" parameterType="int">
+		SELECT *
+		FROM TF_TASK_STATUS_HISTORY
+		WHERE id = #{id}
+	</select>
+
+	<insert id="saveTaskStatusHistory" parameterType="TaskStatusHistory">
+		INSERT INTO TF_TASK_STATUS_HISTORY(
+			ID,
+			TASK_ID,
+			FROM_STATUS,
+			TO_STATUS,
+			CHANGED_BY,
+			CHANGED_AT,
+			MEMO
+		)
+		VALUES(
+		SEQ_TF_TASK_STATUS_HISTORY_PK.nextval,
+		#{taskId},
+		#{fromStatus},
+		#{toStatus},
+		#{changedBy},
+		#{changedAt},
+		#{memo}
+		)
+	</insert>
+
+	
+	<delete id="removeTaskStatusHistory" parameterType="int">
+		DELETE FROM TF_TASK_STATUS_HISTORY
+		WHERE
+		ID = #{id}
+	</delete>
+
+	<update id="modifyTaskStatusHistory" parameterType="TaskStatusHistory">
+		UPDATE TF_TASK_STATUS_HISTORY
+		SET
+		TASK_ID = #{taskId},
+		FROM_STATUS = #{fromStatus},
+		TO_STATUS = #{toStatus},
+		CHANGED_BY = #{changedBy},
+		CHANGED_AT = #{changedAt},
+		MEMO = #{memo}
+		WHERE ID = #{id}
+
+	</update>
+	
+</mapper>		  

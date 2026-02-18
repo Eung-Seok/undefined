@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC
+		   "-//mybatis.org//DTD Mapper 3.0//EN" 
+		   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="attachment_mapper">
+
+	<select id="findAttachmentList" resultType="Attachment">
+		SELECT *
+		FROM TF_ATTACHMENT
+	</select>
+	
+	<select id="findAttachmentById" resultType="Attachment" parameterType="int">
+		SELECT *
+		FROM TF_ATTACHMENT
+		WHERE id = #{id}
+	</select>
+
+	<insert id="saveAttachment" parameterType="Attachment">
+		INSERT INTO TF_ATTACHMENT(
+			ID,
+			UPLOADER_USER_ID,
+			POST_ID,
+			TASK_ID,
+			FILE_NAME,
+			ORIGINAL_FILE_NAME,
+			FILE_URL,
+			CREATED_AT
+		)
+		VALUES(
+		SEQ_TF_ATTACHMENT_PK.nextval,
+		#{uploaderUserId},
+		#{postId},
+		#{taskId},
+		#{fileName},
+		#{originalFileName},
+		#{fileUrl},
+		#{createdAt}
+		)
+	</insert>
+	
+	<delete id="removeAttachment" parameterType="int">
+		DELETE FROM TF_ATTACHMENT
+		WHERE
+		ID = #{id}
+	</delete>
+
+	<update id="modifyAttachment" parameterType="Attachment">
+		UPDATE TF_ATTACHMENT
+		SET
+		UPLOADER_USER_ID = #{uploaderUserId},
+		POST_ID = #{postId},
+		TASK_ID = #{taskId},
+		FILE_NAME = #{fileName},
+		ORIGINAL_FILE_NAME = #{originalFileName},
+		FILE_URL = #{fileUrl},
+		CREATED_AT = #{createdAt}
+		WHERE ID = #{id}
+	</update>
+	
+</mapper>

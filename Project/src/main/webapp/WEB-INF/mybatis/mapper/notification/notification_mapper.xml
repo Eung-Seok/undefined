@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC
+		   "-//mybatis.org//DTD Mapper 3.0//EN" 
+		   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="notification_mapper">
+
+	<select id="findNotificationList" resultType="Notification">
+		SELECT *
+		FROM TF_NOTIFICATION
+	</select>
+	
+	<select id="findNotificationById" resultType="Notification" parameterType="int">
+		SELECT *
+		FROM TF_NOTIFICATION
+		WHERE id = #{id}
+	</select>
+
+	<insert id="saveNotification" parameterType="Notification">
+		INSERT INTO TF_NOTIFICATION(
+			ID,
+			USER_ID,
+			TYPE,
+			MESSAGE,
+			LINK_URL,
+			IS_READ,
+			CREATED_AT
+		)
+		VALUES(
+		SEQ_TF_NOTIFICATION_PK.nextval,
+		#{userId},
+		#{type},
+		#{message},
+		#{linkUrl},
+		#{isRead},
+		#{createdAt}
+		)
+	</insert>
+	
+	<delete id="removeNotification" parameterType="int">
+		DELETE FROM TF_NOTIFICATION
+		WHERE
+		ID = #{id}
+	</delete>
+
+	<update id="modifyNotification" parameterType="Notification">
+		UPDATE TF_NOTIFICATION
+		SET
+		USER_ID = #{userId},
+		TYPE = #{type},
+		MESSAGE = #{message},
+		LINK_URL = #{linkUrl},
+		IS_READ = #{isRead},
+		CREATED_AT = #{createdAt}
+		WHERE ID = #{id}
+	</update>
+
+</mapper>

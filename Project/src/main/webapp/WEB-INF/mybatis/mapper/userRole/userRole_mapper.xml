@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC
+		   "-//mybatis.org//DTD Mapper 3.0//EN" 
+		   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="userRole_mapper">
+
+	<select id="findUserRoleList" resultType="UserRole">
+		SELECT * 
+		FROM TF_USER_ROLE
+	</select>
+	
+	<select id="findUserRoleById" resultType="UserRole" parameterType="int">
+		SELECT *
+		FROM TF_USER_ROLE
+		WHERE id = #{id}
+	</select>
+	
+	
+	<insert id="saveUserRole" parameterType="UserRole">
+		INSERT INTO TF_USER_ROLE(
+			ID,
+			USER_ID,
+			ROLE_ID,
+			CREATED_AT
+		)
+		 VALUES(
+		SEQ_TF_USER_ROLE_PK.nextval,
+		#{userId},
+		#{roleId},
+		#{createdAt}
+		 )
+	</insert>
+
+	<delete id="removeUserRole" parameterType="int">
+		DELETE FROM TF_USER_ROLE
+		WHERE
+		ID = #{id}
+	</delete>
+
+	<update id="modifyUserRole" parameterType="UserRole">
+		UPDATE TF_USER_ROLE
+		SET
+		USER_ID = #{userId},
+		ROLE_ID = #{roleId},
+		CREATED_AT = #{createdAt}
+		WHERE ID = #{id}
+	</update>
+	
+</mapper>		  
