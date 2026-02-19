@@ -23,7 +23,7 @@ if (session.getAttribute("loginUser") == null) {
 <script
 	src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
 </head>
-<body data-role="${sessionScope.loginUser.role}">
+<body>
 	<div class="app">
 		<jsp:include page="/WEB-INF/views/common/sidebar.jsp">
 			<jsp:param name="activeMenu" value="calendar" />

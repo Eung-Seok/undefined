@@ -21,7 +21,7 @@ if (session.getAttribute("loginUser") == null) {
 </style>
 <link rel="stylesheet" href="/css/search/search.css">
 </head>
-<body data-role="${sessionScope.loginUser.role}">
+<body>
 	<div class="app">
 		<aside class="sidebar">
 			<div class="brand">

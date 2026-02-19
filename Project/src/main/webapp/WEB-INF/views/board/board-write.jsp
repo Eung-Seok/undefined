@@ -20,7 +20,7 @@ if (session.getAttribute("loginUser") == null) {
 
 <link href="/css/board/board-view.css" rel="stylesheet">
 </head>
-<body data-role="${sessionScope.loginUser.role}">
+<body>
 	<div class="app">
 		<jsp:include page="/WEB-INF/views/common/sidebar.jsp">
 			<jsp:param name="activeMenu" value="board" />
