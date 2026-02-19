@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,13 +24,14 @@ public class PageController {
 	@Autowired
 	ProjectMemberService projectMemberService;
 
-    @GetMapping("/")
-    public String root() {
-        return "redirect:/dashboard";
-    }
+	@GetMapping("/")
+	public String root(HttpSession session) {
 
-    @GetMapping("/dashboard")
-    public String dashboard() { return "dashboard"; }
+		if (session.getAttribute("loginUser") != null) {
+			return "redirect:/dashboard";
+		}
+		return "redirect:/login";
+	}
 
     @GetMapping("/projects")
 	public String projectList(Model model) {
@@ -50,28 +53,51 @@ public class PageController {
 	    model.addAttribute("projectList", projectList);
 	    return "projects";
 	}
-    
-    @GetMapping("/calendar")
-    public String calendar() { return "calendar"; }
+	
+	@GetMapping("/dashboard")
+	public String dashboard(HttpSession session) {
+		if (session.getAttribute("loginUser") == null)
+			return "redirect:/login";
+		return "dashboard";
+	}
 
-    @GetMapping("/board")
-    public String board() { return "board/board"; }
+	@GetMapping("/calendar")
+	public String calendar() {
+		return "calendar";
+	}
 
-    @GetMapping("/board/write")
-    public String boardWrite() { return "board/board-write"; }
+	@GetMapping("/board")
+	public String board() {
+		return "board/board";
+	}
 
-    @GetMapping("/board/view")
-    public String boardView() { return "board/board-view"; }
+	@GetMapping("/board/write")
+	public String boardWrite() {
+		return "board/board-write";
+	}
 
-    @GetMapping("/employees")
-    public String employees() { return "employee/employees"; }
+	@GetMapping("/board/view")
+	public String boardView() {
+		return "board/board-view";
+	}
 
-    @GetMapping("/employees/view")
-    public String employeeView() { return "employee/employee-view"; }
+	@GetMapping("/employees")
+	public String employees() {
+		return "employee/employees";
+	}
 
-    @GetMapping("/mypage")
-    public String mypage() { return "mypage"; }
+	@GetMapping("/employees/view")
+	public String employeeView() {
+		return "employee/employee-view";
+	}
 
-    @GetMapping("/search")
-    public String search() { return "search"; }
+	@GetMapping("/mypage")
+	public String mypage() {
+		return "mypage";
+	}
+
+	@GetMapping("/search")
+	public String search() {
+		return "search";
+	}
 }
