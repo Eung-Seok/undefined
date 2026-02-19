@@ -82,21 +82,21 @@ if (session.getAttribute("loginUser") == null) {
 			</div>
 
 			<div class="tabs">
-				<a class="tab"
-					href="${pageContext.request.contextPath}/project/overview">개요</a><a
-					class="tab active"
-					href="${pageContext.request.contextPath}/project/tasks">업무</a><a
+				<a class="tab active"
+					href="${pageContext.request.contextPath}/project/overview?projectId=${project.id}">
+					개요 </a> <a class="tab"
+					href="${pageContext.request.contextPath}/project/tasks?projectId=${project.id}">업무</a><a
 					class="tab"
-					href="${pageContext.request.contextPath}/project/calendar">프로젝트
+					href="${pageContext.request.contextPath}/project/calendar?projectId=${project.id}">프로젝트
 					캘린더</a><a class="tab"
-					href="${pageContext.request.contextPath}/project/wbs">WBS</a><a
+					href="${pageContext.request.contextPath}/project/wbs?projectId=${project.id}">WBS</a><a
 					class="tab"
-					href="${pageContext.request.contextPath}/project/issues">이슈</a><a
-					class="tab" href="${pageContext.request.contextPath}/project/docs">문서</a><a
+					href="${pageContext.request.contextPath}/project/issues?projectId=${project.id}">이슈</a><a
+					class="tab" href="${pageContext.request.contextPath}/project/docs?projectId=${project.id}">문서</a><a
 					class="tab"
-					href="${pageContext.request.contextPath}/project/members">참여자</a><a
+					href="${pageContext.request.contextPath}/project/members?projectId=${project.id}">참여자</a><a
 					class="tab"
-					href="${pageContext.request.contextPath}/project/settings">설정</a>
+					href="${pageContext.request.contextPath}/project/settings?projectId=${project.id}">설정</a>
 			</div>
 
 

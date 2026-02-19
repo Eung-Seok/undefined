@@ -99,22 +99,25 @@ if (session.getAttribute("loginUser") == null) {
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
+						<%-- <tr>
 							<td>신규 웹사이트 구축</td>
 							<td><span class="badge good">진행중</span></td>
 							<td>김PM</td>
 							<td>2026-02-01 ~ 2026-04-25</td>
 							<td><a class="btn"
 								href="${pageContext.request.contextPath}/project/overview">열기</a></td>
-						</tr>
-						<tr>
-							<td>ERP 연동</td>
-							<td><span class="badge warn">리스크</span></td>
-							<td>박PM</td>
-							<td>2026-01-15 ~ 2026-04-24</td>
-							<td><a class="btn"
-								href="${pageContext.request.contextPath}/project/overview">열기</a></td>
-						</tr>
+						</tr> --%>
+						<c:forEach var="project" items="${projectList}">
+							<tr>
+								<td>${project.name}</td>
+								<td><span class="badge warn">리스크</span></td>
+								<td>박PM</td>
+								<td>2026-01-15 ~ 2026-04-24</td>
+								<td><a class="btn"
+									href="${pageContext.request.contextPath}/project/overview?projectId=${project.id}">열기</a>
+								</td>
+							</tr>
+						</c:forEach>
 					</tbody>
 				</table>
 				<div style="height: 12px"></div>
