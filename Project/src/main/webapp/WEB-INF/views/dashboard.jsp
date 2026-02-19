@@ -21,7 +21,7 @@ if (session.getAttribute("loginUser") == null) {
 </style>
 <link rel="stylesheet" href="/css/dashboard/dashboard.css">
 </head>
-<body data-role="${sessionScope.loginUser.role}">
+<body data-role="가나다">
 	<div class="app">
 		<aside class="sidebar">
 			<div class="brand">
@@ -41,7 +41,7 @@ if (session.getAttribute("loginUser") == null) {
 					<div class="profile-role">
 						<c:out value="${sessionScope.loginUser.position}" />
 						·
-						<c:out value="${sessionScope.loginUser.role}" />
+						<c:out value="" />
 					</div>
 				</div>
 			</div>
