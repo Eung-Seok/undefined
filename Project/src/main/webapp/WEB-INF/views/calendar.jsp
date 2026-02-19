@@ -20,6 +20,8 @@ if (session.getAttribute("loginUser") == null) {
 <style>
 </style>
 <link rel="stylesheet" href="/css/calendar/calendar.css">
+<script
+	src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
 </head>
 <body data-role="${sessionScope.loginUser.role}">
 	<div class="app">
@@ -120,6 +122,14 @@ if (session.getAttribute("loginUser") == null) {
 					<h3>외부 캘린더 연동</h3>
 					<div class="notice">Google/Outlook 연동은 API 키 설정 후 구현하세요.</div>
 					<div style="height: 12px"></div>
+					<!-- 					<iframe -->
+					<!-- 						src="https://calendar.google.com/calendar/embed?src=108bdeccc6e1caae59585e7281d2214533594d143d16892320714d854208503d%40group.calendar.google.com&ctz=Asia%2FSeoul" -->
+					<!-- 						style="border: 0" width="400" height="300" frameborder="0" -->
+					<!-- 						scrolling="no"></iframe> -->
+					<div id='calendar-container'
+						style="background: white; padding: 10px; border-radius: 8px;">
+						<div id='google-calendar'></div>
+					</div>
 					<button class="btn" data-action="Google Calendar 연결">Google
 						Calendar 연결</button>
 					<button class="btn" data-action="Outlook Calendar 연결"
@@ -131,7 +141,41 @@ if (session.getAttribute("loginUser") == null) {
 	</div>
 	<script src="/js/calendar/calendar.js"></script>
 	<script>
-		
+		document
+				.addEventListener(
+						'DOMContentLoaded',
+						function() {
+							var calendarEl = document
+									.getElementById('google-calendar');
+
+							var calendar = new FullCalendar.Calendar(
+									calendarEl,
+									{
+										initialView : 'dayGridMonth', // 월간 보기
+										locale : 'ko', // 한국어 설정
+										headerToolbar : {
+											left : 'prev,next',
+											center : 'title',
+											right : 'today'
+										},
+										height : 450, // 카드 크기에 맞춰 조절
+
+										// 핵심: 우리가 만든 Spring Controller 주소에서 데이터를 가져옵니다.
+										events : '${pageContext.request.contextPath}/api/calendar/events',
+
+										eventClick : function(info) {
+											alert('일정: ' + info.event.title);
+										},
+										eventColor : '#4285F4', // 구글 브랜드 색상
+										loading : function(isLoading) {
+											if (isLoading) {
+												console.log("구글 일정 로딩 중...");
+											}
+										}
+									});
+
+							calendar.render();
+						});
 	</script>
 </body>
 </html>
