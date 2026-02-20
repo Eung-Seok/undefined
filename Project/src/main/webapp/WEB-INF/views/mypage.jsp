@@ -75,7 +75,7 @@ if (session.getAttribute("loginUser") == null) {
 					<div class="small">role 값은 _로그인 후_ 세션에서 바꾸는게 정석입니다.</div>
 				</div>
 			</div>
-
+			<a href="/mypage/today">asd</a>
 		</main>
 	</div>
 	<script src="/js/mypage/mypage.js"></script>

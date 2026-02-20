@@ -36,7 +36,10 @@ public class PageController {
     public String employeeView() { return "employee/employee-view"; }
 
     @GetMapping("/mypage")
-    public String mypage() { return "mypage"; }
+    public String mypage() {
+        return "mypage";
+    }
+
 
     @GetMapping("/search")
     public String search() { return "search"; }

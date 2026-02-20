@@ -13,22 +13,38 @@
 		SELECT *
 		FROM TF_TASK
 		WHERE id = #{id}
+
+	</select>
+	<!--오늘 할일  -->
+	<select id="findTodayTaskByUser"
+		resultType="com.app.dto.task.Task">
+
+		SELECT
+		t.*,
+		p.NAME AS projectName
+		FROM TF_TASK t
+		JOIN TF_TASK_ASSIGNEE ta ON t.ID = ta.TASK_ID
+		JOIN TF_PROJECT p ON t.PROJECT_ID = p.ID
+		WHERE ta.USER_ID = #{empno}
+		AND TRUNC(t.DUE_DATE) = TRUNC(SYSDATE)
+		ORDER BY t.PRIORITY DESC, t.DUE_DATE ASC
+
 	</select>
 
 	<insert id="saveTask" parameterType="Task">
 		INSERT INTO TF_TASK(
-			ID,
-			PROJECT_ID,
-			PARENT_TASK_ID,
-			NAME,
-			DESCRIPTION,
-			STATUS,
-			PRIORITY,
-			START_DATE,
-			DUE_DATE,
-			PROGRESS_PERCENT,
-			CREATED_AT,
-			UPDATED_AT
+		ID,
+		PROJECT_ID,
+		PARENT_TASK_ID,
+		NAME,
+		DESCRIPTION,
+		STATUS,
+		PRIORITY,
+		START_DATE,
+		DUE_DATE,
+		PROGRESS_PERCENT,
+		CREATED_AT,
+		UPDATED_AT
 		)
 		VALUES(
 		SEQ_TF_TASK_PK.nextval,
@@ -45,7 +61,7 @@
 		#{updatedAt}
 		)
 	</insert>
-	
+
 	<delete id="removeTask" parameterType="int">
 		DELETE FROM TF_TASK
 		WHERE
@@ -57,10 +73,12 @@
 		SET
 		PROJECT_ID = #{projectId},
 		PARENT_TASK_ID = #{parentTaskId},
-		NAME = #{name},
+		NAME =
+		#{name},
 		DESCRIPTION = #{description},
 		STATUS = #{status},
-		PRIORITY = #{priority},
+		PRIORITY =
+		#{priority},
 		START_DATE = #{startDate},
 		DUE_DATE = #{dueDate},
 		PROGRESS_PERCENT = #{progressPercent},
@@ -68,5 +86,5 @@
 		UPDATED_AT = #{updatedAt}
 		WHERE ID = #{id}
 	</update>
-	
+
 </mapper>

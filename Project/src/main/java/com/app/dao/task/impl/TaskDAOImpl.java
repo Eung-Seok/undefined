@@ -29,7 +29,7 @@ public class TaskDAOImpl implements TaskDAO {
 
 	@Override
 	public Task findTaskById(int id) {
-		Task task = sqlSessionTemplate.selectOne("task_mapper.findTaskById",id);
+		Task task = sqlSessionTemplate.selectOne("task_mapper.findTaskById", id);
 		return task;
 	}
 
@@ -45,4 +45,9 @@ public class TaskDAOImpl implements TaskDAO {
 		return result;
 	}
 
+	@Override
+	public List<Task> findTodayTaskByUser(int empno) {
+	    return sqlSessionTemplate.selectList("task_mapper.findTodayTaskByUser", empno);
+	}
+	
 }

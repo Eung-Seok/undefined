@@ -14,4 +14,7 @@ public interface TaskService {
 	int removeTask(int id);
 
 	int modifyTask(Task task);
+
+	// 오늘 할 일 전용
+	List<Task> getTodayTask(int empno);
 }
