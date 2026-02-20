@@ -21,7 +21,7 @@ if (session.getAttribute("loginUser") == null) {
 </style>
 <link rel="stylesheet" href="/css/project/tasks.css">
 </head>
-<body data-role="${sessionScope.loginUser.role}">
+<body>
 	<div class="app">
 		<jsp:include page="/WEB-INF/views/common/sidebar.jsp">
 			<jsp:param name="activeMenu" value="projects" />

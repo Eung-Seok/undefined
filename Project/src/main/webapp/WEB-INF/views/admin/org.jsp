@@ -20,7 +20,7 @@ if (session.getAttribute("loginUser") == null) {
 <link rel="stylesheet" href="/css/admin/org.css">
 </head>
 
-<body data-role="${sessionScope.loginUser.role}">
+<body>
 	<div class="app">
 		<aside class="sidebar">
 			<div class="brand">
@@ -39,8 +39,6 @@ if (session.getAttribute("loginUser") == null) {
 					</div>
 					<div class="profile-role">
 						<c:out value="${sessionScope.loginUser.position}" />
-						·
-						<c:out value="${sessionScope.loginUser.role}" />
 					</div>
 				</div>
 			</div>

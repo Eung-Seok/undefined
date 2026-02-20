@@ -21,7 +21,7 @@ if (session.getAttribute("loginUser") == null) {
 </style>
 <link rel="stylesheet" href="/css/mypage/mypage.css">
 </head>
-<body data-role="${sessionScope.loginUser.role}">
+<body>
 	<div class="app">
 		<jsp:include page="/WEB-INF/views/common/sidebar.jsp">
 			<jsp:param name="activeMenu" value="mypage" />
@@ -55,10 +55,6 @@ if (session.getAttribute("loginUser") == null) {
 							<tr>
 								<th>직급</th>
 								<td><c:out value="${sessionScope.loginUser.position}" /></td>
-							</tr>
-							<tr>
-								<th>권한</th>
-								<td><c:out value="${sessionScope.loginUser.role}" /></td>
 							</tr>
 						</tbody>
 					</table>
