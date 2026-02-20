@@ -7,7 +7,7 @@ if (session.getAttribute("loginUser") == null) {
 	java.util.Map<String, Object> u = new java.util.HashMap<>();
 	u.put("name", "홍길동");
 	u.put("position", "사원");
-	u.put("role", "MEMBER"); // ADMIN / PM / MEMBER / VIEWER
+	u.put("role", "ADMIN"); // ADMIN / PM / MEMBER / VIEWER
 	session.setAttribute("loginUser", u);
 }
 %>
@@ -78,8 +78,10 @@ if (session.getAttribute("loginUser") == null) {
 					</tbody>
 				</table>
 				<div style="height: 12px"></div>
-				<button class="btn primary" data-requires="PM,ADMIN"
-					data-action="프로젝트 생성">프로젝트 생성</button>
+				<!-- <button class="btn primary" data-requires="PM,ADMIN"
+					data-action="프로젝트 생성">프로젝트 생성</button> -->
+				<a class="btn primary"
+					href="${pageContext.request.contextPath}/project/create">프로젝트 생성</a>
 			</div>
 
 		</main>

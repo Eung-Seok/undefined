@@ -18,12 +18,7 @@
 	}
 	window.__toast = toast;
 
-	// Role-based UI (front demo only)
-	const role = document.body.getAttribute('data-role') || 'MEMBER';
-	document.querySelectorAll('[data-requires]').forEach(el => {
-		const need = el.getAttribute('data-requires').split(',').map(s => s.trim());
-		if (!need.includes(role)) el.style.display = 'none';
-	});
+	
 
 	// Quick action buttons
 	document.querySelectorAll('[data-action]').forEach(btn => {

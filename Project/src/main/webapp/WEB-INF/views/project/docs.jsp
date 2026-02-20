@@ -39,7 +39,7 @@ if (session.getAttribute("loginUser") == null) {
 			</div>
 
 			<div class="tabs">
-				<a class="tab active"
+				<a class="tab"
 					href="${pageContext.request.contextPath}/project/overview?projectId=${project.id}">
 					개요 </a> <a class="tab"
 					href="${pageContext.request.contextPath}/project/tasks?projectId=${project.id}">업무</a><a
@@ -49,7 +49,8 @@ if (session.getAttribute("loginUser") == null) {
 					href="${pageContext.request.contextPath}/project/wbs?projectId=${project.id}">WBS</a><a
 					class="tab"
 					href="${pageContext.request.contextPath}/project/issues?projectId=${project.id}">이슈</a><a
-					class="tab" href="${pageContext.request.contextPath}/project/docs?projectId=${project.id}">문서</a><a
+					class="tab active"
+					href="${pageContext.request.contextPath}/project/docs?projectId=${project.id}">문서</a><a
 					class="tab"
 					href="${pageContext.request.contextPath}/project/members?projectId=${project.id}">참여자</a><a
 					class="tab"

@@ -40,8 +40,6 @@ if (session.getAttribute("loginUser") == null) {
 					</div>
 					<div class="profile-role">
 						<c:out value="${sessionScope.loginUser.position}" />
-						·
-						<c:out value="${sessionScope.loginUser.role}" />
 					</div>
 				</div>
 			</div>
@@ -83,19 +81,21 @@ if (session.getAttribute("loginUser") == null) {
 
 			<div class="tabs">
 				<a class="tab active"
-					href="${pageContext.request.contextPath}/project/overview?projectId=${project.id}">개요</a><a
-					class="tab" href="${pageContext.request.contextPath}/project/tasks">업무</a><a
+					href="${pageContext.request.contextPath}/project/overview?projectId=${project.id}">
+					개요 </a> <a class="tab"
+					href="${pageContext.request.contextPath}/project/tasks?projectId=${project.id}">업무</a><a
 					class="tab"
-					href="${pageContext.request.contextPath}/project/calendar">프로젝트
+					href="${pageContext.request.contextPath}/project/calendar?projectId=${project.id}">프로젝트
 					캘린더</a><a class="tab"
-					href="${pageContext.request.contextPath}/project/wbs">WBS</a><a
+					href="${pageContext.request.contextPath}/project/wbs?projectId=${project.id}">WBS</a><a
 					class="tab"
-					href="${pageContext.request.contextPath}/project/issues">이슈</a><a
-					class="tab" href="${pageContext.request.contextPath}/project/docs">문서</a><a
+					href="${pageContext.request.contextPath}/project/issues?projectId=${project.id}">이슈</a><a
 					class="tab"
-					href="${pageContext.request.contextPath}/project/members">참여자</a><a
+					href="${pageContext.request.contextPath}/project/docs?projectId=${project.id}">문서</a><a
 					class="tab"
-					href="${pageContext.request.contextPath}/project/settings">설정</a>
+					href="${pageContext.request.contextPath}/project/members?projectId=${project.id}">참여자</a><a
+					class="tab"
+					href="${pageContext.request.contextPath}/project/settings?projectId=${project.id}">설정</a>
 			</div>
 			<div class="report-wrapper">
 				<form
@@ -147,9 +147,23 @@ if (session.getAttribute("loginUser") == null) {
 						</div>
 					</div>
 					<div class="report-actions">
-						<button class="btn primary" type="submit">생성</button>
+						<button class="btn primary" type="submit">제출</button>
 					</div>
-				</form>
-			</div>
+					<c:if test="${param.success eq 'true'}">
+						<div id="successModal" class="modal">
+							<div class="modal-content">
+								<p>보고서 제출 완료하였습니다.</p>
+								<button onclick="closeModal()" class="btn primary">확인</button>
+							</div>
+						</div>
+					</c:if>
+		</main>
+		</form>
+	</div>
+	<script>
+		function closeModal() {
+			document.getElementById("successModal").style.display = "none";
+		}
+	</script>
 </body>
 </html>

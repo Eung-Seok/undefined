@@ -1,10 +1,7 @@
 package com.app.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.app.service.projectMember.ProjectMemberService;
-import com.app.service.projectMember.impl.ProjectMemberServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,16 +9,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.app.dto.project.Project;
 import com.app.dto.projectMember.ProjectMember;
+import com.app.dto.report.Report;
+import com.app.dto.user.User;
 import com.app.service.board.BoardService;
-import com.app.service.board.impl.BoardServiceImpl;
 import com.app.service.comment.CommentService;
-import com.app.service.comment.impl.CommentServiceImpl;
 import com.app.service.notification.NotificationService;
-import com.app.service.notification.impl.NotificationServiceImpl;
 import com.app.service.project.ProjectService;
+import com.app.service.projectMember.ProjectMemberService;
+import com.app.service.report.ReportService;
+import com.app.service.user.UserService;
 
 @Controller
 @RequestMapping("/project")
@@ -37,22 +37,33 @@ public class ProjectController {
 	ProjectMemberService projectMemberService;
 	@Autowired
 	ProjectService projectService;
+	@Autowired
+	ReportService reportService;
+	@Autowired
+	UserService userService;
 	
 	@PostMapping("/report/save")
-	public String saveReport(
-	        @RequestParam("taskContent") String taskContent,
-	        @RequestParam("issueContent") String issueContent,
-	        @RequestParam("projectId") int projectId) {  
+	public String saveReport(@RequestParam("taskContent") String taskContent,
+			@RequestParam("issueContent") String issueContent, @RequestParam("projectId") int projectId) {
 
-	    System.out.println(taskContent);
-	    System.out.println(issueContent);
-	    System.out.println("저장실행");
+		System.out.println(taskContent);
+		System.out.println(issueContent);
+		System.out.println("저장실행");
 
-	    return "redirect:/project/overview?projectId=" + projectId;
+		return "redirect:/project/overview?projectId=" + projectId;
 	}
 
+	@PostMapping("/save")
+	public String saveProject(Project project, @RequestParam("pmUserId") int pmUserId) {
 
+		project.setOwnerUserId(pmUserId); 
+		
+		projectService.saveProject(project);
 
+		int projectId = project.getId();
+
+		return "redirect:/project/overview?projectId=" + projectId;
+	}
 
 	@GetMapping("/report")
 	public String report(@RequestParam("projectId") int projectId, Model model) {
@@ -61,7 +72,18 @@ public class ProjectController {
 
 		return "project/report";
 	}
-	
+
+	@PostMapping("/project/report/save")
+	public String saveReport(Report dto, RedirectAttributes rttr) {
+
+		reportService.saveReport(dto);
+
+		rttr.addAttribute("success", "true");
+		rttr.addAttribute("projectId", dto.getProjectId());
+
+		return "redirect:/project/report";
+	}
+
 	@GetMapping("/overview")
 	public String overview(@RequestParam("projectId") int projectId, Model model) {
 		Project project = projectService.findProjectById(projectId);
@@ -69,59 +91,66 @@ public class ProjectController {
 
 		return "project/overview";
 	}
-	
-
 
 	@GetMapping("/tasks")
 	public String tasks(@RequestParam("projectId") int projectId, Model model) {
-	    Project project = projectService.findProjectById(projectId);
-	    model.addAttribute("project", project);
+		Project project = projectService.findProjectById(projectId);
+		model.addAttribute("project", project);
 
-	    return "project/tasks";
+		return "project/tasks";
 	}
 
 	@GetMapping("/calendar")
 	public String calendar(@RequestParam("projectId") int projectId, Model model) {
-	    Project project = projectService.findProjectById(projectId);
-	    model.addAttribute("project", project);
-	    return "project/calendar";
+		Project project = projectService.findProjectById(projectId);
+		model.addAttribute("project", project);
+		return "project/calendar";
 	}
 
 	@GetMapping("/wbs")
 	public String wbs(@RequestParam("projectId") int projectId, Model model) {
-	    Project project = projectService.findProjectById(projectId);
-	    model.addAttribute("project", project);
-	    return "project/wbs";
+		Project project = projectService.findProjectById(projectId);
+		model.addAttribute("project", project);
+		return "project/wbs";
 	}
 
 	@GetMapping("/issues")
 	public String issues(@RequestParam("projectId") int projectId, Model model) {
-	    Project project = projectService.findProjectById(projectId);
-	    model.addAttribute("project", project);
+		Project project = projectService.findProjectById(projectId);
+		model.addAttribute("project", project);
 
-	    return "project/issues";
+		return "project/issues";
 	}
 
 	@GetMapping("/docs")
 	public String docs(@RequestParam("projectId") int projectId, Model model) {
-	    Project project = projectService.findProjectById(projectId);
-	    model.addAttribute("project", project);
-	    return "project/docs";
+		Project project = projectService.findProjectById(projectId);
+		model.addAttribute("project", project);
+		return "project/docs";
 	}
 
 	@GetMapping("/members")
 	public String members(@RequestParam("projectId") int projectId, Model model) {
-	    Project project = projectService.findProjectById(projectId);
-	    model.addAttribute("project", project);
+		Project project = projectService.findProjectById(projectId);
+		model.addAttribute("project", project);
 
-	    return "project/members";
+		return "project/members";
 	}
 
 	@GetMapping("/settings")
 	public String settings(@RequestParam("projectId") int projectId, Model model) {
-	    Project project = projectService.findProjectById(projectId);
-	    model.addAttribute("project", project);
-	    return "project/settings";
+		Project project = projectService.findProjectById(projectId);
+		model.addAttribute("project", project);
+		return "project/settings";
+	}
+
+	@GetMapping("/create")
+	public String showCreateForm(Model model) {
+
+		List<User> userList = userService.findUserList();
+		model.addAttribute("userList", userList);
+
+		return "project/create";
 	}
 
 }
