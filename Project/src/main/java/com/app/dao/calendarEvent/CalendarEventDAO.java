@@ -14,4 +14,6 @@ public interface CalendarEventDAO {
 	int removeCalendarEvent(int id);
 
 	int modifyCalendarEvent(CalendarEvent calendarEvent);
+	
+	int upsertCalendarEvent(CalendarEvent calendarEvent);
 }

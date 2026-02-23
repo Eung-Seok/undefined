@@ -6,27 +6,30 @@
 
 	<select id="findCalendarEventList" resultType="CalendarEvent">
 		SELECT *
-		FROM TF_CALENDAR_EVENT
+		FROM
+		TF_CALENDAR_EVENT
 	</select>
-	
-	<select id="findCalendarEventById" resultType="CalendarEvent" parameterType="int">
+
+	<select id="findCalendarEventById" resultType="CalendarEvent"
+		parameterType="int">
 		SELECT *
 		FROM TF_CALENDAR_EVENT
 		WHERE id = #{id}
 	</select>
 
 	<insert id="saveCalendarEvent" parameterType="CalendarEvent">
-		INSERT INTO TF_CALENDAR_EVENT(
-			ID,
-			USER_ID,
-			PROJECT_ID,
-			TASK_ID,
-			NAME,
-			START_DATE,
-			END_DATE,
-			TYPE,
-			CREATED_AT,
-			UPDATED_AT
+		INSERT INTO
+		TF_CALENDAR_EVENT(
+		ID,
+		USER_ID,
+		PROJECT_ID,
+		TASK_ID,
+		NAME,
+		START_DATE,
+		END_DATE,
+		TYPE,
+		CREATED_AT,
+		UPDATED_AT
 		)
 		VALUES(
 		SEQ_TF_CALENDAR_EVENT_PK.nextval,
@@ -37,30 +40,72 @@
 		#{startDate},
 		#{endDate},
 		#{type},
-		#{createdAt},
-		#{updatedAt}
+		SYSDATE,
+		SYSDATE
 		)
 	</insert>
-	
+
 	<delete id="removeCalendarEvent" parameterType="int">
-		DELETE FROM TF_CALENDAR_EVENT
+		DELETE FROM
+		TF_CALENDAR_EVENT
 		WHERE
 		ID = #{id}
 	</delete>
 
 	<update id="modifyCalendarEvent" parameterType="CalendarEvent">
-		UPDATE TF_CALENDAR_EVENT
+		UPDATE
+		TF_CALENDAR_EVENT
 		SET
 		USER_ID = #{userId},
 		PROJECT_ID = #{projectId},
 		TASK_ID = #{taskId},
 		NAME = #{name},
 		START_DATE = #{startDate},
-		END_DATE = #{endDate},
+		END_DATE
+		= #{endDate},
 		TYPE = #{type},
 		CREATED_AT = #{createdAt},
-		UPDATED_AT = #{updatedAt}
+		UPDATED_AT =
+		#{updatedAt}
 		WHERE ID = #{id}
 	</update>
-	
+
+	<update id="upsertCalendarEvent" parameterType="CalendarEvent">
+		MERGE INTO tf_calendar_event t
+		USING DUAL
+		ON (t.type = #{type})
+
+		WHEN MATCHED THEN
+		UPDATE SET
+		t.name = #{name},
+		t.start_date = #{startDate},
+		t.end_date = #{endDate},
+		t.updated_at = SYSDATE
+
+		WHEN NOT MATCHED THEN
+		INSERT (
+		ID,
+		USER_ID,
+		PROJECT_ID,
+		TASK_ID,
+		NAME,
+		START_DATE,
+		END_DATE,
+		TYPE,
+		CREATED_AT,
+		UPDATED_AT
+		)
+		VALUES(
+		SEQ_TF_CALENDAR_EVENT_PK.nextval,
+		#{userId},
+		#{projectId},
+		#{taskId},
+		#{name},
+		#{startDate},
+		#{endDate},
+		#{type},
+		SYSDATE,
+		SYSDATE
+		)
+	</update>
 </mapper>

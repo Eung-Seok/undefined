@@ -14,4 +14,6 @@ public interface CalendarEventService {
 	int removeCalendarEvent(int id);
 
 	int modifyCalendarEvent(CalendarEvent calendarEvent);
+	
+	int upsertCalendarEvent(CalendarEvent calendarEvent);
 }
