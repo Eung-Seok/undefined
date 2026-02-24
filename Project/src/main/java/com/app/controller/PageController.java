@@ -43,7 +43,6 @@ public class PageController {
     @GetMapping("/projects")
 	public String projectList(Model model, HttpSession session) {
 
-    	System.out.println(session.getAttribute("loginUser"));
     	User user = (User) session.getAttribute("loginUser");
     	Map<Integer, String> userNameMap = new HashMap<>();
     	

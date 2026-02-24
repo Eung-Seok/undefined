@@ -12,7 +12,11 @@ public interface UserRoleService {
 
 	UserRole findUserRoleById(int id);
 
+	UserRole findUserRoleByUserId(int userId);
+	
 	int removeUserRole(int id);
 
 	int modifyUserRole(UserRole userRole);
+	
+	
 }

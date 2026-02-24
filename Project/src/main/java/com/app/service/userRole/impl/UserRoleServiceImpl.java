@@ -44,4 +44,10 @@ public class UserRoleServiceImpl implements UserRoleService{
 		int result = userRoleDao.modifyUserRole(userRole);
 		return result;
 	}
+
+	@Override
+	public UserRole findUserRoleByUserId(int userId) {
+		UserRole userRole = userRoleDao.findUserRoleByUserId(userId);
+		return userRole;
+	}
 }

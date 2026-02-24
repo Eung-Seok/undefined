@@ -10,6 +10,8 @@ public interface UserRoleDAO {
 	int saveUserRole(UserRole userRole);
 
 	UserRole findUserRoleById(int id);
+	
+	UserRole findUserRoleByUserId(int userId);
 
 	int removeUserRole(int id);
 

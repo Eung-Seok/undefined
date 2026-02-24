@@ -23,50 +23,9 @@ if (session.getAttribute("loginUser") == null) {
 </head>
 <body>
 	<div class="app">
-		<aside class="sidebar">
-			<div class="brand">
-				<div class="logo">P</div>
-				<div>
-					<div class="brand-title">프로젝트 통합 일정/업무 관리</div>
-					<div class="brand-sub">Project Scheduler · JSP Demo UI</div>
-				</div>
-			</div>
-
-			<div class="profile">
-				<div class="avatar">👤</div>
-				<div>
-					<div class="profile-name">
-						<c:out value="${sessionScope.loginUser.name}" />
-					</div>
-					<div class="profile-role">
-						<c:out value="${sessionScope.loginUser.position}" />
-					</div>
-				</div>
-			</div>
-
-			<div class="nav">
-				<div class="section">Main</div>
-				<a class="" href="${pageContext.request.contextPath}/dashboard"><span>🏠</span>대시보드</a>
-				<a class="" href="${pageContext.request.contextPath}/projects"><span>📁</span>프로젝트</a>
-				<a class="" href="${pageContext.request.contextPath}/calendar"><span>🗓️</span>일정</a>
-				<a class="" href="${pageContext.request.contextPath}/board"><span>📝</span>게시판</a>
-				<a class="" href="${pageContext.request.contextPath}/employees"><span>👥</span>직원정보</a>
-				<a class="active" href="${pageContext.request.contextPath}/mypage"><span>⚙️</span>마이페이지</a>
-
-				<div class="section">Admin</div>
-				<a data-requires="ADMIN"
-					href="${pageContext.request.contextPath}/admin/users">👮 사용자 관리</a>
-				<a data-requires="ADMIN"
-					href="${pageContext.request.contextPath}/admin/roles">🔐 권한 관리</a>
-				<a data-requires="ADMIN"
-					href="${pageContext.request.contextPath}/admin/org">🏢 조직도 관리</a> <a
-					data-requires="ADMIN"
-					href="${pageContext.request.contextPath}/admin/system">🧰 시스템</a>
-			</div>
-
-			<hr class="line">
-			<div class="small">※ 데모 UI: 권한별 숨김은 프론트 처리입니다(보안X)</div>
-		</aside>
+		<jsp:include page="/WEB-INF/views/common/sidebar.jsp">
+			<jsp:param name="activeMenu" value="adminUsers" />
+		</jsp:include>
 
 		<main class="main">
 			<div class="topbar">
@@ -84,7 +43,6 @@ if (session.getAttribute("loginUser") == null) {
 
 			<div class="card">
 				<h3>사용자 관리</h3>
-				<div class="small">ADMIN 전용(데모)</div>
 				<div style="height: 12px"></div>
 				<table class="table">
 					<thead>
@@ -96,18 +54,14 @@ if (session.getAttribute("loginUser") == null) {
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>admin</td>
-							<td>관리자</td>
-							<td>ADMIN</td>
-							<td><button class="btn" data-action="권한 변경">변경</button></td>
-						</tr>
-						<tr>
-							<td>hong</td>
-							<td>홍길동</td>
-							<td>MEMBER</td>
-							<td><button class="btn" data-action="권한 변경">변경</button></td>
-						</tr>
+						<c:forEach var="user" items="${userList}">
+							<tr>
+								<td>${user.empno }</td>
+								<td>${user.name }</td>
+								<td>${userMap[user.empno]}</td>
+								<td><button class="btn" data-action="권한 변경">변경</button></td>
+							</tr>
+						</c:forEach>
 					</tbody>
 				</table>
 			</div>

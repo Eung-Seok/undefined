@@ -16,6 +16,12 @@
 		WHERE id = #{id}
 	</select>
 	
+	<select id="findUserRoleByUserId" resultType="UserRole" parameterType="int">
+		SELECT *
+		FROM TF_USER_ROLE
+		WHERE user_id = #{userId}
+	</select>
+	
 	
 	<insert id="saveUserRole" parameterType="UserRole">
 		INSERT INTO TF_USER_ROLE(

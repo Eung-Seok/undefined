@@ -39,6 +39,7 @@ public class LoginController {
 
 		if (dbUser != null && dbUser.getPassword().equals(user.getPassword())) {
 			session.setAttribute("loginUser", dbUser);
+			session.setAttribute("loginUserRole", roleService.findRoleById(userRoleService.findUserRoleByUserId(user.getEmpno()).getRoleId()).getName());
 			return "redirect:/dashboard";
 		} else {
 

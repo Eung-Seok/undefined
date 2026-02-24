@@ -45,5 +45,11 @@ public class UserRoleDAOImpl implements UserRoleDAO {
 		int result = sqlSessionTemplate.update("userRole_mapper.modifyUserRole", userRole);
 		return result;
 	}
+
+	@Override
+	public UserRole findUserRoleByUserId(int userId) {
+		UserRole userRole = sqlSessionTemplate.selectOne("userRole_mapper.findUserRoleByUserId", userId);
+		return userRole;
+	}
 	
 }
