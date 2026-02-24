@@ -19,4 +19,6 @@ public interface UserDAO {
 	int modifyUser(User user);
 	
 	int updateUserAdmin(AdminUserUpdate adminUserUpdate);
+	
+	int createUserAdmin(AdminUserUpdate adminUserUpdate);
 }

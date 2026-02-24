@@ -19,4 +19,6 @@ public interface UserRoleDAO {
 	int modifyUserRole(UserRole userRole);
 	
 	int adminUserRoleUpdate(AdminUserUpdate adminUserUpdate);
+	
+	int adminUserRoleCreate(AdminUserUpdate adminUserUpdate);
 }

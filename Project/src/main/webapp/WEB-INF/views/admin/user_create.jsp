@@ -1,16 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%
-// Demo session user (Map) - replace with real login later
-if (session.getAttribute("loginUser") == null) {
-	java.util.Map<String, Object> u = new java.util.HashMap<>();
-	u.put("name", "홍길동");
-	u.put("position", "사원");
-	u.put("role", "MEMBER"); // ADMIN / PM / MEMBER / VIEWER
-	session.setAttribute("loginUser", u);
-}
-%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -45,10 +35,7 @@ if (session.getAttribute("loginUser") == null) {
 				<div class="admin-card">
 					<div class="admin-card-head">
 						<div>
-							<h2 style="margin: 0;">사용자 수정</h2>
-							<div style="opacity: .7; margin-top: 4px;">
-								사번: <b>${user.empno}</b>
-							</div>
+							<h2 style="margin: 0;">사용자 생성</h2>
 						</div>
 						<div>
 							<a class="btn btn-light"
@@ -57,31 +44,30 @@ if (session.getAttribute("loginUser") == null) {
 					</div>
 
 					<form method="post"
-						action="<%=request.getContextPath()%>/admin/users/update"
+						action="<%=request.getContextPath()%>/admin/users/create"
 						class="admin-form">
-						<input type="hidden" name="empno" value="${user.empno}" />
-
 						<div class="grid">
+						
 							<div class="field">
-								<label>이메일</label> <input type="text" name="email"
-									value="${user.email}" required />
+								<label>사번</label> <input type="text" name="empno" required />
+							</div>
+							
+							<div class="field">
+								<label>이메일</label> <input type="text" name="email" required />
 							</div>
 
 							<div class="field">
-								<label>이름</label> <input type="text" name="name"
-									value="${user.name}" />
+								<label>이름</label> <input type="text" name="name" />
 							</div>
 
 							<div class="field">
-								<label>직급</label> <input type="text" name="position"
-									value="${user.position}" />
+								<label>직급</label> <input type="text" name="position" />
 							</div>
 
 							<div class="field">
 								<label>부서</label> <select name="deptno" required>
 									<c:forEach var="d" items="${deptList}">
-										<option value="${d.deptno}"
-											<c:if test="${d.deptno == user.deptno}">selected</c:if>>
+										<option value="${d.deptno}">
 											${d.name} (DEPTNO ${d.deptno})</option>
 									</c:forEach>
 								</select>
@@ -89,12 +75,9 @@ if (session.getAttribute("loginUser") == null) {
 
 							<div class="field">
 								<label>상태</label> <select name="status">
-									<option value="ACTIVE"
-										<c:if test="${user.status == 'ACTIVE'}">selected</c:if>>ACTIVE</option>
-									<option value="INACTIVE"
-										<c:if test="${user.status == 'INACTIVE'}">selected</c:if>>INACTIVE</option>
-									<option value="LOCKED"
-										<c:if test="${user.status == 'LOCKED'}">selected</c:if>>LOCKED</option>
+									<option value="ACTIVE">ACTIVE</option>
+									<option value="INACTIVE">INACTIVE</option>
+									<option value="LOCKED">LOCKED</option>
 								</select>
 							</div>
 						</div>
@@ -104,16 +87,14 @@ if (session.getAttribute("loginUser") == null) {
 							<div class="chips">
 								<c:forEach var="r" items="${roleList}">
 									<label class="chip"> <input type="radio"
-										name="role" value="${r.name}"
-										<c:if test="${userRole == r.name}">checked</c:if>>
+										name="role" value="${r.name}">
 										<span>${r.name}</span></label>
 								</c:forEach>
 							</div>
-							<div class="help">체크된 권한으로 덮어쓰기(저장 시 기존 권한은 교체)</div>
 						</div>
 
 						<div class="actions">
-							<button type="submit" class="btn btn-primary">저장</button>
+							<button type="submit" class="btn btn-primary">생성</button>
 							<a class="btn btn-light"
 								href="<%=request.getContextPath()%>/admin/users">취소</a>
 						</div>

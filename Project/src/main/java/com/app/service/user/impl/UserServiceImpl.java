@@ -56,4 +56,11 @@ public class UserServiceImpl implements UserService{
 		return result;
 	}
 
+	@Override
+	public int createUserAdmin(AdminUserUpdate adminUserUpdate) {
+		int result = userDao.createUserAdmin(adminUserUpdate);
+		result += userRoleDAO.adminUserRoleCreate(adminUserUpdate);
+		return result;
+	}
+
 }

@@ -59,6 +59,7 @@ public class LoginController {
 	public String signupProcess(User user) {
 		System.out.println(user);
 		int result = userService.saveUser(user);
+		
 
 		if (result > 0) {
 			return "redirect:/login";

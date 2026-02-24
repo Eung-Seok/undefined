@@ -19,7 +19,7 @@ if (session.getAttribute("loginUser") == null) {
 <title>사용자 관리</title>
 <style>
 </style>
-<link rel="stylesheet" href="/css/admin/users.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/admin/users.css?v=1">
 </head>
 <body>
 	<div class="app">
@@ -42,7 +42,15 @@ if (session.getAttribute("loginUser") == null) {
 
 
 			<div class="card">
-				<h3>사용자 관리</h3>
+				<div class="card-header">
+					<h3 style="margin: 0;">사용자 관리</h3>
+
+					<a class="btn-create"
+						href="<%=request.getContextPath()%>/admin/users/create"> <span
+						class="icon">＋</span> <span>사용자 생성</span>
+					</a>
+				</div>
+
 				<div style="height: 12px"></div>
 				<table class="table">
 					<thead>
@@ -59,7 +67,8 @@ if (session.getAttribute("loginUser") == null) {
 								<td>${user.empno }</td>
 								<td>${user.name }</td>
 								<td>${userMap[user.empno]}</td>
-								<td><a class="btn" href="<%=request.getContextPath()%>/admin/users/edit?empno=${user.empno}">변경</a></td>
+								<td><a class="btn"
+									href="<%=request.getContextPath()%>/admin/users/edit?empno=${user.empno}">변경</a></td>
 							</tr>
 						</c:forEach>
 					</tbody>

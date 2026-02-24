@@ -37,6 +37,21 @@
 		#{createdAt}
 		 )
 	</insert>
+	
+	<insert id="createUserRole" parameterType="AdminUserUpdate">
+		INSERT INTO TF_USER_ROLE(
+			ID,
+			USER_ID,
+			ROLE_ID,
+			CREATED_AT
+		)
+		 VALUES(
+		SEQ_TF_USER_ROLE_PK.nextval,
+		#{empno},
+		3,
+		sysdate
+		 )
+	</insert>
 
 	<delete id="removeUserRole" parameterType="int">
 		DELETE FROM TF_USER_ROLE

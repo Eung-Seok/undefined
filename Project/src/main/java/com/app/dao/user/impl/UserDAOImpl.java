@@ -56,6 +56,11 @@ public class UserDAOImpl implements UserDAO {
 		return sqlSessionTemplate.update("user_mapper.adminUserUpdate", adminUserUpdate);
 	}
 
+	@Override
+	public int createUserAdmin(AdminUserUpdate adminUserUpdate) {
+		return sqlSessionTemplate.insert("user_mapper.createUser", adminUserUpdate);
+	}
+
 
 	
 }

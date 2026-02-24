@@ -58,5 +58,11 @@ public class UserRoleDAOImpl implements UserRoleDAO {
 		int result = sqlSessionTemplate.update("userRole_mapper.adminUserRoleUpdate", adminUserUpdate);
 		return result;
 	}
+
+	@Override
+	public int adminUserRoleCreate(AdminUserUpdate adminUserUpdate) {
+		int result = sqlSessionTemplate.insert("userRole_mapper.createUserRole", adminUserUpdate);
+		return result;
+	}
 	
 }

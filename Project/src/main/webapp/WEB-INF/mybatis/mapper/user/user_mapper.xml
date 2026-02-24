@@ -55,6 +55,33 @@
 		#{updatedAt}
 		)
 	</insert>
+	
+	<insert id="createUser" parameterType="AdminUserUpdate">
+		INSERT INTO TF_USER(
+		EMPNO,
+		EMAIL,
+		PASSWORD,
+		NAME,
+		POSITION,
+		DEPTNO,
+		STATUS,
+		STARTED_AT,
+		CREATED_AT,
+		UPDATED_AT
+		)
+		VALUES(
+		#{empno},
+		#{email},
+		'12345678',
+		#{name},
+		#{position},
+		#{deptno},
+		#{status},
+		null,
+		sysdate,
+		sysdate
+		)
+	</insert>
 
 	<delete id="removeUser" parameterType="int">
 		DELETE FROM TF_USER

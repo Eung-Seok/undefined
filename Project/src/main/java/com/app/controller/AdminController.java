@@ -79,6 +79,21 @@ public class AdminController {
     	return "redirect:/admin/users";
     }
     
+    @GetMapping("/users/create")
+    public String create(Model model) {
+    	 List<Department> deptList = departmentService.findDepartmentList(); // deptno, name
+         List<Role> roleList = roleService.findRoleList();   
+    	
+         model.addAttribute("deptList", deptList);
+         model.addAttribute("roleList", roleList);
+    	return "admin/user_create";
+    }
+    
+    @PostMapping("/users/create")
+    public String createAction(AdminUserUpdate adminUserUpdate) {
+    	userService.createUserAdmin(adminUserUpdate);
+    	return "redirect:/admin/users";
+    }
     @GetMapping("/roles") public String roles(){ return "admin/roles"; }
     
     @ResponseBody

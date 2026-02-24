@@ -17,4 +17,6 @@ public interface UserService {
 	int modifyUser(User user);
 	
 	int updateUserAdmin(AdminUserUpdate adminUserUpdate);
+	
+	int createUserAdmin(AdminUserUpdate adminUserUpdate);
 }
