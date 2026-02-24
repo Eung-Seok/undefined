@@ -46,8 +46,6 @@
 			<div class="section">Admin</div>
 			<a class="${param.activeMenu == 'adminUsers' ? 'active' : ''}"
 				href="${pageContext.request.contextPath}/admin/users">👮 사용자 관리</a>
-			<a class="${param.activeMenu == 'adminRoles' ? 'active' : ''}"
-				href="${pageContext.request.contextPath}/admin/roles">🔐 권한 관리</a>
 			<a class="${param.activeMenu == 'adminOrg' ? 'active' : ''}"
 				href="${pageContext.request.contextPath}/admin/org">🏢 조직도 관리</a>
 			<a class="${param.activeMenu == 'adminSystem' ? 'active' : ''}"

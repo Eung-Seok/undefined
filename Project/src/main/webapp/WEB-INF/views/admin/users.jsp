@@ -59,7 +59,7 @@ if (session.getAttribute("loginUser") == null) {
 								<td>${user.empno }</td>
 								<td>${user.name }</td>
 								<td>${userMap[user.empno]}</td>
-								<td><button class="btn" data-action="권한 변경">변경</button></td>
+								<td><a class="btn" href="<%=request.getContextPath()%>/admin/users/edit?empno=${user.empno}">변경</a></td>
 							</tr>
 						</c:forEach>
 					</tbody>

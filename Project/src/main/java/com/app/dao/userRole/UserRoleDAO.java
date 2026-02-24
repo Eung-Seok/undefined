@@ -2,6 +2,7 @@ package com.app.dao.userRole;
 
 import java.util.List;
 
+import com.app.dto.user.AdminUserUpdate;
 import com.app.dto.userRole.UserRole;
 
 public interface UserRoleDAO {
@@ -16,4 +17,6 @@ public interface UserRoleDAO {
 	int removeUserRole(int id);
 
 	int modifyUserRole(UserRole userRole);
+	
+	int adminUserRoleUpdate(AdminUserUpdate adminUserUpdate);
 }

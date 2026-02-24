@@ -79,5 +79,19 @@
 		#{empno}
 
 	</update>
+	
+	<update id="adminUserUpdate" parameterType="AdminUserUpdate">
+		UPDATE TF_USER
+		SET
+		EMAIL =
+		#{email},
+		NAME = #{name},
+		POSITION = #{position},
+		DEPTNO = #{deptno},
+		STATUS = #{status},
+		UPDATED_AT = sysdate
+		WHERE EMPNO =
+		#{empno}
+	</update>
 
 </mapper>		  

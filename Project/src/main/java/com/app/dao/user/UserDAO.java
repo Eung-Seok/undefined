@@ -2,6 +2,7 @@ package com.app.dao.user;
 
 import java.util.List;
 
+import com.app.dto.user.AdminUserUpdate;
 import com.app.dto.user.User;
 
 public interface UserDAO {
@@ -16,4 +17,6 @@ public interface UserDAO {
 	int removeUser(int id);
 
 	int modifyUser(User user);
+	
+	int updateUserAdmin(AdminUserUpdate adminUserUpdate);
 }

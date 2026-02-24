@@ -53,4 +53,11 @@
 		WHERE ID = #{id}
 	</update>
 	
+	<update id="adminUserRoleUpdate" parameterType="AdminUserUpdate">
+		UPDATE TF_USER_ROLE
+		SET
+		ROLE_ID = (Select ID FROM TF_ROLE WHERE NAME = #{role})
+		WHERE USER_ID = #{empno}
+	</update>
+	
 </mapper>		  

@@ -4,16 +4,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.app.dto.department.Department;
 import com.app.dto.department.DepartmentTreeNode;
 import com.app.dto.role.Role;
+import com.app.dto.user.AdminUserUpdate;
 import com.app.dto.user.User;
 import com.app.dto.userRole.UserRole;
 import com.app.service.department.DepartmentService;
@@ -50,6 +56,29 @@ public class AdminController {
     	
     	return "admin/users"; 
     }
+    
+    @GetMapping("/users/edit")
+    public String edit(@RequestParam("empno") int empno, HttpServletRequest request) {
+    	
+    	 User user = userService.findUserByEmpno(empno);
+         List<Department> deptList = departmentService.findDepartmentList(); // deptno, name
+         List<Role> roleList = roleService.findRoleList();                  // id, name
+         String userRole = roleService.findRoleById(userRoleService.findUserRoleByUserId(empno).getRoleId()).getName();  // ["ADMIN","MEMBER"] 같은 형태
+
+         request.setAttribute("user", user);
+         request.setAttribute("deptList", deptList);
+         request.setAttribute("roleList", roleList);
+         request.setAttribute("userRole", userRole);
+
+         return "admin/user_edit"; // /WEB-INF/views/admin/user_edit.jsp
+    }
+    
+    @PostMapping("/users/update")
+    public String update(AdminUserUpdate adminUserUpdate) {
+    	userService.updateUserAdmin(adminUserUpdate);
+    	return "redirect:/admin/users";
+    }
+    
     @GetMapping("/roles") public String roles(){ return "admin/roles"; }
     
     @ResponseBody
