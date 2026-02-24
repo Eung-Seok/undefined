@@ -67,9 +67,9 @@ if (session.getAttribute("loginUser") == null) {
 						<c:forEach var="project" items="${projectList}">
 							<tr>
 								<td>${project.name}</td>
-								<td><span class="badge warn">리스크</span></td>
-								<td>박PM</td>
-								<td>2026-01-15 ~ 2026-04-24</td>
+								<td><span class="badge warn">${project.status}</span></td>
+								<td>${userNameMap[project.ownerUserId]}</td>
+								<td>${project.startDate} ~ ${project.endDate}</td>
 								<td><a class="btn"
 									href="${pageContext.request.contextPath}/project/overview?projectId=${project.id}">열기</a>
 								</td>

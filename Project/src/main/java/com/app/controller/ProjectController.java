@@ -59,8 +59,17 @@ public class ProjectController {
 		project.setOwnerUserId(pmUserId); 
 		
 		projectService.saveProject(project);
+		
+		ProjectMember projectMember = new ProjectMember();
 
 		int projectId = project.getId();
+		
+		projectMember.setProjectId(projectId);
+		projectMember.setProjectRole("PM");
+		projectMember.setUserId(pmUserId);
+		projectMember.setStatus("ONGOING");
+		
+		projectMemberService.saveProjectMember(projectMember);
 
 		return "redirect:/project/overview?projectId=" + projectId;
 	}

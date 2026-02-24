@@ -1,7 +1,9 @@
 package com.app.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import javax.servlet.http.HttpSession;
@@ -13,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.app.dto.project.Project;
 import com.app.dto.projectMember.ProjectMember;
+import com.app.dto.user.User;
 import com.app.service.project.ProjectService;
 import com.app.service.projectMember.ProjectMemberService;
+import com.app.service.user.UserService;
 
 @Controller
 public class PageController {
@@ -23,6 +27,9 @@ public class PageController {
 	
 	@Autowired
 	ProjectMemberService projectMemberService;
+	
+	@Autowired
+	UserService userService;
 
 	@GetMapping("/")
 	public String root(HttpSession session) {
@@ -34,15 +41,25 @@ public class PageController {
 	}
 
     @GetMapping("/projects")
-	public String projectList(Model model) {
-		
+	public String projectList(Model model, HttpSession session) {
+
+    	System.out.println(session.getAttribute("loginUser"));
+    	User user = (User) session.getAttribute("loginUser");
+    	Map<Integer, String> userNameMap = new HashMap<>();
+    	
+    	
 		List<ProjectMember> projectMemberList = projectMemberService.findProjectMemberList(); 
+		List<User> userList = userService.findUserList();
 		List<Integer> projectIdList = new ArrayList<Integer>();
 		
 		for(ProjectMember p: projectMemberList) {
-			if(String.valueOf(p.getUserId()).equals("1001")) {
+			if(String.valueOf(p.getUserId()).equals(Integer.toString(user.getEmpno()))) {
 				projectIdList.add(Integer.parseInt(String.valueOf(p.getProjectId())));
 			}
+		}
+		
+		for(User u: userList) {
+			userNameMap.put(u.getEmpno(), u.getName());
 		}
 		
 		List<Project> projectList = new ArrayList<Project>();
@@ -51,6 +68,7 @@ public class PageController {
 		}
 		
 	    model.addAttribute("projectList", projectList);
+	    model.addAttribute("userNameMap", userNameMap);
 	    return "projects";
 	}
 	
