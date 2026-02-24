@@ -44,5 +44,10 @@ public class UserDAOImpl implements UserDAO {
 		int result = sqlSessionTemplate.update("user_mapper.modifyUser", user);
 		return result;
 	}
+
+	@Override
+	public List<User> findUsersByDeptnoList(List<Integer> deptnoList) {
+	    return sqlSessionTemplate.selectList("user_mapper.findUsersByDeptnoList", deptnoList);
+	}
 	
 }

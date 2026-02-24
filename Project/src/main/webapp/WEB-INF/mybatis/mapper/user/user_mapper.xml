@@ -9,37 +9,50 @@
 		SELECT *
 		FROM TF_USER
 	</select>
-	
-	<select id="findUserByEmpno" resultType="User" parameterType="int">
+
+	<select id="findUserByEmpno" resultType="User"
+		parameterType="int">
 		SELECT *
 		FROM TF_USER
 		WHERE EMPNO = #{empno}
 	</select>
-	
+
+	<select id="findUsersByDeptnoList" resultType="User"
+		parameterType="java.util.List">
+		SELECT *
+		FROM TF_USER
+		WHERE DEPTNO IN
+		<foreach collection="list" item="deptno" open="("
+			separator="," close=")">
+			#{deptno}
+		</foreach>
+		ORDER BY DEPTNO, EMPNO
+	</select>
+
 	<insert id="saveUser" parameterType="User">
 		INSERT INTO TF_USER(
-			EMPNO, 
-			EMAIL, 
-			PASSWORD, 
-			NAME, 
-			POSITION,
-			DEPARTMENT_ID, 
-			STATUS, 
-			STARTED_AT, 
-			CREATED_AT, 
-			UPDATED_AT
-		) 
+		EMPNO,
+		EMAIL,
+		PASSWORD,
+		NAME,
+		POSITION,
+		DEPTNO,
+		STATUS,
+		STARTED_AT,
+		CREATED_AT,
+		UPDATED_AT
+		)
 		VALUES(
-			#{empno}, 
-			#{email}, 
-			#{password}, 
-			#{name}, 
-			#{position}, 
-			#{departmentId}, 
-			#{status}, 
-			#{startedAt}, 
-			#{createdAt},
-			#{updatedAt}
+		#{empno},
+		#{email},
+		#{password},
+		#{name},
+		#{position},
+		#{deptno},
+		#{status},
+		#{startedAt},
+		#{createdAt},
+		#{updatedAt}
 		)
 	</insert>
 
@@ -52,17 +65,19 @@
 	<update id="modifyUser" parameterType="User">
 		UPDATE TF_USER
 		SET
-		EMAIL = #{email},
+		EMAIL =
+		#{email},
 		PASSWORD = #{password},
 		NAME = #{name},
 		POSITION = #{position},
-		DEPARTMENT_ID = #{departmentId},
+		DEPTNO = #{deptno},
 		STATUS = #{status},
 		STARTED_AT = #{startedAt},
 		CREATED_AT = #{createdAt},
 		UPDATED_AT = #{updatedAt}
-		WHERE EMPNO = #{empno}
+		WHERE EMPNO =
+		#{empno}
 
 	</update>
-	
+
 </mapper>		  
