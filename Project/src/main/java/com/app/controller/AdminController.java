@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.app.dto.department.DepartmentTreeNode;
 import com.app.dto.role.Role;
@@ -50,10 +51,17 @@ public class AdminController {
     	return "admin/users"; 
     }
     @GetMapping("/roles") public String roles(){ return "admin/roles"; }
-    @GetMapping("/org") public  List<DepartmentTreeNode> tree(
+    
+    @ResponseBody
+    @GetMapping("/departments/tree") public  List<DepartmentTreeNode> tree(
             @RequestParam(defaultValue = "true") boolean includeUsers
     ) {
         return departmentService.findDepartmentTree(includeUsers);
+    }
+    
+    @GetMapping("/org")
+    public String orgPage() {
+    	return "admin/org";
     }
     @GetMapping("/system") public String system(){ return "admin/system"; }
 }

@@ -333,3 +333,201 @@ hr.line {
 	color: #1e3a8a;
 	font-size: 13px
 }
+
+.admin-org-wrap {
+	max-width: 980px;
+	margin: 24px auto;
+	padding: 0 16px;
+}
+
+.admin-org-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	margin-bottom: 16px;
+}
+
+.admin-org-title {
+	font-size: 20px;
+	font-weight: 700;
+}
+
+.admin-org-actions {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+}
+
+.admin-org-input {
+	width: 260px;
+	padding: 10px 12px;
+	border: 1px solid #ddd;
+	border-radius: 10px;
+	outline: none;
+}
+
+.admin-org-btn {
+	padding: 10px 12px;
+	border: 1px solid #ddd;
+	background: #fff;
+	border-radius: 10px;
+	cursor: pointer;
+}
+
+.admin-org-btn:hover {
+	background: #f7f7f7;
+}
+
+.admin-org-card {
+	border: 1px solid #e6e6e6;
+	border-radius: 14px;
+	overflow: hidden;
+	background: #fff;
+}
+
+.admin-org-toolbar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 12px 14px;
+	border-bottom: 1px solid #eee;
+	background: #fafafa;
+	font-size: 13px;
+	color: #444;
+}
+
+.admin-org-tree {
+	padding: 14px;
+}
+
+/* Tree */
+.admin-org-ul {
+	list-style: none;
+	margin: 0;
+	padding-left: 18px;
+}
+
+.admin-org-li {
+	margin: 6px 0;
+}
+
+.admin-org-node {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 10px;
+	border: 1px solid #eee;
+	border-radius: 12px;
+	background: #fff;
+}
+
+.admin-org-toggle {
+	width: 28px;
+	height: 28px;
+	border-radius: 8px;
+	border: 1px solid #e5e5e5;
+	background: #fff;
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 14px;
+	user-select: none;
+}
+
+.admin-org-toggle[disabled] {
+	opacity: .4;
+	cursor: default;
+}
+
+.admin-org-dept {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	flex: 1;
+	min-width: 0;
+}
+
+.admin-org-dept-name {
+	font-weight: 700;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.admin-org-dept-meta {
+	font-size: 12px;
+	color: #666;
+}
+
+.admin-org-pill {
+	font-size: 12px;
+	padding: 4px 8px;
+	border-radius: 999px;
+	border: 1px solid #e8e8e8;
+	background: #fafafa;
+	color: #333;
+	white-space: nowrap;
+}
+
+/* Employees list under department */
+.admin-org-emp {
+	margin-top: 8px;
+	margin-left: 36px;
+	border-left: 2px solid #f0f0f0;
+	padding-left: 12px;
+}
+
+.admin-org-emp-item {
+	display: flex;
+	justify-content: space-between;
+	gap: 10px;
+	padding: 6px 8px;
+	border-radius: 10px;
+}
+
+.admin-org-emp-item:hover {
+	background: #fafafa;
+}
+
+.admin-org-emp-left {
+	display: flex;
+	gap: 8px;
+	min-width: 0;
+}
+
+.admin-org-emp-name {
+	font-weight: 600;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.admin-org-emp-pos {
+	color: #666;
+	font-size: 12px;
+	white-space: nowrap;
+}
+
+.admin-org-emp-right {
+	color: #888;
+	font-size: 12px;
+	white-space: nowrap;
+}
+
+.admin-org-muted {
+	color: #888;
+	font-size: 13px;
+	padding: 16px;
+}
+
+.admin-org-error {
+	color: #b00020;
+	font-size: 13px;
+	padding: 16px;
+}
+
+.admin-org-hidden {
+	display: none !important;
+}
