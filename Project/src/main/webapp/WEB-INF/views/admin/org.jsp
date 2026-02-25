@@ -7,10 +7,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>조직도 관리</title>
-<style>
-/* ====== Admin Org Tree (Minimal) ====== */
-</style>
-<link rel="stylesheet" href="/css/admin/org.css">
+<link rel="stylesheet"
+      href="<%=request.getContextPath()%>/css/admin/org.css?v=<%=System.currentTimeMillis()%>">
 </head>
 
 <body>
@@ -65,7 +63,8 @@
 	<script>
   		window.APP_CTX = "<%=request.getContextPath()%>";
 	</script>
-	<script src="/js/admin/org.js"></script>
+	<script defer
+        src="<%=request.getContextPath()%>/js/admin/org.js?v=<%=System.currentTimeMillis()%>"></script>
 
 </body>
 </html>
