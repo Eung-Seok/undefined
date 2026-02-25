@@ -10,6 +10,7 @@
 <style>
 </style>
 <link rel="stylesheet" href="/css/search/search.css">
+<link rel="stylesheet" href="/css/common/sidebar.css">
 </head>
 <body>
 	<div class="app">

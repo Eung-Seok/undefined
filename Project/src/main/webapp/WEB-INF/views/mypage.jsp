@@ -10,6 +10,7 @@
 <style>
 </style>
 <link rel="stylesheet" href="/css/mypage/mypage.css">
+<link rel="stylesheet" href="/css/common/sidebar.css">
 </head>
 <body>
 	<div class="app">

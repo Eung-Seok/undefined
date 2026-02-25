@@ -10,6 +10,7 @@
 <style>
 </style>
 <link rel="stylesheet" href="/css/calendar/calendar.css">
+<link rel="stylesheet" href="/css/common/sidebar.css">
 <script
 	src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
 </head>

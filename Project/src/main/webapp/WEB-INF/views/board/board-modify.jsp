@@ -9,6 +9,7 @@
 <link
 	href="${pageContext.request.contextPath}/css/board/board-write.css"
 	rel="stylesheet">
+	<link rel="stylesheet" href="/css/common/sidebar.css">
 </head>
 <body>
 	<div class="app">

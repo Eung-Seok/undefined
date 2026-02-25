@@ -10,6 +10,7 @@
 <style>
 </style>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/admin/users.css?v=1">
+<link rel="stylesheet" href="/css/common/sidebar.css">
 </head>
 <body>
 	<div class="app">

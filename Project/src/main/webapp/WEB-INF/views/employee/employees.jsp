@@ -8,7 +8,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>조직도 관리</title>
 <link rel="stylesheet"
-      href="<%=request.getContextPath()%>/css/admin/org.css?v=<%=System.currentTimeMillis()%>">
+	href="<%=request.getContextPath()%>/css/admin/org.css?v=<%=System.currentTimeMillis()%>">
+<link rel="stylesheet" href="/css/common/sidebar.css">
 </head>
 <body>
 	<div class="app">
@@ -60,10 +61,11 @@
 		</main>
 	</div>
 	<script>
-  		window.APP_CTX = "<%=request.getContextPath()%>";
+  		window.APP_CTX = "<%=request.getContextPath()%>
+		";
 	</script>
 	<script defer
-        src="<%=request.getContextPath()%>/js/employee/employees.js?v=<%=System.currentTimeMillis()%>"></script>
+		src="<%=request.getContextPath()%>/js/employee/employees.js?v=<%=System.currentTimeMillis()%>"></script>
 
 </body>
 </html>

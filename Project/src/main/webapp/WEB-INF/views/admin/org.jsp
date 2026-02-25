@@ -9,6 +9,7 @@
 <title>조직도 관리</title>
 <link rel="stylesheet"
       href="<%=request.getContextPath()%>/css/admin/org.css?v=<%=System.currentTimeMillis()%>">
+      <link rel="stylesheet" href="/css/common/sidebar.css">
 </head>
 <body>
 	<div class="app">

@@ -9,6 +9,7 @@
 <title>게시판</title>
 
 <link href="/css/board/board.css" rel="stylesheet">
+<link rel="stylesheet" href="/css/common/sidebar.css">
 </head>
 <body>
 	<div class="app">
@@ -32,7 +33,6 @@
 
 			<div class="card">
 				<h3>게시판</h3>
-				<div class="small">공지/사내소통/부서게시판 (데모)</div>
 				<div style="height: 12px"></div>
 				<div
 					style="display: flex; justify-content: space-between; gap: 10px; align-items: center">

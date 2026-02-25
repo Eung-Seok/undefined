@@ -22,7 +22,11 @@
 				<c:out value="${sessionScope.loginUserRole}" />
 			</div>
 		</div>
+		<form action="${pageContext.request.contextPath}/logout" method="get">
+			<button type="submit" class="logout-btn">로그아웃</button>
+		</form>
 	</div>
+
 
 	<div class="nav">
 

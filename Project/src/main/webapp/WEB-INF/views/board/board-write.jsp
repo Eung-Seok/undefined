@@ -55,6 +55,7 @@ textarea {
 	border: none;
 }
 </style>
+<link rel="stylesheet" href="/css/common/sidebar.css">
 </head>
 
 <body>
