@@ -1,6 +1,9 @@
 package com.app.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,7 +44,7 @@ public class ProjectController {
 	ReportService reportService;
 	@Autowired
 	UserService userService;
-	
+
 	@PostMapping("/report/save")
 	public String saveReport(@RequestParam("taskContent") String taskContent,
 			@RequestParam("issueContent") String issueContent, @RequestParam("projectId") int projectId) {
@@ -56,19 +59,18 @@ public class ProjectController {
 	@PostMapping("/save")
 	public String saveProject(Project project, @RequestParam("pmUserId") int pmUserId) {
 
-		project.setOwnerUserId(pmUserId); 
-		
+		project.setOwnerUserId(pmUserId);
 		projectService.saveProject(project);
-		
+
 		ProjectMember projectMember = new ProjectMember();
 
 		int projectId = project.getId();
-		
+
 		projectMember.setProjectId(projectId);
 		projectMember.setProjectRole("PM");
 		projectMember.setUserId(pmUserId);
 		projectMember.setStatus("ONGOING");
-		
+
 		projectMemberService.saveProjectMember(projectMember);
 
 		return "redirect:/project/overview?projectId=" + projectId;
@@ -141,9 +143,43 @@ public class ProjectController {
 	@GetMapping("/members")
 	public String members(@RequestParam("projectId") int projectId, Model model) {
 		Project project = projectService.findProjectById(projectId);
+		List<ProjectMember> projectMemberList = projectMemberService.findProjectMemberListByProjectId(projectId);
+		List<Integer> userIdList = new ArrayList<Integer>();
+		List<User> userList = new ArrayList<User>();
+		Map<Integer, String> userRoleMap = new HashMap<Integer, String>();
+		for (ProjectMember pm : projectMemberList) {
+			userIdList.add(pm.getUserId());
+			userRoleMap.put(pm.getUserId(), pm.getProjectRole());
+		}
+
+		for (Integer i : userIdList) {
+			userList.add(userService.findUserByEmpno(i));
+		}
 		model.addAttribute("project", project);
+		model.addAttribute("userList", userList);
+		model.addAttribute("userRoleMap", userRoleMap);
 
 		return "project/members";
+	}
+
+	@GetMapping("/members/add")
+	public String addMembers(Model model, @RequestParam("projectId") int projectId) {
+		Project project = projectService.findProjectById(projectId);
+		List<User> userList = userService.findUserList();
+		model.addAttribute("userList", userList);
+		model.addAttribute("project", project);
+
+		return "project/inviteMember";
+	}
+
+	@PostMapping("/members/add")
+	public String addProjectMembersBulk(
+	        @RequestParam("projectId") int projectId,
+	        @RequestParam(value = "selectedEmpnos", required = false) List<Integer> selectedEmpnos,
+	        @RequestParam(value = "roleByEmpno", required = false) Map<Integer, String> roleByEmpno
+	) {
+	    projectMemberService.addMembersBulkPerUserRole(projectId, selectedEmpnos, roleByEmpno);
+		return "redirect:/project/members?projectId=" + projectId;
 	}
 
 	@GetMapping("/settings")

@@ -51,35 +51,27 @@
 
 			<div class="card">
 				<h3>참여자</h3>
-				<div class="small">PM/ADMIN만 관리 가능(데모)</div>
-				<div style="height: 12px"></div>
-				<button class="btn primary" id="btnOpenInvite">참여자 초대</button>
-				
-				</div>
 				<div style="height: 12px"></div>
 				<table class="table">
 					<thead>
 						<tr>
 							<th>이름</th>
 							<th>역할</th>
-							<th>권한</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>김PM</td>
-							<td>PM</td>
-							<td><span class="badge good">PM</span></td>
-						</tr>
-						<tr>
-							<td>홍길동</td>
-							<td>개발</td>
-							<td><span class="badge">MEMBER</span></td>
-						</tr>
+						<c:forEach var="user" items="${userList}">
+							<tr>
+								<td>${user.name}</td>
+								<td>${userRoleMap[user.empno]}</td>
+							</tr>
+						</c:forEach>
 					</tbody>
 				</table>
+				<a class="btn primary"
+					href="${pageContext.request.contextPath}/project/members/add?projectId=${project.id}">참여자
+					초대</a>
 			</div>
-
 		</main>
 	</div>
 	<script src="/js/project/members.js"></script>

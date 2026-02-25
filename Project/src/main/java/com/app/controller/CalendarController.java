@@ -31,7 +31,7 @@ public class CalendarController {
 		List<Map<String, Object>> resultList = new ArrayList<>();
 		try {
 			List<Event> items = googleCalendarService.getUpcomingEvents();
-			int userId = 1234; // 고정된 사용자 ID 예시
+			int userId = 1000; // 고정된 사용자 ID 예시
 
 			for (Event event : items) {
 				Map<String, Object> eventMap = new HashMap<>();
@@ -67,7 +67,7 @@ public class CalendarController {
 			         continue;
 			     } // 수정사항 없으면 DB 저장 X
 				CalendarEvent ce = new CalendarEvent();
-				ce.setUserId(1234);
+				ce.setUserId(userId);
 				ce.setName(summary);
 				ce.setStartDate(startLdt);
 				ce.setEndDate(endLdt);

@@ -40,8 +40,8 @@
 		#{startDate},
 		#{endDate},
 		#{status},
-		#{createdAt},
-		#{updatedAt}
+		SYSDATE,
+		SYSDATE
 		)
 	</insert>
 
@@ -60,10 +60,8 @@
 		#{description},
 		START_DATE = #{startDate},
 		END_DATE = #{endDate},
-		STATUS
-		= #{status},
-		CREATED_AT = #{createdAt},
-		UPDATED_AT = #{updatedAt}
+		STATUS = #{status},
+		UPDATED_AT = SYSDATE
 		WHERE
 		ID = #{id}
 	</update>

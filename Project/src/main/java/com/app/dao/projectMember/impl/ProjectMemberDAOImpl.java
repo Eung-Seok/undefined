@@ -1,6 +1,8 @@
 package com.app.dao.projectMember.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +13,14 @@ import com.app.dto.projectMember.ProjectMember;
 
 @Repository
 public class ProjectMemberDAOImpl implements ProjectMemberDAO {
-	
+
 	@Autowired
 	SqlSessionTemplate sqlSessionTemplate;
 
 	@Override
 	public List<ProjectMember> findProjectMemberList() {
-		List<ProjectMember> projectMemberList = sqlSessionTemplate.selectList("projectMember_mapper.findProjectMemberList");
+		List<ProjectMember> projectMemberList = sqlSessionTemplate
+				.selectList("projectMember_mapper.findProjectMemberList");
 		return projectMemberList;
 	}
 
@@ -44,5 +47,25 @@ public class ProjectMemberDAOImpl implements ProjectMemberDAO {
 		int result = sqlSessionTemplate.update("projectMember_mapper.modifyProjectMember", projectMember);
 		return result;
 	}
-	
+
+	@Override
+	public List<ProjectMember> findProjectMemberListByProjectId(int projectId) {
+		List<ProjectMember> projectMemberList = sqlSessionTemplate
+				.selectList("projectMember_mapper.findProjectMemberListByProjectId", projectId);
+		return projectMemberList;
+	}
+
+	@Override
+	public int insertMembersBulkIgnoreDuplicate(int projectId, List<Map<String, Object>> rows) {
+	    Map<String, Object> param = new HashMap<>();
+	    param.put("projectId", projectId);
+	    param.put("rows", rows);
+
+	    return sqlSessionTemplate.insert(
+	        "projectMember_mapper.insertMembersBulk",
+	        param
+	    );
+	}
+
+
 }
