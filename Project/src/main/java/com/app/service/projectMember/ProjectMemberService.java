@@ -19,4 +19,8 @@ public interface ProjectMemberService {
 	int modifyProjectMember(ProjectMember projectMember);
 
 	int addMembersBulkPerUserRole(int projectId, List<Integer> selectedEmpnos, Map<Integer, String> roleByEmpno);
+	
+	int removeProjectMemberByProjectIdAndUserId(Long projectId, Long empno);
+	
+	int updateMemberRole(int projectId, int empno, String projectRole);
 }

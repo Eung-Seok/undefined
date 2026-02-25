@@ -19,7 +19,6 @@
 			</div>
 			<div class="profile-role">
 				<c:out value="${sessionScope.loginUser.position}" />
-				<c:out value="${sessionScope.loginUserRole}" />
 			</div>
 		</div>
 		<form action="${pageContext.request.contextPath}/logout" method="get">

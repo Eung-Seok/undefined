@@ -333,3 +333,73 @@ hr.line {
 	color: #1e3a8a;
 	font-size: 13px
 }
+
+.card-head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 12px; /* 제목/버튼과 테이블 간격 */
+}
+
+.card-title {
+	margin: 0; /* h3 기본 마진 제거 */
+}
+
+.card .card-head .btn.primary {
+	padding: 6px 12px; /* 기존보다 약간 줄임 */
+	font-size: 14px; /* 너무 작지 않게 */
+	border-radius: 8px; /* 기존 둥근 느낌 유지 */
+	line-height: 1.2;
+}
+
+.table {
+	width: 100%;
+	table-layout: fixed; /* 컬럼 폭을 내가 준 값 기준으로 깔끔하게 */
+}
+
+.table th.col-actions, .table td.td-actions {
+	width: 180px; /* 버튼 2개 들어갈 공간 확보 */
+	text-align: right;
+	white-space: nowrap;
+}
+
+.table th:nth-child(1), .table td:nth-child(1) {
+	width: 40%;
+}
+
+.table th:nth-child(2), .table td:nth-child(2) {
+	width: auto;
+}
+
+.table td.td-actions {
+	padding-right: 16px;
+}
+
+.table .btn.small {
+	margin-left: 8px;
+}
+
+.table th.col-actions {
+	text-align: right;
+	padding-right: 24px; /* 값 늘리면 더 안쪽 */
+}
+
+/* 버튼 셀은 기존 유지 */
+.table td.td-actions {
+	text-align: right;
+	padding-right: 16px;
+}
+
+.table th.col-actions {
+	padding-right: 28px;
+}
+
+.table td.td-actions {
+	padding-right: 20px;
+}
+
+.table th.col-actions {
+	text-align: center;
+}
+
+

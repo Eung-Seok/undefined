@@ -77,4 +77,16 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
 
 	    return projectMemberDao.insertMembersBulkIgnoreDuplicate(projectId, rows);
 	}
+
+	@Override
+	public int removeProjectMemberByProjectIdAndUserId(Long projectId, Long empno) {
+		int result = projectMemberDao.removeProjectMemberByProjectIdAndUserId(projectId, empno);
+		return result;
+	}
+
+	@Override
+	public int updateMemberRole(int projectId, int empno, String projectRole) {
+		int result = projectMemberDao.updateMemberRole(projectId, empno, projectRole);
+		return result;
+	}
 }

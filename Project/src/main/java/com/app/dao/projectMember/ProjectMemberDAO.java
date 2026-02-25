@@ -19,4 +19,8 @@ public interface ProjectMemberDAO {
 	int modifyProjectMember(ProjectMember projectMember);
 
 	int insertMembersBulkIgnoreDuplicate(int projectId, List<Map<String, Object>> rows);
+	
+	int removeProjectMemberByProjectIdAndUserId(Long projectId, Long empno);
+	
+	 int updateMemberRole(int projectId, int empno, String projectRole);
 }

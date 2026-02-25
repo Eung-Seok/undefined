@@ -67,5 +67,27 @@ public class ProjectMemberDAOImpl implements ProjectMemberDAO {
 	    );
 	}
 
+	@Override
+	public int removeProjectMemberByProjectIdAndUserId(Long projectId, Long empno) {
+		
+		Map<String, Object> param = new HashMap<>();
+	    param.put("projectId", projectId);
+	    param.put("empno", empno);
+		
+		int result = sqlSessionTemplate.delete("projectMember_mapper.removeProjectMemberByProjectIdAndUserId", param);
+		return result;
+	}
+
+	@Override
+	public int updateMemberRole(int projectId, int empno, String projectRole) {
+		
+		Map<String, Object> param = new HashMap<>();
+	    param.put("projectId", projectId);
+	    param.put("empno", empno);
+	    param.put("projectRole", projectRole);
+		int result = sqlSessionTemplate.update("projectMember_mapper.updateMemberRole", param);
+		return result;
+	}
+
 
 }

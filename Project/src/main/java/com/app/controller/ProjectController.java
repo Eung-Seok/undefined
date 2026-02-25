@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -181,6 +183,52 @@ public class ProjectController {
 	    projectMemberService.addMembersBulkPerUserRole(projectId, selectedEmpnos, roleByEmpno);
 		return "redirect:/project/members?projectId=" + projectId;
 	}
+	
+	@PostMapping("/members/delete")
+	public String deleteProjectMember(@RequestParam("projectId") Long projectId,
+	        @RequestParam("empno") Long empno) {
+		
+		projectMemberService.removeProjectMemberByProjectIdAndUserId(projectId, empno);
+		
+		return "redirect:/project/members?projectId=" + projectId;
+	}
+	
+	@GetMapping("members/edit")
+    public String editForm(@RequestParam("projectId") int projectId,
+                           @RequestParam("empno") int empno,
+                           HttpSession session,
+                           Model model) {
+
+        // (권장) 권한 체크: ADMIN 또는 PM
+        String role = (String) session.getAttribute("loginUserRole");
+        if (!( "ADMIN".equals(role) || "PM".equals(role) )) {
+            return "redirect:/project/members?projectId=" + projectId + "&error=forbidden";
+        }
+        User user = userService.findUserByEmpno(empno);
+        
+        
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("empno", empno);
+        model.addAttribute("name", user.getName());
+
+        return "project/members_edit"; // /WEB-INF/views/project/members_edit.jsp
+    }
+	
+	@PostMapping("members/edit")
+    public String editSubmit(@RequestParam("projectId") int projectId,
+                             @RequestParam("empno") int empno,
+                             @RequestParam("projectRole") String projectRole,
+                             HttpSession session) {
+
+        String role = (String) session.getAttribute("loginUserRole");
+        if (!( "ADMIN".equals(role) || "PM".equals(role) )) {
+            return "redirect:/project/members?projectId=" + projectId + "&error=forbidden";
+        }
+
+        projectMemberService.updateMemberRole(projectId, empno, projectRole);
+
+        return "redirect:/project/members?projectId=" + projectId;
+    }
 
 	@GetMapping("/settings")
 	public String settings(@RequestParam("projectId") int projectId, Model model) {

@@ -80,6 +80,14 @@
 		WHERE
 		ID = #{id}
 	</delete>
+	
+	<delete id="removeProjectMemberByProjectIdAndUserId" parameterType="map" >
+		DELETE FROM
+		TF_PROJECT_MEMBER
+		WHERE
+		PROJECT_ID = #{projectId} and
+		USER_ID = #{empno}
+	</delete>
 
 	<update id="modifyProjectMember" parameterType="ProjectMember">
 		UPDATE
@@ -93,6 +101,15 @@
 		#{joinedAt},
 		CREATED_AT = #{createdAt}
 		WHERE ID = #{id}
+	</update>
+	
+	<update id="updateMemberRole" parameterType="map">
+		UPDATE
+		TF_PROJECT_MEMBER
+		SET
+		PROJECT_ROLE = #{projectRole}
+		WHERE USER_ID = #{empno} AND
+		PROJECT_ID = #{projectId}
 	</update>
 
 </mapper>

@@ -39,8 +39,6 @@
 					캘린더</a><a class="tab"
 					href="${pageContext.request.contextPath}/project/wbs?projectId=${project.id}">WBS</a><a
 					class="tab"
-					href="${pageContext.request.contextPath}/project/issues?projectId=${project.id}">이슈</a><a
-					class="tab"
 					href="${pageContext.request.contextPath}/project/docs?projectId=${project.id}">문서</a><a
 					class="tab"
 					href="${pageContext.request.contextPath}/project/members?projectId=${project.id}">참여자</a><a
