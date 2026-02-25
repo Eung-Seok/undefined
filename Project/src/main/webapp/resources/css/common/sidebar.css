@@ -1,0 +1,38 @@
+@charset "UTF-8";
+
+.profile {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 20px;
+}
+
+.profile-info-wrapper {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	width: 100%;
+	justify-content: space-between;
+}
+
+.profile-info {
+	display: flex;
+	flex-direction: column;
+}
+
+.logout-btn {
+	background: transparent;
+	border: 1px solid #ddd;
+	color: #888;
+	font-size: 12px;
+	padding: 4px 8px;
+	border-radius: 6px;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.logout-btn:hover {
+	background: #ff4d4f;
+	color: white;
+	border-color: #ff4d4f;
+}

@@ -1,16 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%
-// Demo session user (Map) - replace with real login later
-if (session.getAttribute("loginUser") == null) {
-	java.util.Map<String, Object> u = new java.util.HashMap<>();
-	u.put("name", "홍길동");
-	u.put("position", "사원");
-	u.put("role", "MEMBER"); // ADMIN / PM / MEMBER / VIEWER
-	session.setAttribute("loginUser", u);
-}
-%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -20,6 +10,7 @@ if (session.getAttribute("loginUser") == null) {
 <style>
 </style>
 <link rel="stylesheet" href="/css/project/settings.css">
+<link rel="stylesheet" href="/css/common/sidebar.css">
 </head>
 <body>
 	<div class="app">
@@ -40,19 +31,21 @@ if (session.getAttribute("loginUser") == null) {
 
 			<div class="tabs">
 				<a class="tab"
-					href="${pageContext.request.contextPath}/project/overview">개요</a><a
-					class="tab" href="${pageContext.request.contextPath}/project/tasks">업무</a><a
+					href="${pageContext.request.contextPath}/project/overview?projectId=${project.id}">
+					개요 </a> <a class="tab"
+					href="${pageContext.request.contextPath}/project/tasks?projectId=${project.id}">업무</a><a
 					class="tab"
-					href="${pageContext.request.contextPath}/project/calendar">프로젝트
+					href="${pageContext.request.contextPath}/project/calendar?projectId=${project.id}">프로젝트
 					캘린더</a><a class="tab"
-					href="${pageContext.request.contextPath}/project/wbs">WBS</a><a
+					href="${pageContext.request.contextPath}/project/wbs?projectId=${project.id}">WBS</a><a
 					class="tab"
-					href="${pageContext.request.contextPath}/project/issues">이슈</a><a
-					class="tab" href="${pageContext.request.contextPath}/project/docs">문서</a><a
+					href="${pageContext.request.contextPath}/project/issues?projectId=${project.id}">이슈</a><a
 					class="tab"
-					href="${pageContext.request.contextPath}/project/members">참여자</a><a
+					href="${pageContext.request.contextPath}/project/docs?projectId=${project.id}">문서</a><a
+					class="tab"
+					href="${pageContext.request.contextPath}/project/members?projectId=${project.id}">참여자</a><a
 					class="tab active"
-					href="${pageContext.request.contextPath}/project/settings">설정</a>
+					href="${pageContext.request.contextPath}/project/settings?projectId=${project.id}">설정</a>
 			</div>
 
 

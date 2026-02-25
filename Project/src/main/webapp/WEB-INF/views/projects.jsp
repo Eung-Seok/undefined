@@ -1,16 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%
-// Demo session user (Map) - replace with real login later
-if (session.getAttribute("loginUser") == null) {
-	java.util.Map<String, Object> u = new java.util.HashMap<>();
-	u.put("name", "홍길동");
-	u.put("position", "사원");
-	u.put("role", "MEMBER"); // ADMIN / PM / MEMBER / VIEWER
-	session.setAttribute("loginUser", u);
-}
-%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -20,6 +10,7 @@ if (session.getAttribute("loginUser") == null) {
 <style>
 </style>
 <link rel="stylesheet" href="/css/projects/projects.css">
+<link rel="stylesheet" href="/css/common/sidebar.css">
 </head>
 <body>
 	<div class="app">
@@ -56,27 +47,32 @@ if (session.getAttribute("loginUser") == null) {
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
+						<%-- <tr>
 							<td>신규 웹사이트 구축</td>
 							<td><span class="badge good">진행중</span></td>
 							<td>김PM</td>
 							<td>2026-02-01 ~ 2026-04-25</td>
 							<td><a class="btn"
 								href="${pageContext.request.contextPath}/project/overview">열기</a></td>
-						</tr>
-						<tr>
-							<td>ERP 연동</td>
-							<td><span class="badge warn">리스크</span></td>
-							<td>박PM</td>
-							<td>2026-01-15 ~ 2026-04-24</td>
-							<td><a class="btn"
-								href="${pageContext.request.contextPath}/project/overview">열기</a></td>
-						</tr>
+						</tr> --%>
+						<c:forEach var="project" items="${projectList}">
+							<tr>
+								<td>${project.name}</td>
+								<td><span class="badge warn">${project.status}</span></td>
+								<td>${userNameMap[project.ownerUserId]}</td>
+								<td>${project.startDate} ~ ${project.endDate}</td>
+								<td><a class="btn"
+									href="${pageContext.request.contextPath}/project/overview?projectId=${project.id}">열기</a>
+								</td>
+							</tr>
+						</c:forEach>
 					</tbody>
 				</table>
 				<div style="height: 12px"></div>
-				<button class="btn primary" data-requires="PM,ADMIN"
-					data-action="프로젝트 생성">프로젝트 생성</button>
+				<!-- <button class="btn primary" data-requires="PM,ADMIN"
+					data-action="프로젝트 생성">프로젝트 생성</button> -->
+				<a class="btn primary"
+					href="${pageContext.request.contextPath}/project/create">프로젝트 생성</a>
 			</div>
 
 		</main>

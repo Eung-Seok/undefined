@@ -3,32 +3,37 @@
 		   "-//mybatis.org//DTD Mapper 3.0//EN" 
 		   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="project_mapper">
-	
+
 	<select id="findProjectList" resultType="Project">
 		SELECT *
 		FROM TF_PROJECT
 	</select>
-	
-	<select id="findProjectById" resultType="Project" parameterType="int">
+
+	<select id="findProjectById" resultType="Project"
+		parameterType="int">
 		SELECT *
 		FROM TF_PROJECT
 		WHERE id = #{id}
 	</select>
 
 	<insert id="saveProject" parameterType="Project">
+		<selectKey keyProperty="id" resultType="int" order="BEFORE">
+			SELECT SEQ_TF_PROJECT_PK.nextval FROM dual
+		</selectKey>
+		
 		INSERT INTO TF_PROJECT(
-			ID,
-			OWNER_USER_ID,
-			NAME,
-			DESCRIPTION,
-			START_DATE,
-			END_DATE,
-			STATUS,
-			CREATED_AT,
-			UPDATED_AT
+		ID,
+		OWNER_USER_ID,
+		NAME,
+		DESCRIPTION,
+		START_DATE,
+		END_DATE,
+		STATUS,
+		CREATED_AT,
+		UPDATED_AT
 		)
 		VALUES(
-		SEQ_TF_PROJECT_PK.nextval,
+		#{id},
 		#{ownerUserId},
 		#{name},
 		#{description},
@@ -39,7 +44,7 @@
 		#{updatedAt}
 		)
 	</insert>
-	
+
 	<delete id="removeProject" parameterType="int">
 		DELETE FROM TF_PROJECT
 		WHERE
@@ -51,13 +56,16 @@
 		SET
 		OWNER_USER_ID = #{ownerUserId},
 		NAME = #{name},
-		DESCRIPTION = #{description},
+		DESCRIPTION =
+		#{description},
 		START_DATE = #{startDate},
 		END_DATE = #{endDate},
-		STATUS = #{status},
+		STATUS
+		= #{status},
 		CREATED_AT = #{createdAt},
 		UPDATED_AT = #{updatedAt}
-		WHERE ID = #{id}
+		WHERE
+		ID = #{id}
 	</update>
-	
+
 </mapper>

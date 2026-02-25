@@ -1,16 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%
-// Demo session user (Map) - replace with real login later
-if (session.getAttribute("loginUser") == null) {
-	java.util.Map<String, Object> u = new java.util.HashMap<>();
-	u.put("name", "홍길동");
-	u.put("position", "사원");
-	u.put("role", "MEMBER"); // ADMIN / PM / MEMBER / VIEWER
-	session.setAttribute("loginUser", u);
-}
-%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -20,6 +10,7 @@ if (session.getAttribute("loginUser") == null) {
 <style>
 </style>
 <link rel="stylesheet" href="/css/dashboard/dashboard.css">
+<link rel="stylesheet" href="/css/common/sidebar.css">
 </head>
 <body>
 	<div class="app">

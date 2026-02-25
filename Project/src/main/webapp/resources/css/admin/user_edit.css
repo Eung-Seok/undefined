@@ -333,39 +333,98 @@ hr.line {
 	color: #1e3a8a;
 	font-size: 13px
 }
-.card-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+
+.admin-page {
+	padding: 18px;
 }
 
-/* 생성 버튼 스타일 */
-.btn-create{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  padding:8px 14px;
-  border-radius:999px;
-  font-size:13px;
-  font-weight:600;
-  background:linear-gradient(135deg, #2563eb, #1d4ed8);
-  color:#fff;
-  text-decoration:none;
-  box-shadow:0 6px 16px rgba(37,99,235,.25);
-  transition:all .2s ease;
+.admin-card {
+	background: #fff;
+	border: 1px solid #eee;
+	border-radius: 14px;
+	padding: 18px;
 }
 
-/* 아이콘 살짝 강조 */
-.btn-create .icon{
-  font-size:16px;
-  font-weight:900;
+.admin-card-head {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 12px;
+	margin-bottom: 14px;
 }
 
-
-/* 호버 효과 */
-.btn-create:hover{
-  transform:translateY(-2px);
-  box-shadow:0 8px 20px rgba(37,99,235,.35);
-  filter:brightness(1.05);
+.admin-form .grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 14px;
 }
 
+.field label {
+	display: block;
+	font-size: 13px;
+	opacity: .8;
+	margin-bottom: 6px;
+}
+
+.field input, .field select {
+	width: 100%;
+	padding: 10px 12px;
+	border: 1px solid #ddd;
+	border-radius: 10px;
+}
+
+.actions {
+	display: flex;
+	gap: 10px;
+	margin-top: 18px;
+}
+
+.btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 10px 14px;
+	border-radius: 10px;
+	border: 1px solid transparent;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.btn-primary {
+	background: #2d6cdf;
+	color: #fff;
+}
+
+.btn-light {
+	background: #f6f7fb;
+	color: #111;
+	border-color: #e6e8f0;
+}
+
+.chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+
+.chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 10px;
+	border: 1px solid #e7e7e7;
+	border-radius: 999px;
+	background: #fafafa;
+}
+
+.help {
+	margin-top: 6px;
+	font-size: 12px;
+	opacity: .65;
+}
+
+@media ( max-width : 900px) {
+	.admin-form .grid {
+		grid-template-columns: 1fr;
+	}
+}

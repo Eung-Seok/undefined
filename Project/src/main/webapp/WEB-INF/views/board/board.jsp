@@ -1,16 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%
-// Demo session user (Map) - replace with real login later
-if (session.getAttribute("loginUser") == null) {
-	java.util.Map<String, Object> u = new java.util.HashMap<>();
-	u.put("name", "홍길동");
-	u.put("position", "사원");
-	u.put("role", "MEMBER"); // ADMIN / PM / MEMBER / VIEWER
-	session.setAttribute("loginUser", u);
-}
-%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -19,6 +9,7 @@ if (session.getAttribute("loginUser") == null) {
 <title>게시판</title>
 
 <link href="/css/board/board.css" rel="stylesheet">
+<link rel="stylesheet" href="/css/common/sidebar.css">
 </head>
 <body>
 	<div class="app">
@@ -42,11 +33,10 @@ if (session.getAttribute("loginUser") == null) {
 
 			<div class="card">
 				<h3>게시판</h3>
-				<div class="small">공지/사내소통/부서게시판 (데모)</div>
 				<div style="height: 12px"></div>
 				<div
 					style="display: flex; justify-content: space-between; gap: 10px; align-items: center">
-					<div class="small">총 3건</div>
+					<div class="small">총${postList.size()}건</div>
 					<a class="btn primary"
 						href="${pageContext.request.contextPath}/board/write">글쓰기</a>
 				</div>
@@ -61,33 +51,28 @@ if (session.getAttribute("loginUser") == null) {
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>공지</td>
-							<td><a href="${pageContext.request.contextPath}/board/view">프로젝트
-									일정관리 시스템 오픈</a></td>
-							<td>관리자</td>
-							<td>2026-02-12</td>
-						</tr>
-						<tr>
-							<td>사내활동</td>
-							<td><a href="${pageContext.request.contextPath}/board/view">워크샵
-									안내</a></td>
-							<td>인사팀</td>
-							<td>2026-02-10</td>
-						</tr>
-						<tr>
-							<td>부서</td>
-							<td><a href="${pageContext.request.contextPath}/board/view">개발팀
-									주간회의</a></td>
-							<td>개발팀</td>
-							<td>2026-02-09</td>
-						</tr>
+						<c:forEach var="post" items="${postList}">
+							<tr>
+								<td>${post.name}</td>
+								<td><a
+									href="${pageContext.request.contextPath}/board/view?id=${post.id}">
+										<c:out value="${post.title}" />
+								</a></td>
+								<td>${post.authorName}</td>
+								<td>${post.createdAt}</td>
+							</tr>
+						</c:forEach>
+
+						<c:if test="${empty postList}">
+							<tr>
+								<td colspan="4" style="text-align: center;">등록된 게시글이 없습니다.</td>
+							</tr>
+						</c:if>
 					</tbody>
 				</table>
 			</div>
-
 		</main>
 	</div>
-	<script src="/js/board/board.js"></script>
+	<script src="${pageContext.request.contextPath}/js/board/board.js"></script>
 </body>
 </html>

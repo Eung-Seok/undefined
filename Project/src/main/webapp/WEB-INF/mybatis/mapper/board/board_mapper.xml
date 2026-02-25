@@ -1,49 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <!DOCTYPE mapper PUBLIC
-		   "-//mybatis.org//DTD Mapper 3.0//EN" 
-		   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-		   
+           "-//mybatis.org//DTD Mapper 3.0//EN" 
+           "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="board_mapper">
 
-	<select id="findBoardList" resultType="Board">
-		SELECT *
-		FROM TF_BOARD
-	</select>
-	
-	<select id="findBoardById" resultType="Board" parameterType="int">
-		SELECT *
-		FROM TF_BOARD
-		WHERE id = #{id}
-	</select>
+    <select id="findBoardList" resultType="com.app.dto.board.Board">
+        SELECT 
+            p.ID           AS id,             
+            b.NAME         AS name,           
+            p.TITLE        AS title,          
+            u.NAME         AS authorName,     
+            p.CREATED_AT   AS createdAt
+        FROM TF_POST p
+        JOIN TF_BOARD b ON p.BOARD_ID = b.ID
+        JOIN TF_USER u ON p.AUTHOR_USER_ID = u.EMPNO
+        ORDER BY p.ID DESC
+    </select>
 
-	<insert id="saveBoard" parameterType="Board">
-		INSERT INTO TF_BOARD(
-			ID,
-			NAME,
-			PROJECT_ID,
-			CREATED_AT
-		)
-		VALUES(
-		SEQ_TF_BOARD_PK.nextval,
-		#{name},
-		#{projectId},
-		#{createdAt}
-		)
-	</insert>
-	
-	<delete id="removeBoard" parameterType="int">
-		DELETE FROM TF_BOARD
-		WHERE
-		ID = #{id}
-	</delete>
+   <select id="findBoardById" resultType="com.app.dto.board.Board" parameterType="int">
+    SELECT
+        p.ID             AS id,
+        p.BOARD_ID       AS boardId,
+        b.NAME           AS name,
+        p.TITLE          AS title,
+        p.CONTENT        AS content,
+        u.NAME           AS authorName,
+        p.AUTHOR_USER_ID AS authorUserId, p.CREATED_AT     AS createdAt
+    FROM TF_POST p
+    JOIN TF_BOARD b ON p.BOARD_ID = b.ID
+    JOIN TF_USER u ON p.AUTHOR_USER_ID = u.EMPNO
+    WHERE p.ID = #{id}
+</select>
 
-	<update id="modifyBoard" parameterType="Board">
-		UPDATE TF_BOARD
-		SET
-		NAME = #{name},
-		PROJECT_ID = #{projectId},
-		CREATED_AT = #{createdAt}
-		WHERE ID = #{id}
-	</update>
-	
+    <insert id="saveBoard" parameterType="com.app.dto.board.Board">
+        INSERT INTO TF_POST (
+            ID,
+            BOARD_ID,
+            AUTHOR_USER_ID,
+            TITLE,
+            CONTENT,
+            CREATED_AT
+        ) VALUES (
+            SEQ_TF_POST_PK.nextval,
+            #{boardId}, 
+            #{authorUserId}, 
+            #{title},
+            #{content},
+            SYSDATE
+        )
+    </insert>
+
+    <delete id="removeBoard" parameterType="int">
+        DELETE FROM TF_POST
+        WHERE ID = #{id}
+    </delete>
+
+    <update id="modifyBoard" parameterType="com.app.dto.board.Board">
+        UPDATE TF_POST
+        SET
+            TITLE = #{title},
+            CONTENT = #{content}
+        WHERE ID = #{id}
+    </update>
+
 </mapper>

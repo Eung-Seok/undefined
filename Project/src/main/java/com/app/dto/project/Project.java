@@ -1,5 +1,7 @@
 package com.app.dto.project;
 
+import java.sql.Date;
+
 import lombok.Data;
 
 @Data
@@ -8,9 +10,9 @@ public class Project {
 	int ownerUserId;
 	String name;
 	String description;
-	String startDate;
-	String endDate;
+	Date startDate;
+	Date endDate;
 	String status;
-	String createdAt;
-	String updatedAt;
+	Date createdAt;
+	Date updatedAt;
 }

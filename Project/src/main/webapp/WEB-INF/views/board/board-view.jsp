@@ -1,64 +1,107 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%
-// Demo session user (Map) - replace with real login later
-if (session.getAttribute("loginUser") == null) {
-	java.util.Map<String, Object> u = new java.util.HashMap<>();
-	u.put("name", "홍길동");
-	u.put("position", "사원");
-	u.put("role", "MEMBER"); // ADMIN / PM / MEMBER / VIEWER
-	session.setAttribute("loginUser", u);
-}
-%>
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>게시글 보기</title>
+<link href="${pageContext.request.contextPath}/css/board/board-view.css"
+	rel="stylesheet">
+<style>
+.app {
+	align-items: flex-start !important;
+}
 
-<link href="/css/board/board-view.css" rel="stylesheet">
+.card {
+	padding: 30px;
+	width: 100%;
+	min-height: 550px;
+	display: block !important;
+}
+
+.content-body {
+	margin-top: 15px;
+	line-height: 1.6;
+	white-space: pre-wrap;
+	min-height: 350px;
+}
+
+.btn-area {
+	display: flex;
+	justify-content: flex-end;
+	gap: 10px;
+	margin-top: 30px;
+	border-top: 1px solid #eee;
+	padding-top: 20px;
+}
+
+.btn {
+	text-decoration: none;
+	padding: 8px 18px;
+	border-radius: 4px;
+	font-size: 14px;
+}
+
+.btn-list {
+	color: #333;
+	border: 1px solid #ccc;
+}
+
+.btn-edit {
+	color: white;
+	background: #007bff;
+}
+
+.btn-delete {
+	border: 1px solid #dc3545;
+	color: #dc3545;
+	background: white;
+	cursor: pointer;
+}
+</style>
+<link rel="stylesheet" href="/css/common/sidebar.css">
 </head>
 <body>
 	<div class="app">
 		<jsp:include page="/WEB-INF/views/common/sidebar.jsp">
 			<jsp:param name="activeMenu" value="board" />
 		</jsp:include>
-
 		<main class="main">
-			<div class="topbar">
-				<div class="search">
-					🔎 <input placeholder="프로젝트, 업무, 사용자 검색(데모)" />
-				</div>
-				<div class="actions">
-					<button class="btn" data-action="알림">🔔</button>
-					<button class="btn primary" data-action="빠른 생성">＋</button>
-				</div>
-			</div>
-
-
-
-
 			<div class="card">
-				<h3>프로젝트 일정관리 시스템 오픈</h3>
-				<div class="small">공지 · 관리자 · 2026-02-12</div>
-				<div style="height: 12px"></div>
-				<div style="line-height: 1.7">
-					안녕하세요. 프로젝트 통합 일정/업무 관리 시스템 데모 화면입니다.<br /> 다음 단계에서 로그인/권한/DB 연동을
-					붙여 완성하세요.
+				<div style="display: flex; gap: 10px; align-items: center;">
+					<span
+						style="background: #e7f0ff; color: #007bff; padding: 5px 10px; border-radius: 4px;">${post.name}</span>
+					<span style="color: #666;">${post.authorName} ·
+						${post.createdAt}</span>
 				</div>
-				<div style="height: 14px"></div>
-				<div style="display: flex; gap: 10px; justify-content: flex-end">
-					<a class="btn" href="${pageContext.request.contextPath}/board">목록</a>
-					<button class="btn" data-action="수정">수정</button>
-					<button class="btn" data-action="삭제">삭제</button>
+				<h2 style="margin: 20px 0; font-size: 24px; color: #333;">${post.title}</h2>
+				<hr>
+				<div class="content-body">${post.content}</div>
+
+				<div class="btn-area">
+					<a href="${pageContext.request.contextPath}/board"
+						class="btn btn-list">목록</a>
+
+					<%-- [핵심] 작성자 본인 사번 일치 혹은 PM 권한 체크 --%>
+					<c:if
+						test="${(loginUser.empno == post.authorUserId) || (loginUser.position == 'PM')}">
+						<a
+							href="${pageContext.request.contextPath}/board/edit?id=${post.id}"
+							class="btn btn-edit">수정</a>
+						<button type="button" class="btn btn-delete"
+							onclick="deletePost(${post.id})">삭제</button>
+					</c:if>
 				</div>
 			</div>
-
 		</main>
 	</div>
-
-	<script src="/js/board/board-view.js"></script>
+	<script>
+    function deletePost(id) {
+        if (confirm("이 글을 정말 삭제하시겠습니까?")) {
+            location.href = "${pageContext.request.contextPath}/board/delete?id=" + id;
+        }
+    }
+    </script>
 </body>
 </html>
