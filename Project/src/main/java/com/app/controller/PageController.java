@@ -36,21 +36,6 @@ public class PageController {
 		return "calendar";
 	}
 
-	@GetMapping("/board")
-	public String board() {
-		return "board/board";
-	}
-
-	@GetMapping("/board/write")
-	public String boardWrite() {
-		return "board/board-write";
-	}
-
-	@GetMapping("/board/view")
-	public String boardView() {
-		return "board/board-view";
-	}
-
 	@GetMapping("/employees")
 	public String employees() {
 		return "employee/employees";
