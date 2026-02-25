@@ -10,7 +10,6 @@
 <link rel="stylesheet"
       href="<%=request.getContextPath()%>/css/admin/org.css?v=<%=System.currentTimeMillis()%>">
 </head>
-
 <body>
 	<div class="app">
 		<jsp:include page="/WEB-INF/views/common/sidebar.jsp">
