@@ -13,7 +13,7 @@
 <body>
 	<div class="app">
 		<jsp:include page="/WEB-INF/views/common/sidebar.jsp">
-			<jsp:param name="activeMenu" value="adminRoles" />
+			<jsp:param name="activeMenu" value="adminOrg" />
 		</jsp:include>
 		<main class="main">
 			<div class="topbar">

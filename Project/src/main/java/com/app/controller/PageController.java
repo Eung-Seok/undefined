@@ -12,10 +12,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.app.dto.department.DepartmentTreeNode;
 import com.app.dto.project.Project;
 import com.app.dto.projectMember.ProjectMember;
 import com.app.dto.user.User;
+import com.app.service.department.DepartmentService;
 import com.app.service.project.ProjectService;
 import com.app.service.projectMember.ProjectMemberService;
 import com.app.service.user.UserService;
@@ -30,6 +33,9 @@ public class PageController {
 	
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	DepartmentService departmentService;
 
 	@GetMapping("/")
 	public String root(HttpSession session) {
@@ -87,6 +93,14 @@ public class PageController {
 	public String employees() {
 		return "employee/employees";
 	}
+	
+	@ResponseBody
+	@GetMapping("/employees/tree") public  List<DepartmentTreeNode> tree(
+            @RequestParam(defaultValue = "true") boolean includeUsers
+    ) {
+        return departmentService.findDepartmentTree(includeUsers);
+    }
+ 
 
 	@GetMapping("/employees/view")
 	public String employeeView() {

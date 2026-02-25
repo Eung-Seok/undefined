@@ -58,51 +58,51 @@ textarea {
 </head>
 
 <body>
-<div class="app">
+	<div class="app">
 
-	<jsp:include page="/WEB-INF/views/common/sidebar.jsp" />
+		<jsp:include page="/WEB-INF/views/common/sidebar.jsp">
+			<jsp:param name="activeMenu" value="board" />
+		</jsp:include>
 
-	<main class="main">
-		<div class="card">
+		<main class="main">
+			<div class="card">
 
-			<h3>게시글 작성</h3>
+				<h3>게시글 작성</h3>
 
-			<form action="${pageContext.request.contextPath}/board/write"
-				  method="post">
+				<form action="${pageContext.request.contextPath}/board/write"
+					method="post">
 
-				<!-- 게시판 선택 -->
-				<div class="form-group">
-					<label>게시판 분류</label>
-					<select name="boardId" required>
-						<option value="">게시판을 선택하세요</option>
-						<option value="1">공지사항</option>
-						<option value="2">사내소통</option>
-						<option value="3">자유게시판</option>
-					</select>
-				</div>
+					<!-- 게시판 선택 -->
+					<div class="form-group">
+						<label>게시판 분류</label> <select name="boardId" required>
+							<option value="">게시판을 선택하세요</option>
+							<option value="1">공지사항</option>
+							<option value="2">사내소통</option>
+							<option value="3">자유게시판</option>
+						</select>
+					</div>
 
-				<!-- 제목 -->
-				<div class="form-group">
-					<label>제목</label>
-					<input type="text" name="title" required />
-				</div>
+					<!-- 제목 -->
+					<div class="form-group">
+						<label>제목</label> <input type="text" name="title" required />
+					</div>
 
-				<!-- 내용 -->
-				<div class="form-group">
-					<label>내용</label>
-					<textarea name="content" required></textarea>
-				</div>
+					<!-- 내용 -->
+					<div class="form-group">
+						<label>내용</label>
+						<textarea name="content" required></textarea>
+					</div>
 
-				<!-- 버튼 -->
-				<div class="btn-area">
-					<button type="submit" class="btn primary">등록</button>
-				</div>
+					<!-- 버튼 -->
+					<div class="btn-area">
+						<button type="submit" class="btn primary">등록</button>
+					</div>
 
-			</form>
+				</form>
 
-		</div>
-	</main>
+			</div>
+		</main>
 
-</div>
+	</div>
 </body>
 </html>

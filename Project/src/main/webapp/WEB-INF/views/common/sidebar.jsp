@@ -48,8 +48,6 @@
 				href="${pageContext.request.contextPath}/admin/users">👮 사용자 관리</a>
 			<a class="${param.activeMenu == 'adminOrg' ? 'active' : ''}"
 				href="${pageContext.request.contextPath}/admin/org">🏢 조직도 관리</a>
-			<a class="${param.activeMenu == 'adminSystem' ? 'active' : ''}"
-				href="${pageContext.request.contextPath}/admin/system">🧰 시스템</a>
 		</c:if>
 	</div>
 </aside>
