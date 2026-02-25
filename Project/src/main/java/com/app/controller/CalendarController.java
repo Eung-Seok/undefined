@@ -1,6 +1,5 @@
 package com.app.controller;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -37,8 +36,8 @@ public class CalendarController {
 			for (Event event : items) {
 				Map<String, Object> eventMap = new HashMap<>();
 				String summary = event.getSummary();
-				String eventId = event.getId();
-
+				String eId = event.getId();
+				String eTag = event.getEtag();
 				// 1. Google DateTime을 String으로 안전하게 추출 (null 체크 포함)
 				String startStr = (event.getStart().getDateTime() != null) ? event.getStart().getDateTime().toString()
 						: event.getStart().getDate().toString() + "T00:00:00Z";
@@ -55,19 +54,26 @@ public class CalendarController {
 //				System.out.println(startLdt);
 //				System.out.println(endLdt);
 				System.out.println(event.getId());
+				System.out.println(event.getEtag());
+				
 				eventMap.put("title", summary);
 				eventMap.put("start", startStr);
 				eventMap.put("end", endStr);
+//				eventMap.put("googleEventId", eventId);
 				resultList.add(eventMap);
 
-				// DB저장
-				// 중복되지 않았을 때만 DB 저장
+			     CalendarEvent existing = calendarEventService.findCalendarEventByEId(eId);
+			     if (existing != null && eTag.equals(existing.getETag())) {
+			         continue;
+			     } // 수정사항 없으면 DB 저장 X
 				CalendarEvent ce = new CalendarEvent();
 				ce.setUserId(1234);
 				ce.setName(summary);
 				ce.setStartDate(startLdt);
 				ce.setEndDate(endLdt);
-				ce.setType(eventId);
+				ce.setType("TASK");
+				ce.setEId(eId);
+				ce.setETag(eTag);
 
 				calendarEventService.upsertCalendarEvent(ce);
 				System.out.println("새 일정 저장 완료: " + summary);

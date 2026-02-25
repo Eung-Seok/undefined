@@ -9,7 +9,7 @@ public interface CalendarEventService {
 
 	int saveCalendarEvent(CalendarEvent calendarEvent);
 
-	CalendarEvent findCalendarEventById(int id);
+	CalendarEvent findCalendarEventByEId(String eId);
 
 	int removeCalendarEvent(int id);
 

@@ -16,4 +16,6 @@ public class CalendarEvent {
 	String type;
 	String createdAt;
 	String updatedAt;
+	String eId;
+	String eTag;
 }

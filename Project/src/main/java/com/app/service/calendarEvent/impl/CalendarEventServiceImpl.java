@@ -28,8 +28,8 @@ public class CalendarEventServiceImpl implements CalendarEventService{
 	}
 
 	@Override
-	public CalendarEvent findCalendarEventById(int id) {
-		CalendarEvent calendarEvent = calendarEventDao.findCalendarEventById(id);
+	public CalendarEvent findCalendarEventByEId(String eId) {
+		CalendarEvent calendarEvent = calendarEventDao.findCalendarEventByEId(eId);
 		return calendarEvent;
 	}
 

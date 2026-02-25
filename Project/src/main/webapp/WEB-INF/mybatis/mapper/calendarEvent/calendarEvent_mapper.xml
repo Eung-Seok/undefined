@@ -10,11 +10,11 @@
 		TF_CALENDAR_EVENT
 	</select>
 
-	<select id="findCalendarEventById" resultType="CalendarEvent"
-		parameterType="int">
+	<select id="findCalendarEventByEId" resultType="CalendarEvent"
+		parameterType="String">
 		SELECT *
 		FROM TF_CALENDAR_EVENT
-		WHERE id = #{id}
+		WHERE e_id = #{eId}
 	</select>
 
 	<insert id="saveCalendarEvent" parameterType="CalendarEvent">
@@ -73,16 +73,15 @@
 	<update id="upsertCalendarEvent" parameterType="CalendarEvent">
 		MERGE INTO tf_calendar_event t
 		USING DUAL
-		ON (t.type = #{type})
+		ON (t.e_id = #{eId})
 
 		WHEN MATCHED THEN
 		UPDATE SET
 		t.name = #{name},
 		t.start_date = #{startDate},
 		t.end_date = #{endDate},
-		t.updated_at = SYSDATE
-
-		WHEN NOT MATCHED THEN
+		t.e_tag = #{eTag}, t.updated_at = SYSDATE
+		WHERE (t.e_tag IS NULL OR t.e_tag != #{eTag}) WHEN NOT MATCHED THEN
 		INSERT (
 		ID,
 		USER_ID,
@@ -93,7 +92,7 @@
 		END_DATE,
 		TYPE,
 		CREATED_AT,
-		UPDATED_AT
+		UPDATED_AT, E_ID, E_TAG
 		)
 		VALUES(
 		SEQ_TF_CALENDAR_EVENT_PK.nextval,
@@ -105,7 +104,9 @@
 		#{endDate},
 		#{type},
 		SYSDATE,
-		SYSDATE
+		SYSDATE,
+		#{eId},
+		#{eTag}
 		)
 	</update>
 </mapper>
