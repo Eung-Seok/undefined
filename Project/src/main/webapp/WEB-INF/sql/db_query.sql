@@ -409,3 +409,7 @@ INSERT INTO TF_USER_ROLE VALUES(SEQ_TF_USER_ROLE_PK.nextval, 1208, 3,SYSDATE);
 INSERT INTO TF_BOARD(ID, NAME) VALUES(SEQ_TF_BOARD_PK.nextval, '공지사항');
 INSERT INTO TF_BOARD(ID, NAME) VALUES(SEQ_TF_BOARD_PK.nextval, '사내소통');
 INSERT INTO TF_BOARD(ID, NAME) VALUES(SEQ_TF_BOARD_PK.nextval, '자유게시판');
+
+alter table tf_calendar_event add E_ID VARCHAR(30);
+alter table tf_calendar_event add E_TAG VARCHAR(20);
+
