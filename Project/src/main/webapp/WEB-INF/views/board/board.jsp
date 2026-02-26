@@ -8,8 +8,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>게시판</title>
 
-<link href="/css/board/board.css" rel="stylesheet">
 <link rel="stylesheet" href="/css/common/sidebar.css">
+<link href="/css/board/board.css" rel="stylesheet">
 </head>
 <body>
 	<div class="app">

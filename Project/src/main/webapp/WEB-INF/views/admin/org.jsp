@@ -47,10 +47,6 @@
 							<div>
 								데이터: <span id="adminOrgStatus">로딩중…</span>
 							</div>
-							<div>
-								API:
-								<code>/admin/departments/tree?includeUsers=true</code>
-							</div>
 						</div>
 						<div id="adminOrgRoot" class="admin-org-tree">
 							<!-- Rendered Here -->

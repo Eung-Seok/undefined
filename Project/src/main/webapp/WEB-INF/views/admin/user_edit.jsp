@@ -9,8 +9,8 @@
 <title>권한 관리</title>
 <style>
 </style>
-<link rel="stylesheet" href="/css/admin/user_edit.css">
 <link rel="stylesheet" href="/css/common/sidebar.css">
+<link rel="stylesheet" href="/css/admin/user_edit.css">
 </head>
 <body>
 	<div class="app">
