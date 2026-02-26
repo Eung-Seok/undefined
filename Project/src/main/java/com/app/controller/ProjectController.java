@@ -55,15 +55,59 @@ public class ProjectController {
 	@Autowired
 	TaskAssigneeService taskAssigneeService;
 
-	@PostMapping("/report/save")
-	public String saveReport(@RequestParam("taskContent") String taskContent,
-			@RequestParam("issueContent") String issueContent, @RequestParam("projectId") int projectId) {
+	@GetMapping("/report")
+    public String list(@RequestParam("projectId") int projectId, HttpSession session, Model model) {
+		User user = (User) session.getAttribute("loginUser");
+		Project project = projectService.findProjectById(projectId);
+		List<Report> reportList = reportService.findReportByProjectId(projectId);
+		List<Report> userReportList = new ArrayList<Report>();
+		List<User> userList = userService.findUserList();
+		Map<Integer, String> userName = new HashMap<Integer, String>();
+		
+		for(User u: userList) {
+			userName.put(u.getEmpno(), u.getName());
+		}
+		for(Report r: reportList) {
+			if(r.getAuthorUserId() == user.getEmpno()) {
+				userReportList.add(r);
+			}
+		}
+		
+		model.addAttribute("userName", userName);
+        model.addAttribute("project", project);
+        model.addAttribute("reportList", reportList);
+        model.addAttribute("userReportList", userReportList);
 
-		System.out.println(taskContent);
-		System.out.println(issueContent);
-		System.out.println("저장실행");
+        return "project/report_list"; 
+    }
+	
+	@GetMapping("/report/view")
+	public String viewReport(@RequestParam("projectId") int projectId, @RequestParam("reportId") int reportId, Model model, HttpSession session) {
+		Report report = reportService.findReportById(reportId);
+		Project project = projectService.findProjectById(projectId);
+		User user = (User) session.getAttribute("loginUser");
+		List<User> userList = userService.findUserList();
+		Map<Integer, String> userName = new HashMap<Integer, String>();
+		
+		for(User u: userList) {
+			userName.put(u.getEmpno(), u.getName());
+		}
 
-		return "redirect:/project/overview?projectId=" + projectId;
+		model.addAttribute("user",user);
+		model.addAttribute("userName", userName);
+		model.addAttribute("project", project);
+		model.addAttribute("report", report);
+		
+		return "/project/report_view";
+	}
+	@PostMapping("/report/write")
+	public String writeSubmit(@RequestParam("projectId") int projectId, Report report, HttpSession session) {
+		User loginUser = (User) session.getAttribute("loginUser");
+		report.setAuthorUserId(((User) session.getAttribute("loginUser")).getEmpno());
+
+		reportService.saveReport(report);
+
+		return "redirect:/project/report?projectId=" + projectId;
 	}
 
 	@PostMapping("/save")
@@ -85,23 +129,28 @@ public class ProjectController {
 		return "redirect:/project/overview?projectId=" + projectId;
 	}
 
-	@GetMapping("/report")
-	public String report(@RequestParam("projectId") int projectId, Model model) {
+	@GetMapping("/report/write")
+	public String report(@RequestParam("projectId") int projectId, Model model, HttpSession session) {
+		User user = (User) session.getAttribute("loginUser");
 		Project project = projectService.findProjectById(projectId);
+		List<Task> taskList = taskService.findTaskListByProjectId(projectId);
+		List<TaskAssignee> taskAssigneesList = taskAssigneeService.findTaskAssigneeListByUserId(user.getEmpno());
+		List<Task> userTaskList = new ArrayList<Task>();
+		List<User> userList = userService.findUserList();
+		for (TaskAssignee t : taskAssigneesList) {
+			if (projectId == taskService.findTaskById(t.getTaskId()).getProjectId()) {
+				userTaskList.add(taskService.findTaskById(t.getTaskId()));
+			}
+		}
+		Map<Integer, String> userName = new HashMap<>();
+
+		for (User u : userList) {
+			userName.put(u.getEmpno(), u.getName());
+		}
+
 		model.addAttribute("project", project);
-
-		return "project/report";
-	}
-
-	@PostMapping("/project/report/save")
-	public String saveReport(Report dto, RedirectAttributes rttr) {
-
-		reportService.saveReport(dto);
-
-		rttr.addAttribute("success", "true");
-		rttr.addAttribute("projectId", dto.getProjectId());
-
-		return "redirect:/project/report";
+		model.addAttribute("taskList", userTaskList);
+		return "project/writereport";
 	}
 
 	@GetMapping("/overview")
@@ -120,31 +169,29 @@ public class ProjectController {
 		List<TaskAssignee> taskAssigneesList = taskAssigneeService.findTaskAssigneeListByUserId(user.getEmpno());
 		List<Task> userTaskList = new ArrayList<Task>();
 		List<User> userList = userService.findUserList();
-		for(TaskAssignee t: taskAssigneesList) {
-			if(projectId == taskService.findTaskById(t.getTaskId()).getProjectId()) {
+		for (TaskAssignee t : taskAssigneesList) {
+			if (projectId == taskService.findTaskById(t.getTaskId()).getProjectId()) {
 				userTaskList.add(taskService.findTaskById(t.getTaskId()));
 			}
 		}
-		Map<Integer,String> userName= new HashMap<>();
-		
-		for(User u : userList) {
+		Map<Integer, String> userName = new HashMap<>();
+
+		for (User u : userList) {
 			userName.put(u.getEmpno(), u.getName());
 		}
-		
+
 		model.addAttribute("userName", userName);
 		model.addAttribute("taskList", taskList);
 		model.addAttribute("userTaskList", userTaskList);
 		model.addAttribute("project", project);
 		model.addAttribute("userTaskNum", userTaskList.size());
 		model.addAttribute("taskNum", taskList.size());
-		
-		
 
 		return "project/tasks";
 	}
-	
+
 	@GetMapping("/tasks/add")
-	public String addTask(@RequestParam("projectId") int projectId,Model model) {
+	public String addTask(@RequestParam("projectId") int projectId, Model model) {
 		Project project = projectService.findProjectById(projectId);
 		List<ProjectMember> projectMemberList = projectMemberService.findProjectMemberListByProjectId(projectId);
 		List<Integer> userIdList = new ArrayList<Integer>();
@@ -162,20 +209,20 @@ public class ProjectController {
 		model.addAttribute("project", project);
 		return "project/addtask";
 	}
-	
+
 	@PostMapping("tasks/add")
 	public String addTaskAction(@RequestParam("projectId") int projectId, Task task) {
-		
+
 		task.setProjectId(projectId);
 		taskService.saveTask(task);
-		
+
 		TaskAssignee taskAssignee = new TaskAssignee();
 		taskAssignee.setTaskId(task.getId());
 		taskAssignee.setUserId(task.getOwnerUserId());
 		taskAssignee.setStatus("ONGOING");
-		
+
 		taskAssigneeService.saveTaskAssignee(taskAssignee);
-		return "redirect:/project/tasks?projectId="+ projectId ;
+		return "redirect:/project/tasks?projectId=" + projectId;
 	}
 
 	@GetMapping("/calendar")
@@ -225,60 +272,52 @@ public class ProjectController {
 	}
 
 	@PostMapping("/members/add")
-	public String addProjectMembersBulk(
-	        @RequestParam("projectId") int projectId,
-	        @RequestParam(value = "selectedEmpnos", required = false) List<Integer> selectedEmpnos,
-	        @RequestParam(value = "roleByEmpno", required = false) Map<Integer, String> roleByEmpno
-	) {
-	    projectMemberService.addMembersBulkPerUserRole(projectId, selectedEmpnos, roleByEmpno);
+	public String addProjectMembersBulk(@RequestParam("projectId") int projectId,
+			@RequestParam(value = "selectedEmpnos", required = false) List<Integer> selectedEmpnos,
+			@RequestParam(value = "roleByEmpno", required = false) Map<Integer, String> roleByEmpno) {
+		projectMemberService.addMembersBulkPerUserRole(projectId, selectedEmpnos, roleByEmpno);
 		return "redirect:/project/members?projectId=" + projectId;
 	}
-	
+
 	@PostMapping("/members/delete")
-	public String deleteProjectMember(@RequestParam("projectId") Long projectId,
-	        @RequestParam("empno") Long empno) {
-		
+	public String deleteProjectMember(@RequestParam("projectId") Long projectId, @RequestParam("empno") Long empno) {
+
 		projectMemberService.removeProjectMemberByProjectIdAndUserId(projectId, empno);
-		
+
 		return "redirect:/project/members?projectId=" + projectId;
 	}
-	
+
 	@GetMapping("members/edit")
-    public String editForm(@RequestParam("projectId") int projectId,
-                           @RequestParam("empno") int empno,
-                           HttpSession session,
-                           Model model) {
+	public String editForm(@RequestParam("projectId") int projectId, @RequestParam("empno") int empno,
+			HttpSession session, Model model) {
 
-        // (권장) 권한 체크: ADMIN 또는 PM
-        String role = (String) session.getAttribute("loginUserRole");
-        if (!( "ADMIN".equals(role) || "PM".equals(role) )) {
-            return "redirect:/project/members?projectId=" + projectId + "&error=forbidden";
-        }
-        User user = userService.findUserByEmpno(empno);
-        
-        
-        model.addAttribute("projectId", projectId);
-        model.addAttribute("empno", empno);
-        model.addAttribute("name", user.getName());
+		// (권장) 권한 체크: ADMIN 또는 PM
+		String role = (String) session.getAttribute("loginUserRole");
+		if (!("ADMIN".equals(role) || "PM".equals(role))) {
+			return "redirect:/project/members?projectId=" + projectId + "&error=forbidden";
+		}
+		User user = userService.findUserByEmpno(empno);
 
-        return "project/members_edit"; // /WEB-INF/views/project/members_edit.jsp
-    }
-	
+		model.addAttribute("projectId", projectId);
+		model.addAttribute("empno", empno);
+		model.addAttribute("name", user.getName());
+
+		return "project/members_edit"; // /WEB-INF/views/project/members_edit.jsp
+	}
+
 	@PostMapping("members/edit")
-    public String editSubmit(@RequestParam("projectId") int projectId,
-                             @RequestParam("empno") int empno,
-                             @RequestParam("projectRole") String projectRole,
-                             HttpSession session) {
+	public String editSubmit(@RequestParam("projectId") int projectId, @RequestParam("empno") int empno,
+			@RequestParam("projectRole") String projectRole, HttpSession session) {
 
-        String role = (String) session.getAttribute("loginUserRole");
-        if (!( "ADMIN".equals(role) || "PM".equals(role) )) {
-            return "redirect:/project/members?projectId=" + projectId + "&error=forbidden";
-        }
+		String role = (String) session.getAttribute("loginUserRole");
+		if (!("ADMIN".equals(role) || "PM".equals(role))) {
+			return "redirect:/project/members?projectId=" + projectId + "&error=forbidden";
+		}
 
-        projectMemberService.updateMemberRole(projectId, empno, projectRole);
+		projectMemberService.updateMemberRole(projectId, empno, projectRole);
 
-        return "redirect:/project/members?projectId=" + projectId;
-    }
+		return "redirect:/project/members?projectId=" + projectId;
+	}
 
 	@GetMapping("/settings")
 	public String settings(@RequestParam("projectId") int projectId, Model model) {

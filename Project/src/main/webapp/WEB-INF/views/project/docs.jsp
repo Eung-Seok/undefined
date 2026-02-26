@@ -14,6 +14,10 @@
 </head>
 <body>
 	<div class="app">
+		<c:set var="role" value="${sessionScope.loginUserRole}" />
+		<c:set var="canManageMembers"
+			value="${role == 'ADMIN' || role == 'PM'}" />
+		<c:set var="notManageMembers" value="${role == 'MEMBER'}" />
 		<jsp:include page="/WEB-INF/views/common/sidebar.jsp">
 			<jsp:param name="activeMenu" value="projects" />
 		</jsp:include>
@@ -36,13 +40,16 @@
 					href="${pageContext.request.contextPath}/project/tasks?projectId=${project.id}">업무</a><a
 					class="tab"
 					href="${pageContext.request.contextPath}/project/calendar?projectId=${project.id}">프로젝트
-					캘린더</a><a
-					class="tab active"
+					캘린더</a><a class="tab active"
 					href="${pageContext.request.contextPath}/project/docs?projectId=${project.id}">문서</a><a
 					class="tab"
 					href="${pageContext.request.contextPath}/project/members?projectId=${project.id}">참여자</a><a
 					class="tab"
-					href="${pageContext.request.contextPath}/project/settings?projectId=${project.id}">설정</a>
+					href="${pageContext.request.contextPath}/project/report?projectId=${project.id}">보고서</a>
+				<c:if test="${canManageMembers}">
+					<a class="tab"
+						href="${pageContext.request.contextPath}/project/settings?projectId=${project.id}">설정</a>
+				</c:if>
 			</div>
 
 

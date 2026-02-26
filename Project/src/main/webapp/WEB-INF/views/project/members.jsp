@@ -41,13 +41,16 @@
 					href="${pageContext.request.contextPath}/project/tasks?projectId=${project.id}">업무</a><a
 					class="tab"
 					href="${pageContext.request.contextPath}/project/calendar?projectId=${project.id}">프로젝트
-					캘린더</a><a
-					class="tab"
+					캘린더</a><a class="tab"
 					href="${pageContext.request.contextPath}/project/docs?projectId=${project.id}">문서</a><a
 					class="tab active"
 					href="${pageContext.request.contextPath}/project/members?projectId=${project.id}">참여자</a><a
 					class="tab"
-					href="${pageContext.request.contextPath}/project/settings?projectId=${project.id}">설정</a>
+					href="${pageContext.request.contextPath}/project/report?projectId=${project.id}">보고서</a>
+				<c:if test="${canManageMembers}">
+					<a class="tab"
+						href="${pageContext.request.contextPath}/project/settings?projectId=${project.id}">설정</a>
+				</c:if>
 			</div>
 
 
