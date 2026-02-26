@@ -83,7 +83,7 @@
 
 					<div style="text-align: right; margin-top: 20px;">
 						<a class="btn"
-							href="${pageContext.request.contextPath}/projects/tasks?projectid=${project.id}">취소</a>
+							href="${pageContext.request.contextPath}/project/tasks?projectId=${project.id}">취소</a>
 						<button type="submit" class="btn primary">저장</button>
 					</div>
 
