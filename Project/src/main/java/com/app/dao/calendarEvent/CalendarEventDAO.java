@@ -5,7 +5,7 @@ import java.util.List;
 import com.app.dto.calendarEvent.CalendarEvent;
 
 public interface CalendarEventDAO {
-	List<CalendarEvent> findCalendarEventList();
+	List<CalendarEvent> findCalendarEventListByUserId(int userId);
 
 	int saveCalendarEvent(CalendarEvent calendarEvent);
 
@@ -16,4 +16,6 @@ public interface CalendarEventDAO {
 	int modifyCalendarEvent(CalendarEvent calendarEvent);
 	
 	int upsertCalendarEvent(CalendarEvent calendarEvent);
+	
+	int deleteRemovedEvents(List<String> eIdList);
 }

@@ -54,7 +54,7 @@ public class GoogleCalendarService {
         DateTime now = new DateTime(System.currentTimeMillis());
         Events events = service.events().list("108bdeccc6e1caae59585e7281d2214533594d143d16892320714d854208503d@group.calendar.google.com")
                 .setMaxResults(20)
-                .setTimeMin(now)
+//                .setTimeMin(now)
                 .setOrderBy("startTime")
                 .setSingleEvents(true)
                 .execute();
