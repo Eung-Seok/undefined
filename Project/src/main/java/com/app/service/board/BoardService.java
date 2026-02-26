@@ -14,4 +14,6 @@ public interface BoardService {
 	int removeBoard(int id);
 
 	int modifyBoard(Board board);
+	
+	List<Board> findBoardListByBoardId(Integer boardId);
 }

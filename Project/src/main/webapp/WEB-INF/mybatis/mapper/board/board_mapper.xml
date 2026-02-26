@@ -5,63 +5,77 @@
 
 <mapper namespace="board_mapper">
 
-    <select id="findBoardList" resultType="com.app.dto.board.Board">
-        SELECT 
-            p.ID           AS id,             
-            b.NAME         AS name,           
-            p.TITLE        AS title,          
-            u.NAME         AS authorName,     
-            p.CREATED_AT   AS createdAt
-        FROM TF_POST p
-        JOIN TF_BOARD b ON p.BOARD_ID = b.ID
-        JOIN TF_USER u ON p.AUTHOR_USER_ID = u.EMPNO
-        ORDER BY p.ID DESC
-    </select>
-
-   <select id="findBoardById" resultType="com.app.dto.board.Board" parameterType="int">
+	<select id="findBoardList" resultType="com.app.dto.board.Board">
     SELECT
-        p.ID             AS id,
-        p.BOARD_ID       AS boardId,
-        b.NAME           AS name,
-        p.TITLE          AS title,
-        p.CONTENT        AS content,
-        u.NAME           AS authorName,
-        p.AUTHOR_USER_ID AS authorUserId, p.CREATED_AT     AS createdAt
+        p.ID AS id,
+        b.NAME AS name,
+        p.TITLE AS title,
+        u.NAME AS authorName,
+        p.CREATED_AT AS createdAt
     FROM TF_POST p
     JOIN TF_BOARD b ON p.BOARD_ID = b.ID
-    JOIN TF_USER u ON p.AUTHOR_USER_ID = u.EMPNO
-    WHERE p.ID = #{id}
+    JOIN TF_USER u ON p.AUTHOR_USER_ID = u.EMPNO  ORDER BY p.ID DESC
 </select>
 
-    <insert id="saveBoard" parameterType="com.app.dto.board.Board">
-        INSERT INTO TF_POST (
-            ID,
-            BOARD_ID,
-            AUTHOR_USER_ID,
-            TITLE,
-            CONTENT,
-            CREATED_AT
-        ) VALUES (
-            SEQ_TF_POST_PK.nextval,
-            #{boardId}, 
-            #{authorUserId}, 
-            #{title},
-            #{content},
-            SYSDATE
-        )
-    </insert>
+	<select id="findBoardById" resultType="com.app.dto.board.Board"
+		parameterType="int">
+		SELECT
+		p.ID AS id,
+		p.BOARD_ID AS boardId,
+		b.NAME AS name,
+		p.TITLE AS title,
+		p.CONTENT AS content,
+		u.NAME AS authorName,
+		p.AUTHOR_USER_ID AS authorUserId, p.CREATED_AT AS createdAt
+		FROM TF_POST p
+		JOIN TF_BOARD b ON p.BOARD_ID = b.ID
+		JOIN TF_USER u ON p.AUTHOR_USER_ID = u.EMPNO
+		WHERE p.ID = #{id}
+	</select>
 
-    <delete id="removeBoard" parameterType="int">
-        DELETE FROM TF_POST
-        WHERE ID = #{id}
-    </delete>
+	<select id="findBoardListByBoardId" resultType="com.app.dto.board.Board" parameterType="java.lang.Integer">
+    SELECT 
+        p.ID            AS id,
+        p.BOARD_ID      AS boardId,
+        b.NAME          AS name,
+        p.TITLE         AS title,
+        p.AUTHOR_USER_ID AS userId,
+        u.NAME          AS authorName,
+        p.CREATED_AT    AS createdAt
+    FROM TF_POST p
+    LEFT JOIN TF_BOARD b ON p.BOARD_ID = b.ID
+    LEFT JOIN TF_USER u ON p.AUTHOR_USER_ID = u.EMPNO
+    WHERE p.BOARD_ID = #{value}  ORDER BY p.ID DESC
+</select>
+	<insert id="saveBoard" parameterType="com.app.dto.board.Board">
+		INSERT INTO TF_POST (
+		ID,
+		BOARD_ID,
+		AUTHOR_USER_ID,
+		TITLE,
+		CONTENT,
+		CREATED_AT
+		) VALUES (
+		SEQ_TF_POST_PK.nextval,
+		#{boardId},
+		#{authorUserId},
+		#{title},
+		#{content},
+		SYSDATE
+		)
+	</insert>
 
-    <update id="modifyBoard" parameterType="com.app.dto.board.Board">
-        UPDATE TF_POST
-        SET
-            TITLE = #{title},
-            CONTENT = #{content}
-        WHERE ID = #{id}
-    </update>
+	<delete id="removeBoard" parameterType="int">
+		DELETE FROM TF_POST
+		WHERE ID = #{id}
+	</delete>
+
+	<update id="modifyBoard" parameterType="com.app.dto.board.Board">
+		UPDATE TF_POST
+		SET
+		TITLE = #{title},
+		CONTENT = #{content}
+		WHERE ID = #{id}
+	</update>
 
 </mapper>

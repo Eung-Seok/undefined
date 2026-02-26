@@ -44,4 +44,10 @@ public class BoardServiceImpl implements BoardService{
 		int result = boardDao.modifyBoard(board);
 		return result;
 	}
+
+	@Override
+	public List<Board> findBoardListByBoardId(Integer boardId) {
+		
+		return boardDao.findBoardListByBoardId(boardId);
+	}
 }
