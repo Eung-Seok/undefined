@@ -45,4 +45,10 @@ public class TaskDAOImpl implements TaskDAO {
 		return result;
 	}
 
+	@Override
+	public List<Task> findTaskListByProjectId(int porjectId) {
+		List<Task> taskList = sqlSessionTemplate.selectList("task_mapper.findTaskListByProjectId", porjectId);
+		return taskList;
+	}
+
 }

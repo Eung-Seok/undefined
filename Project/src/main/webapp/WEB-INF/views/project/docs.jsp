@@ -36,8 +36,7 @@
 					href="${pageContext.request.contextPath}/project/tasks?projectId=${project.id}">업무</a><a
 					class="tab"
 					href="${pageContext.request.contextPath}/project/calendar?projectId=${project.id}">프로젝트
-					캘린더</a><a class="tab"
-					href="${pageContext.request.contextPath}/project/wbs?projectId=${project.id}">WBS</a><a
+					캘린더</a><a
 					class="tab active"
 					href="${pageContext.request.contextPath}/project/docs?projectId=${project.id}">문서</a><a
 					class="tab"

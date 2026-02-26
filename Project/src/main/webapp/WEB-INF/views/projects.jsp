@@ -14,6 +14,10 @@
 </head>
 <body>
 	<div class="app">
+		<c:set var="role" value="${sessionScope.loginUserRole}" />
+		<c:set var="canManageMembers"
+			value="${role == 'ADMIN' || role == 'PM'}" />
+		<c:set var="notManageMembers" value="${role == 'MEMBER'}" />
 		<jsp:include page="/WEB-INF/views/common/sidebar.jsp">
 			<jsp:param name="activeMenu" value="projects" />
 		</jsp:include>
@@ -33,8 +37,17 @@
 
 
 			<div class="card">
-				<h3>프로젝트 목록</h3>
-				<div class="small">프로젝트 선택 후 내부 탭(개요/업무/WBS/문서 등)으로 이동하세요.</div>
+				<div
+					style="display: flex; gap: 10px; justify-content: space-between; align-items: center">
+					<h3>프로젝트 목록</h3>
+					<c:if test="${canManageMembers}">
+						<a class="btn primary"
+							href="${pageContext.request.contextPath}/project/create">프로젝트
+							생성</a>
+					</c:if>
+				</div>
+
+
 				<div style="height: 12px"></div>
 				<table class="table">
 					<thead>
@@ -47,32 +60,45 @@
 						</tr>
 					</thead>
 					<tbody>
-						<%-- <tr>
-							<td>신규 웹사이트 구축</td>
-							<td><span class="badge good">진행중</span></td>
-							<td>김PM</td>
-							<td>2026-02-01 ~ 2026-04-25</td>
-							<td><a class="btn"
-								href="${pageContext.request.contextPath}/project/overview">열기</a></td>
-						</tr> --%>
-						<c:forEach var="project" items="${projectList}">
-							<tr>
-								<td>${project.name}</td>
-								<td><span class="badge warn">${project.status}</span></td>
-								<td>${userNameMap[project.ownerUserId]}</td>
-								<td>${project.startDate} ~ ${project.endDate}</td>
-								<td><a class="btn"
-									href="${pageContext.request.contextPath}/project/overview?projectId=${project.id}">열기</a>
-								</td>
-							</tr>
-						</c:forEach>
+						<c:if test="${notManageMembers}">
+							<c:forEach var="project" items="${projectList}">
+								<tr>
+									<td>${project.name}</td>
+									<td><span
+										class="badge ${project.status == 'READY' ? 'ready' : 
+          project.status == 'PROGRESS' ? 'progress' : 
+          project.status == 'DONE' ? 'done' : ''}">${project.status == 'READY' ? '대기' : 
+          project.status == 'PROGRESS' ? '진행중' : 
+          project.status == 'DONE' ? '완료' : ''}</span></td>
+									<td>${userNameMap[project.ownerUserId]}</td>
+									<td>${project.startDate}~${project.endDate}</td>
+									<td><a class="btn"
+										href="${pageContext.request.contextPath}/project/overview?projectId=${project.id}">열기</a>
+									</td>
+								</tr>
+							</c:forEach>
+						</c:if>
+						<c:if test="${canManageMembers}">
+							<c:forEach var="project" items="${allProjectList}">
+								<tr>
+									<td>${project.name}</td>
+									<td><span
+										class="badge ${project.status == 'READY' ? 'ready' : 
+          project.status == 'PROGRESS' ? 'progress' : 
+          project.status == 'DONE' ? 'done' : ''}">${project.status == 'READY' ? '대기' : 
+          project.status == 'PROGRESS' ? '진행중' : 
+          project.status == 'DONE' ? '완료' : ''}</span></td>
+									<td>${userNameMap[project.ownerUserId]}</td>
+									<td>${project.startDate}~${project.endDate}</td>
+									<td><a class="btn"
+										href="${pageContext.request.contextPath}/project/overview?projectId=${project.id}">열기</a>
+									</td>
+								</tr>
+							</c:forEach>
+						</c:if>
 					</tbody>
 				</table>
 				<div style="height: 12px"></div>
-				<!-- <button class="btn primary" data-requires="PM,ADMIN"
-					data-action="프로젝트 생성">프로젝트 생성</button> -->
-				<a class="btn primary"
-					href="${pageContext.request.contextPath}/project/create">프로젝트 생성</a>
 			</div>
 
 		</main>

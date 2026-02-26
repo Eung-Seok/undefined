@@ -6,6 +6,8 @@ import com.app.dto.task.Task;
 
 public interface TaskService {
 	List<Task> findTaskList();
+	
+	List<Task> findTaskListByProjectId(int porjectId);
 
 	int saveTask(Task task);
 

@@ -9,6 +9,12 @@
 		FROM TF_TASK_ASSIGNEE
 	</select>
 	
+	<select id="findTaskAssigneeListByUserId" resultType="TaskAssignee" parameterType="int">
+		SELECT *
+		FROM TF_TASK_ASSIGNEE
+		WHERE USER_ID = #{userId}
+	</select>
+	
 	<select id="findTaskAssigneeById" resultType="TaskAssignee" parameterType="int">
 		SELECT *
 		FROM TF_TASK_ASSIGNEE
@@ -28,7 +34,7 @@
 		#{taskId},
 		#{userId},
 		#{status},
-		#{joinedAt}
+		SYSDATE
 		)
 	</insert>
 

@@ -19,6 +19,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.app.dto.project.Project;
 import com.app.dto.projectMember.ProjectMember;
 import com.app.dto.report.Report;
+import com.app.dto.task.Task;
+import com.app.dto.taskAssignee.TaskAssignee;
 import com.app.dto.user.User;
 import com.app.service.board.BoardService;
 import com.app.service.comment.CommentService;
@@ -26,6 +28,8 @@ import com.app.service.notification.NotificationService;
 import com.app.service.project.ProjectService;
 import com.app.service.projectMember.ProjectMemberService;
 import com.app.service.report.ReportService;
+import com.app.service.task.TaskService;
+import com.app.service.taskAssignee.TaskAssigneeService;
 import com.app.service.user.UserService;
 
 @Controller
@@ -46,6 +50,10 @@ public class ProjectController {
 	ReportService reportService;
 	@Autowired
 	UserService userService;
+	@Autowired
+	TaskService taskService;
+	@Autowired
+	TaskAssigneeService taskAssigneeService;
 
 	@PostMapping("/report/save")
 	public String saveReport(@RequestParam("taskContent") String taskContent,
@@ -63,7 +71,6 @@ public class ProjectController {
 
 		project.setOwnerUserId(pmUserId);
 		projectService.saveProject(project);
-
 		ProjectMember projectMember = new ProjectMember();
 
 		int projectId = project.getId();
@@ -106,11 +113,69 @@ public class ProjectController {
 	}
 
 	@GetMapping("/tasks")
-	public String tasks(@RequestParam("projectId") int projectId, Model model) {
+	public String tasks(@RequestParam("projectId") int projectId, Model model, HttpSession session) {
+		User user = (User) session.getAttribute("loginUser");
 		Project project = projectService.findProjectById(projectId);
+		List<Task> taskList = taskService.findTaskListByProjectId(projectId);
+		List<TaskAssignee> taskAssigneesList = taskAssigneeService.findTaskAssigneeListByUserId(user.getEmpno());
+		List<Task> userTaskList = new ArrayList<Task>();
+		List<User> userList = userService.findUserList();
+		for(TaskAssignee t: taskAssigneesList) {
+			if(projectId == taskService.findTaskById(t.getTaskId()).getProjectId()) {
+				userTaskList.add(taskService.findTaskById(t.getTaskId()));
+			}
+		}
+		Map<Integer,String> userName= new HashMap<>();
+		
+		for(User u : userList) {
+			userName.put(u.getEmpno(), u.getName());
+		}
+		
+		model.addAttribute("userName", userName);
+		model.addAttribute("taskList", taskList);
+		model.addAttribute("userTaskList", userTaskList);
 		model.addAttribute("project", project);
+		model.addAttribute("userTaskNum", userTaskList.size());
+		model.addAttribute("taskNum", taskList.size());
+		
+		
 
 		return "project/tasks";
+	}
+	
+	@GetMapping("/tasks/add")
+	public String addTask(@RequestParam("projectId") int projectId,Model model) {
+		Project project = projectService.findProjectById(projectId);
+		List<ProjectMember> projectMemberList = projectMemberService.findProjectMemberListByProjectId(projectId);
+		List<Integer> userIdList = new ArrayList<Integer>();
+		List<User> userList = new ArrayList<User>();
+		Map<Integer, String> userRoleMap = new HashMap<Integer, String>();
+		for (ProjectMember pm : projectMemberList) {
+			userIdList.add(pm.getUserId());
+			userRoleMap.put(pm.getUserId(), pm.getProjectRole());
+		}
+
+		for (Integer i : userIdList) {
+			userList.add(userService.findUserByEmpno(i));
+		}
+		model.addAttribute("userList", userList);
+		model.addAttribute("project", project);
+		return "project/addtask";
+	}
+	
+	@PostMapping("tasks/add")
+	public String addTaskAction(@RequestParam("projectId") int projectId, Task task) {
+		
+		task.setProjectId(projectId);
+		taskService.saveTask(task);
+		
+		TaskAssignee taskAssignee = new TaskAssignee();
+		taskAssignee.setTaskId(task.getId());
+		taskAssignee.setUserId(task.getOwnerUserId());
+		taskAssignee.setStatus("ONGOING");
+		
+		taskAssigneeService.saveTaskAssignee(taskAssignee);
+		return "redirect:/project/tasks?projectId="+ projectId ;
 	}
 
 	@GetMapping("/calendar")
@@ -118,21 +183,6 @@ public class ProjectController {
 		Project project = projectService.findProjectById(projectId);
 		model.addAttribute("project", project);
 		return "project/calendar";
-	}
-
-	@GetMapping("/wbs")
-	public String wbs(@RequestParam("projectId") int projectId, Model model) {
-		Project project = projectService.findProjectById(projectId);
-		model.addAttribute("project", project);
-		return "project/wbs";
-	}
-
-	@GetMapping("/issues")
-	public String issues(@RequestParam("projectId") int projectId, Model model) {
-		Project project = projectService.findProjectById(projectId);
-		model.addAttribute("project", project);
-
-		return "project/issues";
 	}
 
 	@GetMapping("/docs")
@@ -242,7 +292,6 @@ public class ProjectController {
 
 		List<User> userList = userService.findUserList();
 		model.addAttribute("userList", userList);
-
 		return "project/create";
 	}
 
