@@ -77,6 +77,7 @@ public class CalendarEventServiceImpl implements CalendarEventService {
 			String eId = event.getId();
 			String eTag = event.getEtag();
 			eIdList.add(eId);
+			
 			// 1. Google DateTime을 String으로 안전하게 추출 (null 체크 포함)
 			String startStr = (event.getStart().getDateTime() != null) ? event.getStart().getDateTime().toString()
 					: event.getStart().getDate().toString() + "T00:00:00Z";
@@ -88,18 +89,8 @@ public class CalendarEventServiceImpl implements CalendarEventService {
 			LocalDateTime startLdt = OffsetDateTime.parse(startStr).toLocalDateTime();
 			LocalDateTime endLdt = OffsetDateTime.parse(endStr).toLocalDateTime();
 
-//				System.out.println(startStr);
-//				System.out.println(endStr);
-//				System.out.println(startLdt);
-//				System.out.println(endLdt);
 			System.out.println(event.getId());
 			System.out.println(event.getEtag());
-
-//			eventMap.put("title", summary);
-//			eventMap.put("start", startStr);
-//			eventMap.put("end", endStr);
-//			eventMap.put("googleEventId", eventId);
-//			resultList.add(eventMap);
 
 			CalendarEvent existing = calendarEventDao.findCalendarEventByEId(eId);
 			if (existing != null && eTag.equals(existing.getETag())) {
@@ -118,7 +109,6 @@ public class CalendarEventServiceImpl implements CalendarEventService {
 			System.out.println("일정 수정/저장 완료: " + summary);
 		}
 		if (!eIdList.isEmpty()) {
-			// 이번엔 userId 없이 eId 리스트만 보냅니다.
 			int deletedCount = calendarEventDao.deleteRemovedEvents(eIdList);
 			if (deletedCount > 0) {
 				System.out.println("동기화 완료: 구글에서 삭제된 일정 " + deletedCount + "건을 DB에서도 삭제했습니다.");
