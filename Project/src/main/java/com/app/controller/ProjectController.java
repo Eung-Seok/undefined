@@ -120,31 +120,29 @@ public class ProjectController {
 		List<TaskAssignee> taskAssigneesList = taskAssigneeService.findTaskAssigneeListByUserId(user.getEmpno());
 		List<Task> userTaskList = new ArrayList<Task>();
 		List<User> userList = userService.findUserList();
-		for(TaskAssignee t: taskAssigneesList) {
-			if(projectId == taskService.findTaskById(t.getTaskId()).getProjectId()) {
+		for (TaskAssignee t : taskAssigneesList) {
+			if (projectId == taskService.findTaskById(t.getTaskId()).getProjectId()) {
 				userTaskList.add(taskService.findTaskById(t.getTaskId()));
 			}
 		}
-		Map<Integer,String> userName= new HashMap<>();
-		
-		for(User u : userList) {
+		Map<Integer, String> userName = new HashMap<>();
+
+		for (User u : userList) {
 			userName.put(u.getEmpno(), u.getName());
 		}
-		
+
 		model.addAttribute("userName", userName);
 		model.addAttribute("taskList", taskList);
 		model.addAttribute("userTaskList", userTaskList);
 		model.addAttribute("project", project);
 		model.addAttribute("userTaskNum", userTaskList.size());
 		model.addAttribute("taskNum", taskList.size());
-		
-		
 
 		return "project/tasks";
 	}
-	
+
 	@GetMapping("/tasks/add")
-	public String addTask(@RequestParam("projectId") int projectId,Model model) {
+	public String addTask(@RequestParam("projectId") int projectId, Model model) {
 		Project project = projectService.findProjectById(projectId);
 		List<ProjectMember> projectMemberList = projectMemberService.findProjectMemberListByProjectId(projectId);
 		List<Integer> userIdList = new ArrayList<Integer>();
@@ -162,20 +160,24 @@ public class ProjectController {
 		model.addAttribute("project", project);
 		return "project/addtask";
 	}
-	
+
 	@PostMapping("tasks/add")
-	public String addTaskAction(@RequestParam("projectId") int projectId, Task task) {
-		
-		task.setProjectId(projectId);
-		taskService.saveTask(task);
-		
-		TaskAssignee taskAssignee = new TaskAssignee();
-		taskAssignee.setTaskId(task.getId());
-		taskAssignee.setUserId(task.getOwnerUserId());
-		taskAssignee.setStatus("ONGOING");
-		
-		taskAssigneeService.saveTaskAssignee(taskAssignee);
-		return "redirect:/project/tasks?projectId="+ projectId ;
+	public String addTaskAction(@RequestParam("projectId") int projectId, Task task, HttpSession session) {
+		// 1. 로그인 정보 확인 (구글 연동 시 userId 필요)
+		User loginUser = (User) session.getAttribute("loginUser");
+		if (loginUser == null)
+			return "redirect:/login"; // 예외 처리
+
+		try {
+			// 2. 업무 저장 + 구글 전송 + 일정 연동을 하나의 서비스 메서드에서 처리
+			taskService.saveTaskWithGoogleSync(projectId, task, loginUser.getEmpno());
+		} catch (Exception e) {
+			e.printStackTrace();
+			// 실패 시 에러 메시지를 들고 이동 (선택 사항)
+			return "redirect:/project/tasks?projectId=" + projectId + "&error=sync_fail";
+		}
+
+		return "redirect:/project/tasks?projectId=" + projectId;
 	}
 
 	@GetMapping("/calendar")
@@ -225,60 +227,52 @@ public class ProjectController {
 	}
 
 	@PostMapping("/members/add")
-	public String addProjectMembersBulk(
-	        @RequestParam("projectId") int projectId,
-	        @RequestParam(value = "selectedEmpnos", required = false) List<Integer> selectedEmpnos,
-	        @RequestParam(value = "roleByEmpno", required = false) Map<Integer, String> roleByEmpno
-	) {
-	    projectMemberService.addMembersBulkPerUserRole(projectId, selectedEmpnos, roleByEmpno);
+	public String addProjectMembersBulk(@RequestParam("projectId") int projectId,
+			@RequestParam(value = "selectedEmpnos", required = false) List<Integer> selectedEmpnos,
+			@RequestParam(value = "roleByEmpno", required = false) Map<Integer, String> roleByEmpno) {
+		projectMemberService.addMembersBulkPerUserRole(projectId, selectedEmpnos, roleByEmpno);
 		return "redirect:/project/members?projectId=" + projectId;
 	}
-	
+
 	@PostMapping("/members/delete")
-	public String deleteProjectMember(@RequestParam("projectId") Long projectId,
-	        @RequestParam("empno") Long empno) {
-		
+	public String deleteProjectMember(@RequestParam("projectId") Long projectId, @RequestParam("empno") Long empno) {
+
 		projectMemberService.removeProjectMemberByProjectIdAndUserId(projectId, empno);
-		
+
 		return "redirect:/project/members?projectId=" + projectId;
 	}
-	
+
 	@GetMapping("members/edit")
-    public String editForm(@RequestParam("projectId") int projectId,
-                           @RequestParam("empno") int empno,
-                           HttpSession session,
-                           Model model) {
+	public String editForm(@RequestParam("projectId") int projectId, @RequestParam("empno") int empno,
+			HttpSession session, Model model) {
 
-        // (권장) 권한 체크: ADMIN 또는 PM
-        String role = (String) session.getAttribute("loginUserRole");
-        if (!( "ADMIN".equals(role) || "PM".equals(role) )) {
-            return "redirect:/project/members?projectId=" + projectId + "&error=forbidden";
-        }
-        User user = userService.findUserByEmpno(empno);
-        
-        
-        model.addAttribute("projectId", projectId);
-        model.addAttribute("empno", empno);
-        model.addAttribute("name", user.getName());
+		// (권장) 권한 체크: ADMIN 또는 PM
+		String role = (String) session.getAttribute("loginUserRole");
+		if (!("ADMIN".equals(role) || "PM".equals(role))) {
+			return "redirect:/project/members?projectId=" + projectId + "&error=forbidden";
+		}
+		User user = userService.findUserByEmpno(empno);
 
-        return "project/members_edit"; // /WEB-INF/views/project/members_edit.jsp
-    }
-	
+		model.addAttribute("projectId", projectId);
+		model.addAttribute("empno", empno);
+		model.addAttribute("name", user.getName());
+
+		return "project/members_edit"; // /WEB-INF/views/project/members_edit.jsp
+	}
+
 	@PostMapping("members/edit")
-    public String editSubmit(@RequestParam("projectId") int projectId,
-                             @RequestParam("empno") int empno,
-                             @RequestParam("projectRole") String projectRole,
-                             HttpSession session) {
+	public String editSubmit(@RequestParam("projectId") int projectId, @RequestParam("empno") int empno,
+			@RequestParam("projectRole") String projectRole, HttpSession session) {
 
-        String role = (String) session.getAttribute("loginUserRole");
-        if (!( "ADMIN".equals(role) || "PM".equals(role) )) {
-            return "redirect:/project/members?projectId=" + projectId + "&error=forbidden";
-        }
+		String role = (String) session.getAttribute("loginUserRole");
+		if (!("ADMIN".equals(role) || "PM".equals(role))) {
+			return "redirect:/project/members?projectId=" + projectId + "&error=forbidden";
+		}
 
-        projectMemberService.updateMemberRole(projectId, empno, projectRole);
+		projectMemberService.updateMemberRole(projectId, empno, projectRole);
 
-        return "redirect:/project/members?projectId=" + projectId;
-    }
+		return "redirect:/project/members?projectId=" + projectId;
+	}
 
 	@GetMapping("/settings")
 	public String settings(@RequestParam("projectId") int projectId, Model model) {

@@ -16,4 +16,6 @@ public interface TaskService {
 	int removeTask(int id);
 
 	int modifyTask(Task task);
+	
+	void saveTaskWithGoogleSync(int projectId, Task task, int loginUserId) throws Exception;
 }
