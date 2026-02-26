@@ -28,16 +28,18 @@
 					<button class="btn primary" data-action="빠른 생성">＋</button>
 				</div>
 			</div>
+
 			<div class="card">
-				<h3>프로젝트 생성</h3>
-				<div class="small">새로운 프로젝트 정보를 입력하세요.</div>
+				<h3>업무 생성</h3>
+				<div class="small">새로운 업무 정보를 입력하세요.</div>
 				<div style="height: 16px;"></div>
 
-				<form action="${pageContext.request.contextPath}/project/save"
+				<form
+					action="${pageContext.request.contextPath}/project/tasks/add?projectId=${project.id}"
 					method="post" class="form">
 
 					<div class="form-group">
-						<label>프로젝트명</label> <input type="text" name="name" required>
+						<label>업무명</label> <input type="text" name="name" required>
 					</div>
 
 					<div class="form-group">
@@ -45,7 +47,7 @@
 						<textarea name="description" rows="4"></textarea>
 					</div>
 					<div class="form-group">
-						<label>프로젝트 매니저 (PM)</label> <select name="pmUserId" required>
+						<label>업무 담당자</label> <select name="ownerUserId" required>
 							<option value="">선택하세요</option>
 							<c:forEach var="user" items="${userList}">
 								<option value="${user.empno}">${user.name}
@@ -59,21 +61,29 @@
 						</div>
 
 						<div class="form-group">
-							<label>종료일</label> <input type="date" name="endDate">
+							<label>종료일</label> <input type="date" name="dueDate">
 						</div>
 					</div>
 
 					<div class="form-group">
+						<label>우선순위</label> <select name="priority">
+							<option value="HIGHT">상</option>
+							<option value="MEDIUMN">중</option>
+							<option value="LOW">하</option>
+						</select>
+					</div>
+					
+					<div class="form-group">
 						<label>상태</label> <select name="status">
-							<option value="READY">준비</option>
+							<option value="READY">대기</option>
 							<option value="PROGRESS">진행중</option>
-							<option value="lisk">리스크</option>
 							<option value="DONE">완료</option>
 						</select>
 					</div>
 
 					<div style="text-align: right; margin-top: 20px;">
-						<a class="btn" href="${pageContext.request.contextPath}/projects">취소</a>
+						<a class="btn"
+							href="${pageContext.request.contextPath}/projects/tasks?projectid=${project.id}">취소</a>
 						<button type="submit" class="btn primary">저장</button>
 					</div>
 

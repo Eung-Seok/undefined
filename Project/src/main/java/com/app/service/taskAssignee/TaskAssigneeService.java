@@ -6,6 +6,8 @@ import com.app.dto.taskAssignee.TaskAssignee;
 
 public interface TaskAssigneeService {
 	List<TaskAssignee> findTaskAssigneeList();
+	
+	List<TaskAssignee> findTaskAssigneeListByUserId(int userId);
 
 	int saveTaskAssignee(TaskAssignee taskAssignee);
 

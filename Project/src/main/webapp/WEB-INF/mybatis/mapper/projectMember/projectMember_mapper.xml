@@ -6,24 +6,62 @@
 
 	<select id="findProjectMemberList" resultType="ProjectMember">
 		SELECT *
-		FROM TF_PROJECT_MEMBER
+		FROM
+		TF_PROJECT_MEMBER
 	</select>
-	
-	<select id="findProjectMemberById" resultType="ProjectMember" parameterType="int">
+
+	<select id="findProjectMemberById" resultType="ProjectMember"
+		parameterType="int">
 		SELECT *
 		FROM TF_PROJECT_MEMBER
 		WHERE id = #{id}
 	</select>
 
+	<insert id="insertMembersBulk" parameterType="map">
+		INSERT INTO TF_PROJECT_MEMBER
+		(ID, PROJECT_ID, USER_ID, PROJECT_ROLE, STATUS, JOINED_AT, CREATED_AT)
+		SELECT
+		SEQ_TF_PROJECT_MEMBER_PK.NEXTVAL,
+		#{projectId},
+		x.user_id,
+		x.project_role,
+		'ONGOING',
+		SYSDATE,
+		SYSDATE
+		FROM (
+		<foreach collection="rows" item="r" separator="UNION ALL">
+			SELECT
+			#{r.userId} AS user_id,
+			#{r.projectRole} AS project_role
+			FROM DUAL
+		</foreach>
+		) x
+		WHERE NOT EXISTS (
+		SELECT 1
+		FROM TF_PROJECT_MEMBER pm
+		WHERE pm.PROJECT_ID = #{projectId}
+		AND pm.USER_ID = x.user_id
+		)
+	</insert>
+
+	<select id="findProjectMemberListByProjectId"
+		resultType="ProjectMember" parameterType="int">
+		SELECT *
+		FROM
+		TF_PROJECT_MEMBER
+		WHERE project_id = #{projectId}
+	</select>
+
 	<insert id="saveProjectMember" parameterType="ProjectMember">
-		INSERT INTO TF_PROJECT_MEMBER(
-			ID,
-			PROJECT_ID,
-			USER_ID,
-			PROJECT_ROLE,
-			STATUS,
-			JOINED_AT,
-			CREATED_AT
+		INSERT INTO
+		TF_PROJECT_MEMBER(
+		ID,
+		PROJECT_ID,
+		USER_ID,
+		PROJECT_ROLE,
+		STATUS,
+		JOINED_AT,
+		CREATED_AT
 		)
 		VALUES(
 		SEQ_TF_PROJECT_MEMBER_PK.nextval,
@@ -31,27 +69,47 @@
 		#{userId},
 		#{projectRole},
 		#{status},
-		#{joinedAt},
-		#{createdAt}
+		SYSDATE,
+		SYSDATE
 		)
 	</insert>
-	
+
 	<delete id="removeProjectMember" parameterType="int">
-		DELETE FROM TF_PROJECT_MEMBER
+		DELETE FROM
+		TF_PROJECT_MEMBER
 		WHERE
 		ID = #{id}
 	</delete>
+	
+	<delete id="removeProjectMemberByProjectIdAndUserId" parameterType="map" >
+		DELETE FROM
+		TF_PROJECT_MEMBER
+		WHERE
+		PROJECT_ID = #{projectId} and
+		USER_ID = #{empno}
+	</delete>
 
 	<update id="modifyProjectMember" parameterType="ProjectMember">
-		UPDATE TF_PROJECT_MEMBER
+		UPDATE
+		TF_PROJECT_MEMBER
 		SET
 		PROJECT_ID = #{projectId},
 		USER_ID = #{userId},
 		PROJECT_ROLE = #{projectRole},
 		STATUS = #{status},
-		JOINED_AT = #{joinedAt},
+		JOINED_AT =
+		#{joinedAt},
 		CREATED_AT = #{createdAt}
 		WHERE ID = #{id}
+	</update>
+	
+	<update id="updateMemberRole" parameterType="map">
+		UPDATE
+		TF_PROJECT_MEMBER
+		SET
+		PROJECT_ROLE = #{projectRole}
+		WHERE USER_ID = #{empno} AND
+		PROJECT_ID = #{projectId}
 	</update>
 
 </mapper>

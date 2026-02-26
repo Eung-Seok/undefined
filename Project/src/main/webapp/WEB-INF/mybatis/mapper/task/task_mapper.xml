@@ -8,6 +8,12 @@
 		SELECT *
 		FROM TF_TASK
 	</select>
+	
+	<select id="findTaskListByProjectId" resultType="Task" parameterType="int">
+		SELECT *
+		FROM TF_TASK
+		WHERE PROJECT_ID = #{projectId}
+	</select>
 
 	<select id="findTaskById" resultType="Task" parameterType="int">
 		SELECT *
@@ -16,36 +22,39 @@
 	</select>
 
 	<insert id="saveTask" parameterType="Task">
+		<selectKey keyProperty="id" resultType="int" order="BEFORE">
+			SELECT SEQ_TF_TASK_PK.nextval FROM dual
+		</selectKey>
 		INSERT INTO TF_TASK(
-			ID,
-			PROJECT_ID,
-			PARENT_TASK_ID,
-			NAME,
-			DESCRIPTION,
-			STATUS,
-			PRIORITY,
-			START_DATE,
-			DUE_DATE,
-			PROGRESS_PERCENT,
-			CREATED_AT,
-			UPDATED_AT
+		ID,
+		PROJECT_ID,
+		NAME,
+		DESCRIPTION,
+		STATUS,
+		PRIORITY,
+		START_DATE,
+		DUE_DATE,
+		PROGRESS_PERCENT,
+		CREATED_AT,
+		UPDATED_AT,
+		OWNER_USER_ID
 		)
 		VALUES(
-		SEQ_TF_TASK_PK.nextval,
+		#{id},
 		#{projectId},
-		#{parentTaskId},
 		#{name},
 		#{description},
 		#{status},
 		#{priority},
 		#{startDate},
 		#{dueDate},
-		#{progressPercent},
-		#{createdAt},
-		#{updatedAt}
+		0,
+		SYSDATE,
+		SYSDATE,
+		#{ownerUserId}
 		)
 	</insert>
-	
+
 	<delete id="removeTask" parameterType="int">
 		DELETE FROM TF_TASK
 		WHERE
@@ -57,10 +66,12 @@
 		SET
 		PROJECT_ID = #{projectId},
 		PARENT_TASK_ID = #{parentTaskId},
-		NAME = #{name},
+		NAME =
+		#{name},
 		DESCRIPTION = #{description},
 		STATUS = #{status},
-		PRIORITY = #{priority},
+		PRIORITY =
+		#{priority},
 		START_DATE = #{startDate},
 		DUE_DATE = #{dueDate},
 		PROGRESS_PERCENT = #{progressPercent},
@@ -68,5 +79,5 @@
 		UPDATED_AT = #{updatedAt}
 		WHERE ID = #{id}
 	</update>
-	
+
 </mapper>

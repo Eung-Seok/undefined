@@ -56,6 +56,7 @@ public class PageController {
 		List<ProjectMember> projectMemberList = projectMemberService.findProjectMemberList(); 
 		List<User> userList = userService.findUserList();
 		List<Integer> projectIdList = new ArrayList<Integer>();
+		List<Project> allProjectList = projectService.findProjectList();
 		
 		for(ProjectMember p: projectMemberList) {
 			if(String.valueOf(p.getUserId()).equals(Integer.toString(user.getEmpno()))) {
@@ -72,6 +73,7 @@ public class PageController {
 			projectList.add(projectService.findProjectById(i));
 		}
 		
+		model.addAttribute("allProjectList", allProjectList);
 	    model.addAttribute("projectList", projectList);
 	    model.addAttribute("userNameMap", userNameMap);
 	    return "projects";

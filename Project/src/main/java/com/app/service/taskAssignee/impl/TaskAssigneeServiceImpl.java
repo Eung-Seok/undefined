@@ -44,4 +44,10 @@ public class TaskAssigneeServiceImpl implements TaskAssigneeService{
 		int result = taskAssigneeDao.modifyTaskAssignee(taskAssignee);
 		return result;
 	}
+
+	@Override
+	public List<TaskAssignee> findTaskAssigneeListByUserId(int userId) {
+		List<TaskAssignee> taskAgAssignees = taskAssigneeDao.findTaskAssigneeListByUserId(userId);
+		return taskAgAssignees;
+	}
 }

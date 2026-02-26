@@ -7,6 +7,8 @@ import com.app.dto.task.Task;
 public interface TaskDAO {
 	List<Task> findTaskList();
 	
+	List<Task> findTaskListByProjectId(int porjectId);
+	
 	int saveTask(Task task);
 
 	Task findTaskById(int id);

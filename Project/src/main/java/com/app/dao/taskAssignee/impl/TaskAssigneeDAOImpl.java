@@ -1,6 +1,8 @@
 package com.app.dao.taskAssignee.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +45,12 @@ public class TaskAssigneeDAOImpl implements TaskAssigneeDAO {
 	public int modifyTaskAssignee(TaskAssignee taskAssignee) {
 		int result = sqlSessionTemplate.update("taskAssignee_mapper.modifyTaskAssignee", taskAssignee);
 		return result;
+	}
+
+	@Override
+	public List<TaskAssignee> findTaskAssigneeListByUserId(int userId) {		
+		List<TaskAssignee> taskAssignees = sqlSessionTemplate.selectList("taskAssignee_mapper.findTaskAssigneeListByUserId",userId);
+		return taskAssignees;
 	}
 	
 }
