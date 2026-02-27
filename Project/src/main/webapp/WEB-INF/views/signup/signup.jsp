@@ -49,7 +49,7 @@
 
         <div class="mb-3">
             <label class="form-label">부서번호</label>
-            <input type="text" name="departmentId" class="form-control" placeholder="부서코드 입력" required>
+            <input type="text" name="deptno" class="form-control" placeholder="부서코드 입력" required>
         </div>
 
         <button type="submit" class="btn btn-reg w-100 mt-2">사원 등록 완료</button>

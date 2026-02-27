@@ -9,7 +9,7 @@ public interface CalendarEventService {
 
 	int saveCalendarEvent(CalendarEvent calendarEvent);
 
-	CalendarEvent findCalendarEventById(int id);
+	CalendarEvent findCalendarEventByEId(String eId);
 
 	int removeCalendarEvent(int id);
 
@@ -18,5 +18,8 @@ public interface CalendarEventService {
     // ✅ 인터페이스에 추가
     int modifyCalendarEvent(CalendarEvent calendarEvent);
 
+	int modifyCalendarEvent(CalendarEvent calendarEvent);
+	
+	int upsertCalendarEvent(CalendarEvent calendarEvent);
 }
 

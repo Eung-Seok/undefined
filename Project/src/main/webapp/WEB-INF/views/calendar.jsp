@@ -1,16 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%
-// Demo session user (Map) - replace with real login later
-if (session.getAttribute("loginUser") == null) {
-	java.util.Map<String, Object> u = new java.util.HashMap<>();
-	u.put("name", "홍길동");
-	u.put("position", "사원");
-	u.put("role", "MEMBER"); // ADMIN / PM / MEMBER / VIEWER
-	session.setAttribute("loginUser", u);
-}
-%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -20,6 +10,9 @@ if (session.getAttribute("loginUser") == null) {
 <style>
 </style>
 <link rel="stylesheet" href="/css/calendar/calendar.css">
+<link rel="stylesheet" href="/css/common/sidebar.css">
+<script
+	src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
 </head>
 <body>
 	<div class="app">
@@ -75,20 +68,18 @@ if (session.getAttribute("loginUser") == null) {
 				</div>
 				<div class="card">
 					<h3>외부 캘린더 연동</h3>
-					<div class="notice">Google/Outlook 연동은 API 키 설정 후 구현하세요.</div>
 					<div style="height: 12px"></div>
-					<button class="btn" data-action="Google Calendar 연결">Google
-						Calendar 연결</button>
-					<button class="btn" data-action="Outlook Calendar 연결"
-						style="margin-left: 8px">Outlook Calendar 연결</button>
+					<div id='calendar-container'
+						style="background: white; padding: 10px; border-radius: 8px;">
+						<div id='google-calendar'></div>
 				</div>
 			</div>
 
 		</main>
 	</div>
-	<script src="/js/calendar/calendar.js"></script>
 	<script>
-		
+		window.contextPath = '${pageContext.request.contextPath}';
 	</script>
+	<script src="/js/calendar/calendar.js"></script>
 </body>
 </html>

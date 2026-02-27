@@ -1,5 +1,7 @@
 package com.app.controller;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,29 +18,28 @@ import com.app.service.userRole.UserRoleService;
 @Controller
 public class LoginController {
 
-	@Autowired
-	UserService userService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    RoleService roleService;
+    @Autowired
+    UserRoleService userRoleService;
 
-	@Autowired
-	UserRoleService userRoleService;
+    // [1] 로그인 페이지
+    @GetMapping("/login")
+    public String loginPage() {
+        return "login/login"; 
+    }
 
-	@Autowired
-	RoleService roleService;
-
-	// 1. 로그인 화면 이동
-	@GetMapping("/login")
-	public String loginForm() {
-		return "login/login";
-	}
-
-	// 2. 로그인 실행 로직
-	@PostMapping("/login")
+    // [2] 로그인 실행
+    @PostMapping("/login")
 	public String loginProcess(User user, HttpSession session, Model model) {
 
 		User dbUser = userService.findUserByEmpno(user.getEmpno());
 
 		if (dbUser != null && dbUser.getPassword().equals(user.getPassword())) {
 			session.setAttribute("loginUser", dbUser);
+			session.setAttribute("loginUserRole", roleService.findRoleById(userRoleService.findUserRoleByUserId(user.getEmpno()).getRoleId()).getName());
 			return "redirect:/dashboard";
 		} else {
 
@@ -46,30 +47,57 @@ public class LoginController {
 			return "login/login";
 		}
 	}
+    //  회원가입 페이지 
+    @GetMapping("/signup")
+    public String signupPage() {
+        return "signup/signup"; 
+    }
 
-	// 3. 회원가입 화면 이동
-	@GetMapping("/signup")
-	public String signupForm() {
-		return "signup/signup";
-	}
+    //  회원가입 실행
+    @PostMapping("/signup")
+    public String signupProcess(User user, Model model) {
+        
+        User checkUser = userService.findUserByEmpno(user.getEmpno());
 
-	// 4. 회원가입 실행 로직
-	@PostMapping("/signup")
-	public String signupProcess(User user) {
-		System.out.println(user);
-		int result = userService.saveUser(user);
+        if (checkUser != null) {
+            
+            model.addAttribute("msg", "이미 등록된 사원번호입니다. (사번: " + user.getEmpno() + ")");
+            model.addAttribute("url", "/signup");
+            return "common/alert"; 
+        }
 
-		if (result > 0) {
-			return "redirect:/login";
-		} else {
-			return "redirect:/signup";
-		}
-	}
+        try {
+            userService.saveUser(user);
+            return "redirect:/login";
+        } catch (Exception e) {           
+            model.addAttribute("signupError", "가입 처리 중 오류가 발생했습니다.");
+            return "signup/signup"; 
+        }
+    }
 
-	// 5. 로그아웃
-	@GetMapping("/logout")
-	public String logout(HttpSession session) {
-		session.invalidate();
-		return "redirect:/login";
-	}
+    //  비밀번호 찾기 
+    @PostMapping("/find-password")
+    public String findPassword(int empno, String email, Model model) {
+        User user = userService.findUserByEmpno(empno);
+
+        if (user != null && user.getEmail().equals(email)) {
+            model.addAttribute("loginError", "회원님의 비밀번호는 [" + user.getPassword() + "] 입니다.");
+        } else {
+            model.addAttribute("loginError", "일치하는 정보가 없습니다.");
+        }
+        return "login/login"; 
+    }
+    
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session, HttpServletResponse response) {
+    	// 세션무효화
+        session.invalidate();
+        // 쿠키삭제 
+        Cookie cookie = new Cookie("savedEmpno", null);
+        cookie.setPath("/"); 
+        cookie.setMaxAge(0); 
+        response.addCookie(cookie);
+        return "redirect:/login";
+    }
 }

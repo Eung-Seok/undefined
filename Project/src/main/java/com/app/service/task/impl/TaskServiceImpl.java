@@ -73,4 +73,10 @@ public class TaskServiceImpl implements TaskService{
 	 }
 
 
+
+	@Override
+	public List<Task> findTaskListByProjectId(int porjectId) {
+		List<Task> taskList = taskDao.findTaskListByProjectId(porjectId);
+		return taskList;
+	}
 }

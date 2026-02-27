@@ -4,8 +4,18 @@ import lombok.Data;
 
 @Data
 public class Board {
-	int id;
-	String name;
-	Integer projectId;
-	String createdAt;
+	private int id;
+	private int boardId;
+    private String name;      
+    private int postId;      
+    private String title;    
+    private String content;  
+    private int authorUserId;
+    private int pmUserId;
+    private String authorName; 
+    private String createdAt;
+    
+    public int getPostId() {
+        return id;
+    }
 }

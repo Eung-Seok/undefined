@@ -4,6 +4,8 @@
 		   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="report_mapper">
 
+
+	
 	<select id="findReportList" resultType="Report">
 		SELECT *
 		FROM TF_REPORT
@@ -11,6 +13,14 @@
 
 	<select id="findReportById" resultType="Report"
 		parameterType="int">
+	
+	<select id="findReportByProjectId" resultType="Report" parameterType="int">
+		SELECT *
+		FROM TF_REPORT
+		WHERE PROJECT_ID = #{projectId}
+	</select>
+	
+	<select id="findReportById" resultType="Report" parameterType="int">
 		SELECT *
 		FROM TF_REPORT
 		WHERE id = #{id}
@@ -32,14 +42,15 @@
 
 	<insert id="saveReport" parameterType="Report">
 		INSERT INTO TF_REPORT(
-		ID,
-		PROJECT_ID,
-		AUTHOR_USER_ID,
-		PERIOD_TYPE,
-		PERIOD_START,
-		PERIOD_END,
-		SUMMARY,
-		CREATED_AT
+			ID,
+			PROJECT_ID,
+			AUTHOR_USER_ID,
+			PERIOD_TYPE,
+			PERIOD_START,
+			PERIOD_END,
+			SUMMARY,
+			CREATED_AT,
+			ISSUE
 		)
 		VALUES(
 		SEQ_TF_REPORT_PK.nextval,
@@ -49,7 +60,8 @@
 		#{periodStart},
 		#{periodEnd},
 		#{summary},
-		#{createdAt}
+		SYSDATE,
+		#{issue}
 		)
 	</insert>
 

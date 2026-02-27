@@ -30,3 +30,38 @@
 		btn.addEventListener('click', () => toast(btn.getAttribute('data-action') + ' (데모)'));
 	});
 })();
+
+document
+.addEventListener(
+	'DOMContentLoaded',
+	function() {
+		var calendarEl = document
+			.getElementById('google-calendar');
+
+		var calendar = new FullCalendar.Calendar(
+			calendarEl,
+			{
+				initialView: 'dayGridMonth', // 월간 보기
+				locale: 'ko', // 한국어 설정
+				headerToolbar: {
+					left: 'prev,next',
+					center: 'title',
+					right: 'today'
+				},
+				height: 450, // 카드 크기에 맞춰 조절
+
+				// 핵심: 우리가 만든 Spring Controller 주소에서 데이터를 가져옵니다.
+				events: window.contextPath + 'api/calendar/events',
+				eventClick: function(info) {
+					alert('일정: ' + info.event.title);
+				},
+				eventColor: '#4285F4', // 구글 브랜드 색상
+				loading: function(isLoading) {
+					if (isLoading) {
+						console.log("구글 일정 로딩 중...");
+					}
+				}
+			});
+
+		calendar.render();
+	});

@@ -333,3 +333,39 @@ hr.line {
 	color: #1e3a8a;
 	font-size: 13px
 }
+.card-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+/* 생성 버튼 스타일 */
+.btn-create{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:8px 14px;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:600;
+  background:linear-gradient(135deg, #2563eb, #1d4ed8);
+  color:#fff;
+  text-decoration:none;
+  box-shadow:0 6px 16px rgba(37,99,235,.25);
+  transition:all .2s ease;
+}
+
+/* 아이콘 살짝 강조 */
+.btn-create .icon{
+  font-size:16px;
+  font-weight:900;
+}
+
+
+/* 호버 효과 */
+.btn-create:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 20px rgba(37,99,235,.35);
+  filter:brightness(1.05);
+}
+

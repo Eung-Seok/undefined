@@ -1,23 +1,22 @@
 package com.app.dto.task;
 
+import java.sql.Date;
+
 import lombok.Data;
 
 @Data
 public class Task {
 	int id;
 	int projectId;
+	int ownerUserId;
 	Integer parentTaskId;
 	String name;
 	String description;
 	String status;
 	String priority;
-	String startDate;
-	String dueDate;
+	Date startDate;
+	Date dueDate;
 	Integer progressPercent;
-	String createdAt;
-	String updatedAt;
-	int weight;
-	// SQL에서 계산된 값 매핑용
-    Double weightedProgress;
-
+	Date createdAt;
+	Date updatedAt;
 }

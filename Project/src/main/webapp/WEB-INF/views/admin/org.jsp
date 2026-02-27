@@ -1,72 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%
-if (session.getAttribute("loginUser") == null) {
-	java.util.Map<String, Object> u = new java.util.HashMap<>();
-	u.put("name", "홍길동");
-	u.put("position", "사원");
-	u.put("role", "MEMBER");
-	session.setAttribute("loginUser", u);
-}
-%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>조직도 관리</title>
-
-<link rel="stylesheet" href="/css/admin/org.css">
+<link rel="stylesheet"
+      href="<%=request.getContextPath()%>/css/admin/org.css?v=<%=System.currentTimeMillis()%>">
+      <link rel="stylesheet" href="/css/common/sidebar.css">
 </head>
-
 <body>
 	<div class="app">
-		<aside class="sidebar">
-			<div class="brand">
-				<div class="logo">P</div>
-				<div>
-					<div class="brand-title">프로젝트 통합 일정/업무 관리</div>
-					<div class="brand-sub">Project Scheduler · JSP Demo UI</div>
-				</div>
-			</div>
-
-			<div class="profile">
-				<div class="avatar">👤</div>
-				<div>
-					<div class="profile-name">
-						<c:out value="${sessionScope.loginUser.name}" />
-					</div>
-					<div class="profile-role">
-						<c:out value="${sessionScope.loginUser.position}" />
-					</div>
-				</div>
-			</div>
-
-			<div class="nav">
-				<div class="section">Main</div>
-				<a class="" href="${pageContext.request.contextPath}/dashboard"><span>🏠</span>대시보드</a>
-				<a class="" href="${pageContext.request.contextPath}/projects"><span>📁</span>프로젝트</a>
-				<a class="" href="${pageContext.request.contextPath}/calendar"><span>🗓️</span>일정</a>
-				<a class="" href="${pageContext.request.contextPath}/board"><span>📝</span>게시판</a>
-				<a class="" href="${pageContext.request.contextPath}/employees"><span>👥</span>직원정보</a>
-				<a class="active" href="${pageContext.request.contextPath}/mypage"><span>⚙️</span>마이페이지</a>
-
-				<div class="section">Admin</div>
-				<a data-requires="ADMIN"
-					href="${pageContext.request.contextPath}/admin/users">👮 사용자 관리</a>
-				<a data-requires="ADMIN"
-					href="${pageContext.request.contextPath}/admin/roles">🔐 권한 관리</a>
-				<a data-requires="ADMIN"
-					href="${pageContext.request.contextPath}/admin/org">🏢 조직도 관리</a> <a
-					data-requires="ADMIN"
-					href="${pageContext.request.contextPath}/admin/system">🧰 시스템</a>
-			</div>
-
-			<hr class="line">
-			<div class="small">※ 데모 UI: 권한별 숨김은 프론트 처리입니다(보안X)</div>
-		</aside>
-
+		<jsp:include page="/WEB-INF/views/common/sidebar.jsp">
+			<jsp:param name="activeMenu" value="adminOrg" />
+		</jsp:include>
 		<main class="main">
 			<div class="topbar">
 				<div class="search">
@@ -79,14 +28,39 @@ if (session.getAttribute("loginUser") == null) {
 			</div>
 
 			<div class="card">
-				<h3>조직도 관리</h3>
-				<div class="small">ADMIN 전용(데모)</div>
-				<div style="height: 12px"></div>
-				<div class="notice">조직도/팀 관리 UI는 다음 단계에서 트리 형태로 구현하세요.</div>
-			</div>
+				<div class="admin-org-wrap">
+					<div class="admin-org-header">
+						<div class="admin-org-title">조직도(부서/직원)</div>
+						<div class="admin-org-actions">
+							<input id="adminOrgSearch" class="admin-org-input"
+								placeholder="부서/직원 검색 (예: 개발부, 김부장)" />
+							<button id="adminOrgReload" class="admin-org-btn" type="button">새로고침</button>
+							<button id="adminOrgCollapseAll" class="admin-org-btn"
+								type="button">전체 접기</button>
+							<button id="adminOrgExpandAll" class="admin-org-btn"
+								type="button">전체 펼치기</button>
+						</div>
+					</div>
 
+					<div class="admin-org-card">
+						<div class="admin-org-toolbar">
+							<div>
+								데이터: <span id="adminOrgStatus">로딩중…</span>
+							</div>
+						</div>
+						<div id="adminOrgRoot" class="admin-org-tree">
+							<!-- Rendered Here -->
+						</div>
+					</div>
+				</div>
+			</div>
 		</main>
 	</div>
-	<script src="/js/admin/org.js"></script>
+	<script>
+  		window.APP_CTX = "<%=request.getContextPath()%>";
+	</script>
+	<script defer
+        src="<%=request.getContextPath()%>/js/admin/org.js?v=<%=System.currentTimeMillis()%>"></script>
+
 </body>
 </html>

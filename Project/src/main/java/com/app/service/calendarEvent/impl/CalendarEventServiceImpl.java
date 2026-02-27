@@ -28,8 +28,8 @@ public class CalendarEventServiceImpl implements CalendarEventService{
 	}
 
 	@Override
-	public CalendarEvent findCalendarEventById(int id) {
-		CalendarEvent calendarEvent = calendarEventDao.findCalendarEventById(id);
+	public CalendarEvent findCalendarEventByEId(String eId) {
+		CalendarEvent calendarEvent = calendarEventDao.findCalendarEventByEId(eId);
 		return calendarEvent;
 	}
 
@@ -49,4 +49,9 @@ public class CalendarEventServiceImpl implements CalendarEventService{
 	    return calendarEventDao.findWeekCalendarEvents(userId);
 	}
 
+	@Override
+	public int upsertCalendarEvent(CalendarEvent calendarEvent) {
+		int result = calendarEventDao.upsertCalendarEvent(calendarEvent);
+		return result;
+	}
 }

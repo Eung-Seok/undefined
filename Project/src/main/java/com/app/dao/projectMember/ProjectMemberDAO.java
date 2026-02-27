@@ -1,12 +1,15 @@
 package com.app.dao.projectMember;
 
 import java.util.List;
+import java.util.Map;
 
 import com.app.dto.projectMember.ProjectMember;
 
 public interface ProjectMemberDAO {
 	List<ProjectMember> findProjectMemberList();
-	
+
+	List<ProjectMember> findProjectMemberListByProjectId(int projectId);
+
 	int saveProjectMember(ProjectMember projectMember);
 
 	ProjectMember findProjectMemberById(int id);
@@ -14,4 +17,10 @@ public interface ProjectMemberDAO {
 	int removeProjectMember(int id);
 
 	int modifyProjectMember(ProjectMember projectMember);
+
+	int insertMembersBulkIgnoreDuplicate(int projectId, List<Map<String, Object>> rows);
+	
+	int removeProjectMemberByProjectIdAndUserId(Long projectId, Long empno);
+	
+	 int updateMemberRole(int projectId, int empno, String projectRole);
 }

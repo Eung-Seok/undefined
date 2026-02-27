@@ -1,16 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%
-// Demo session user (Map) - replace with real login later
-if (session.getAttribute("loginUser") == null) {
-	java.util.Map<String, Object> u = new java.util.HashMap<>();
-	u.put("name", "홍길동");
-	u.put("position", "사원");
-	u.put("role", "MEMBER"); // ADMIN / PM / MEMBER / VIEWER
-	session.setAttribute("loginUser", u);
-}
-%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -20,9 +10,14 @@ if (session.getAttribute("loginUser") == null) {
 <style>
 </style>
 <link rel="stylesheet" href="/css/project/tasks.css">
+<link rel="stylesheet" href="/css/common/sidebar.css">
 </head>
 <body>
 	<div class="app">
+		<c:set var="role" value="${sessionScope.loginUserRole}" />
+		<c:set var="canManageMembers"
+			value="${role == 'ADMIN' || role == 'PM'}" />
+		<c:set var="notManageMembers" value="${role == 'MEMBER'}" />
 		<jsp:include page="/WEB-INF/views/common/sidebar.jsp">
 			<jsp:param name="activeMenu" value="projects" />
 		</jsp:include>
@@ -40,32 +35,39 @@ if (session.getAttribute("loginUser") == null) {
 
 			<div class="tabs">
 				<a class="tab"
-					href="${pageContext.request.contextPath}/project/overview">개요</a><a
-					class="tab active"
-					href="${pageContext.request.contextPath}/project/tasks">업무</a><a
+					href="${pageContext.request.contextPath}/project/overview?projectId=${project.id}">
+					개요 </a> <a class="tab active"
+					href="${pageContext.request.contextPath}/project/tasks?projectId=${project.id}">업무</a><a
 					class="tab"
-					href="${pageContext.request.contextPath}/project/calendar">프로젝트
+					href="${pageContext.request.contextPath}/project/calendar?projectId=${project.id}">프로젝트
 					캘린더</a><a class="tab"
-					href="${pageContext.request.contextPath}/project/wbs">WBS</a><a
+					href="${pageContext.request.contextPath}/project/docs?projectId=${project.id}">문서</a><a
 					class="tab"
-					href="${pageContext.request.contextPath}/project/issues">이슈</a><a
-					class="tab" href="${pageContext.request.contextPath}/project/docs">문서</a><a
+					href="${pageContext.request.contextPath}/project/members?projectId=${project.id}">참여자</a
+					><a class="tab"
+					href="${pageContext.request.contextPath}/project/report?projectId=${project.id}">보고서</a>
+					<c:if test="${canManageMembers}"><a
 					class="tab"
-					href="${pageContext.request.contextPath}/project/members">참여자</a><a
-					class="tab"
-					href="${pageContext.request.contextPath}/project/settings">설정</a>
+					href="${pageContext.request.contextPath}/project/settings?projectId=${project.id}">설정</a></c:if>
 			</div>
 
 
 			<div class="card">
-				<h3>업무(Task)</h3>
-				<div class="small">업무는 프로젝트 내부에 포함됩니다(요구사항 반영)</div>
-				<div style="height: 12px"></div>
+
 				<div
 					style="display: flex; gap: 10px; justify-content: space-between; align-items: center">
-					<div class="small">총 6건</div>
-					<button class="btn primary" data-requires="PM,ADMIN"
-						data-action="업무 생성">업무 생성</button>
+
+					<div>
+						<h3>업무(Task)</h3>
+						<span class="small">총 <c:if test="${canManageMembers}">${taskNum}</c:if>
+							<c:if test="${notManageMembers}">${userTaskNum}</c:if> 건
+						</span>
+					</div>
+					<c:if test="${canManageMembers}">
+						<a class="btn primary"
+							href="${pageContext.request.contextPath}/project/tasks/add?projectId=${project.id}">업무
+							생성</a>
+					</c:if>
 				</div>
 				<div style="height: 12px"></div>
 				<table class="table">
@@ -74,28 +76,64 @@ if (session.getAttribute("loginUser") == null) {
 							<th>업무</th>
 							<th>담당</th>
 							<th>상태</th>
-							<th>마감</th>
+							<th>중요도</th>
+							<th>기간</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>요구사항 정리</td>
-							<td>홍길동</td>
-							<td><span class="badge good">진행중</span></td>
-							<td>2/13</td>
-						</tr>
-						<tr>
-							<td>WBS 초안 작성</td>
-							<td>김PM</td>
-							<td><span class="badge warn">대기</span></td>
-							<td>2/15</td>
-						</tr>
-						<tr>
-							<td>디자인 리뷰</td>
-							<td>디자이너</td>
-							<td><span class="badge">완료</span></td>
-							<td>2/11</td>
-						</tr>
+						<c:if test="${notManageMembers}">
+							<c:forEach var="task" items="${userTaskList}">
+								<tr class="clickable-row"
+    onclick="location.href='${pageContext.request.contextPath}/project/tasks/view?projectId=${project.id}&taskId=${task.id}'">
+									<td>${task.name}</td>
+									<td>${userName[task.ownerUserId] }</td>
+									<td><span
+										class="badge ${task.status == 'READY' ? 'ready' : 
+          task.status == 'PROGRESS' ? 'progress' : 
+          task.status == 'DONE' ? 'done' : ''}">
+											${task.status == 'READY' ? '대기' : 
+          task.status == 'PROGRESS' ? '진행중' : 
+          task.status == 'DONE' ? '완료' : ''}</span></td>
+									<td><span
+										class="badge 
+    ${task.priority == 'HIGHT' ? 'high' :
+      task.priority == 'MEDIUMN' ? 'medium' :
+      task.priority == 'LOW' ? 'low' : ''}">
+
+											${task.priority == 'HIGHT' ? '상' :
+      task.priority == 'MEDIUMN' ? '중' :
+      task.priority == 'LOW' ? '하' : task.priority}
+									</span></td>
+									<td>${task.startDate}~${task.dueDate}</td>
+								</tr>
+							</c:forEach>
+						</c:if>
+						<c:if test="${canManageMembers}">
+							<c:forEach var="task" items="${taskList}">
+								<tr class="clickable-row"
+    onclick="location.href='${pageContext.request.contextPath}/project/tasks/view?projectId=${project.id}&taskId=${task.id}'">
+									<td>${task.name}</td>
+									<td>${userName[task.ownerUserId] }</td>
+									<td><span
+										class="badge ${task.status == 'READY' ? 'ready' : 
+          task.status == 'PROGRESS' ? 'progress' : 
+          task.status == 'DONE' ? 'done' : ''}">${task.status == 'READY' ? '대기' : 
+          task.status == 'PROGRESS' ? '진행중' : 
+          task.status == 'DONE' ? '완료' : ''}</span></td>
+									<td><span
+										class="badge 
+    ${task.priority == 'HIGHT' ? 'high' :
+      task.priority == 'MEDIUMN' ? 'medium' :
+      task.priority == 'LOW' ? 'low' : ''}">
+
+											${task.priority == 'HIGHT' ? '상' :
+      task.priority == 'MEDIUMN' ? '중' :
+      task.priority == 'LOW' ? '하' : task.priority}
+									</span></td>
+									<td>${task.startDate}~${task.dueDate}</td>
+								</tr>
+							</c:forEach>
+						</c:if>
 					</tbody>
 				</table>
 			</div>

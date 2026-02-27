@@ -11,6 +11,7 @@
 
 	<typeAliases>
 		<typeAlias type="com.app.dto.user.User" alias="User" />
+		<typeAlias type="com.app.dto.user.AdminUserUpdate" alias="AdminUserUpdate" />
 		<typeAlias type="com.app.dto.userRole.UserRole" alias="UserRole" />
 		<typeAlias type="com.app.dto.taskStatusHistory.TaskStatusHistory" alias="TaskStatusHistory" />
 		<typeAlias type="com.app.dto.taskAssignee.TaskAssignee" alias="TaskAssignee" />

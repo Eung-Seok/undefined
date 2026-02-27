@@ -9,7 +9,7 @@ public interface CalendarEventDAO {
 
 	int saveCalendarEvent(CalendarEvent calendarEvent);
 
-	CalendarEvent findCalendarEventById(int id);
+	CalendarEvent findCalendarEventByEId(String eId);
 
 	int removeCalendarEvent(int id);
 
@@ -17,4 +17,6 @@ public interface CalendarEventDAO {
 	// ✅ 주간 일정 조회 추가
     List<CalendarEvent> findWeekCalendarEvents(int userId);
 
+	
+	int upsertCalendarEvent(CalendarEvent calendarEvent);
 }

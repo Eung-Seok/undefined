@@ -16,6 +16,12 @@
 		WHERE id = #{id}
 	</select>
 	
+	<select id="findUserRoleByUserId" resultType="UserRole" parameterType="int">
+		SELECT *
+		FROM TF_USER_ROLE
+		WHERE user_id = #{userId}
+	</select>
+	
 	
 	<insert id="saveUserRole" parameterType="UserRole">
 		INSERT INTO TF_USER_ROLE(
@@ -29,6 +35,21 @@
 		#{userId},
 		#{roleId},
 		#{createdAt}
+		 )
+	</insert>
+	
+	<insert id="createUserRole" parameterType="AdminUserUpdate">
+		INSERT INTO TF_USER_ROLE(
+			ID,
+			USER_ID,
+			ROLE_ID,
+			CREATED_AT
+		)
+		 VALUES(
+		SEQ_TF_USER_ROLE_PK.nextval,
+		#{empno},
+		3,
+		sysdate
 		 )
 	</insert>
 
@@ -45,6 +66,13 @@
 		ROLE_ID = #{roleId},
 		CREATED_AT = #{createdAt}
 		WHERE ID = #{id}
+	</update>
+	
+	<update id="adminUserRoleUpdate" parameterType="AdminUserUpdate">
+		UPDATE TF_USER_ROLE
+		SET
+		ROLE_ID = (Select ID FROM TF_ROLE WHERE NAME = #{role})
+		WHERE USER_ID = #{empno}
 	</update>
 	
 </mapper>		  

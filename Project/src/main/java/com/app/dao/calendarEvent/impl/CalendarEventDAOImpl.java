@@ -28,8 +28,8 @@ public class CalendarEventDAOImpl implements CalendarEventDAO {
 	}
 
 	@Override
-	public CalendarEvent findCalendarEventById(int id) {
-		CalendarEvent calendarEvent = sqlSessionTemplate.selectOne("calendarEvent_mapper.findCalendarEventById", id);
+	public CalendarEvent findCalendarEventByEId(String eId) {
+		CalendarEvent calendarEvent = sqlSessionTemplate.selectOne("calendarEvent_mapper.findCalendarEventByEId", eId);
 		return calendarEvent;
 	}
 
@@ -49,4 +49,12 @@ public class CalendarEventDAOImpl implements CalendarEventDAO {
 	    return sqlSessionTemplate.selectList("calendarEvent_mapper.findWeekCalendarEvents", userId);
 	}
 
+
+
+	@Override
+	public int upsertCalendarEvent(CalendarEvent calendarEvent) {
+		int result = sqlSessionTemplate.update("calendarEvent_mapper.upsertCalendarEvent", calendarEvent);
+		return result;
+	}
+	
 }

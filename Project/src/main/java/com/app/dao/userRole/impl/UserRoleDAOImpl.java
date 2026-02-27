@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.app.dao.user.UserDAO;
 import com.app.dao.userRole.UserRoleDAO;
+import com.app.dto.user.AdminUserUpdate;
 import com.app.dto.userRole.UserRole;
 
 @Repository
@@ -43,6 +44,24 @@ public class UserRoleDAOImpl implements UserRoleDAO {
 	@Override
 	public int modifyUserRole(UserRole userRole) {
 		int result = sqlSessionTemplate.update("userRole_mapper.modifyUserRole", userRole);
+		return result;
+	}
+
+	@Override
+	public UserRole findUserRoleByUserId(int userId) {
+		UserRole userRole = sqlSessionTemplate.selectOne("userRole_mapper.findUserRoleByUserId", userId);
+		return userRole;
+	}
+
+	@Override
+	public int adminUserRoleUpdate(AdminUserUpdate adminUserUpdate) {
+		int result = sqlSessionTemplate.update("userRole_mapper.adminUserRoleUpdate", adminUserUpdate);
+		return result;
+	}
+
+	@Override
+	public int adminUserRoleCreate(AdminUserUpdate adminUserUpdate) {
+		int result = sqlSessionTemplate.insert("userRole_mapper.createUserRole", adminUserUpdate);
 		return result;
 	}
 	
