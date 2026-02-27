@@ -15,21 +15,43 @@
 		WHERE id = #{id}
 
 	</select>
-	<!--오늘 할일  -->
+	<!-- 오늘 내가 해야 할 일 조회 (가중치 포함) --> 
 	<select id="findTodayTaskByUser"
 		resultType="com.app.dto.task.Task">
-
 		SELECT
 		t.*,
-		p.NAME AS projectName
+		p.NAME AS projectName,
+		
+		(t.PROGRESS_PERCENT * t.WEIGHT) AS weightedProgress
 		FROM TF_TASK t
-		JOIN TF_TASK_ASSIGNEE ta ON t.ID = ta.TASK_ID
-		JOIN TF_PROJECT p ON t.PROJECT_ID = p.ID
+		JOIN
+		TF_TASK_ASSIGNEE ta ON t.ID = ta.TASK_ID
+		JOIN TF_PROJECT p ON
+		t.PROJECT_ID = p.ID
 		WHERE ta.USER_ID = #{empno}
-		AND TRUNC(t.DUE_DATE) = TRUNC(SYSDATE)
-		ORDER BY t.PRIORITY DESC, t.DUE_DATE ASC
-
+		AND (
+		TRUNC(t.DUE_DATE) =
+		TRUNC(SYSDATE) 
+		OR TRUNC(t.START_DATE) = TRUNC(SYSDATE) 
+		OR t.STATUS IN ('TODO','ONGOING') 
+		)
+		ORDER BY
+		t.PRIORITY DESC, t.DUE_DATE ASC
 	</select>
+	<!-- 프로젝트 전체 공정율 계산 -->
+	<select id="calculateProjectProgress" resultType="double"
+		parameterType="int">
+		SELECT
+		CASE
+		WHEN SUM(WEIGHT) = 0 THEN 0
+		ELSE
+		SUM(PROGRESS_PERCENT * WEIGHT) / SUM(WEIGHT)
+		END AS PROJECT_PROGRESS
+		FROM TF_TASK
+		WHERE PROJECT_ID = #{projectId}
+	</select>
+
+
 
 	<insert id="saveTask" parameterType="Task">
 		INSERT INTO TF_TASK(
@@ -86,5 +108,37 @@
 		UPDATED_AT = #{updatedAt}
 		WHERE ID = #{id}
 	</update>
+	<update id="updateStatus">
+		UPDATE TF_TASK
+		SET status = #{status}
+		WHERE id =
+		#{taskId}
+	</update>
+	<update id="completeTask" parameterType="int">
+		UPDATE TF_TASK
+		SET STATUS
+		= 'DONE',
+		PROGRESS_PERCENT = 100,
+		UPDATED_AT = SYSDATE
+		WHERE ID =
+		#{taskId}
+	</update>
+	<update id="updateProjectProgress" parameterType="map">
+		UPDATE TF_PROJECT
+		SET PROGRESS =
+		CASE
+		WHEN (SELECT SUM(WEIGHT) FROM TF_TASK WHERE PROJECT_ID = #{projectId}) = 0
+		THEN 0
+		ELSE (
+		SELECT SUM(PROGRESS_PERCENT * WEIGHT) / SUM(WEIGHT)
+		FROM TF_TASK
+		WHERE PROJECT_ID = #{projectId}
+		)
+		END,
+		UPDATED_AT = SYSDATE
+		WHERE ID = #{projectId}
+	</update>
+
+
 
 </mapper>

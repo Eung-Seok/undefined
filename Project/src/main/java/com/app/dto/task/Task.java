@@ -16,4 +16,8 @@ public class Task {
 	Integer progressPercent;
 	String createdAt;
 	String updatedAt;
+	int weight;
+	// SQL에서 계산된 값 매핑용
+    Double weightedProgress;
+
 }

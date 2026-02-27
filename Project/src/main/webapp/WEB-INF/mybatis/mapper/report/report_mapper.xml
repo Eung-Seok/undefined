@@ -3,28 +3,43 @@
 		   "-//mybatis.org//DTD Mapper 3.0//EN" 
 		   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="report_mapper">
-	
+
 	<select id="findReportList" resultType="Report">
 		SELECT *
 		FROM TF_REPORT
 	</select>
-	
-	<select id="findReportById" resultType="Report" parameterType="int">
+
+	<select id="findReportById" resultType="Report"
+		parameterType="int">
 		SELECT *
 		FROM TF_REPORT
 		WHERE id = #{id}
 	</select>
 
+	<!--주간 공정율 -->
+	<select id="calculateTodayProgress" resultType="double" parameterType="int">
+    SELECT 
+        CASE 
+            WHEN SUM(t.WEIGHT) = 0 THEN 0
+            ELSE SUM(t.PROGRESS_PERCENT * t.WEIGHT) / SUM(t.WEIGHT)
+        END AS TODAY_PROGRESS
+    FROM TF_TASK t
+    JOIN TF_TASK_ASSIGNEE ta ON t.ID = ta.TASK_ID
+    WHERE ta.USER_ID = #{userId}
+      AND TRUNC(t.START_DATE) = TRUNC(SYSDATE)
+</select>
+
+
 	<insert id="saveReport" parameterType="Report">
 		INSERT INTO TF_REPORT(
-			ID,
-			PROJECT_ID,
-			AUTHOR_USER_ID,
-			PERIOD_TYPE,
-			PERIOD_START,
-			PERIOD_END,
-			SUMMARY,
-			CREATED_AT
+		ID,
+		PROJECT_ID,
+		AUTHOR_USER_ID,
+		PERIOD_TYPE,
+		PERIOD_START,
+		PERIOD_END,
+		SUMMARY,
+		CREATED_AT
 		)
 		VALUES(
 		SEQ_TF_REPORT_PK.nextval,
@@ -37,7 +52,7 @@
 		#{createdAt}
 		)
 	</insert>
-	
+
 	<delete id="removeReport" parameterType="int">
 		DELETE FROM TF_REPORT
 		WHERE
@@ -51,10 +66,12 @@
 		AUTHOR_USER_ID = #{authorUserId},
 		PERIOD_TYPE = #{periodType},
 		PERIOD_START = #{periodStart},
-		PERIOD_END = #{periodEnd},
+		PERIOD_END =
+		#{periodEnd},
 		SUMMARY = #{summary},
 		CREATED_AT = #{createdAt}
-		WHERE ID = #{id}
+		WHERE ID =
+		#{id}
 	</update>
-	
+
 </mapper>

@@ -14,7 +14,7 @@ public class ReportServiceImpl implements ReportService{
 
 	@Autowired
 	ReportDAO reportDao;
-
+	
 	@Override
 	public List<Report> findReportList() {
 		List<Report> reportList = reportDao.findReportList();
@@ -44,4 +44,10 @@ public class ReportServiceImpl implements ReportService{
 		int result = reportDao.modifyReport(report);
 		return result;
 	}
+	  @Override
+	    public double calculateWeeklyProgress(int userId) {
+	        return reportDao.calculateWeeklyProgress(userId); // ✅ reportDao로 통일
+	    }
+
+
 }

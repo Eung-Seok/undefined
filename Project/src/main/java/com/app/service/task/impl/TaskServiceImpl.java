@@ -15,7 +15,7 @@ public class TaskServiceImpl implements TaskService{
 
 	@Autowired
 	TaskDAO taskDao;
-
+	
 	@Override
 	public List<Task> findTaskList() {
 		List<Task> taskList = taskDao.findTaskList();
@@ -51,4 +51,26 @@ public class TaskServiceImpl implements TaskService{
         return taskDao.findTodayTaskByUser(empno);
         
     }
+	// 오늘 할 일 상태 업데이트
+	 @Override
+	    public int updateTaskStatus(int taskId, String status) {
+	        return taskDao.updateTaskStatus(taskId, status);
+	    }
+	 //프로젝트 공정율 계산
+	 @Override
+	    public double calculateProjectProgress(int projectId) {
+	        return taskDao.calculateProjectProgress(projectId);
+	    }
+
+	 @Override
+	 public void completeTask(int taskId) {
+	     taskDao.completeTask(taskId);
+	 }
+
+	 @Override
+	 public int updateProjectProgress(int projectId) {
+	     return taskDao.updateProjectProgress(projectId);
+	 }
+
+
 }

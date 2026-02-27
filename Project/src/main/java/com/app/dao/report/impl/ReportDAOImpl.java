@@ -14,6 +14,7 @@ public class ReportDAOImpl implements ReportDAO {
 	
 	@Autowired
 	SqlSessionTemplate sqlSessionTemplate;
+	private static final String NAMESPACE = "report_mapper.";
 
 	@Override
 	public List<Report> findReportList() {
@@ -44,5 +45,9 @@ public class ReportDAOImpl implements ReportDAO {
 		int result = sqlSessionTemplate.update("report_mapper.modifyReport", report);
 		return result;
 	}
-	
+	 @Override
+	    public double calculateWeeklyProgress(int userId) {
+	        return sqlSessionTemplate.selectOne(NAMESPACE + "calculateWeeklyProgress", userId);
+	    }
+
 }

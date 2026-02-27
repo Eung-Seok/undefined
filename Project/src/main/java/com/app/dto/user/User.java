@@ -14,4 +14,6 @@ public class User {
 	String startedAt;
 	String createdAt;
 	String updatedAt;
+	 // 권한 필드 추가
+    String role;
 }

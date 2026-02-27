@@ -1,6 +1,8 @@
 package com.app.dao.task.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,5 +51,27 @@ public class TaskDAOImpl implements TaskDAO {
 	public List<Task> findTodayTaskByUser(int empno) {
 	    return sqlSessionTemplate.selectList("task_mapper.findTodayTaskByUser", empno);
 	}
-	
+	@Override
+	public int updateTaskStatus(int taskId, String status) {
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("taskId", taskId);
+	    params.put("status", status);
+	    return sqlSessionTemplate.update("task_mapper.updateStatus", params);
+	}
+	@Override
+    public double calculateProjectProgress(int projectId) {
+        return sqlSessionTemplate.selectOne("task_mapper.calculateProjectProgress", projectId);
+    }
+	 @Override
+	    public void completeTask(int taskId) {
+	        sqlSessionTemplate.update("task_mapper.completeTask", taskId);
+	    }
+
+	 @Override
+	 public int updateProjectProgress(int projectId) {
+	     return sqlSessionTemplate.update("task_mapper.updateProjectProgress", projectId);
+	 }
+	 
+
+
 }

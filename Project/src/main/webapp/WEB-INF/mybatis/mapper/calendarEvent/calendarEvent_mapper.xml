@@ -14,7 +14,7 @@
 		FROM TF_CALENDAR_EVENT
 		WHERE id = #{id}
 	</select>
-
+	
 	<insert id="saveCalendarEvent" parameterType="CalendarEvent">
 		INSERT INTO TF_CALENDAR_EVENT(
 			ID,
@@ -62,5 +62,15 @@
 		UPDATED_AT = #{updatedAt}
 		WHERE ID = #{id}
 	</update>
+	<!-- ✅ 주간 일정 조회 -->
+    <select id="findWeekCalendarEvents" resultType="CalendarEvent" parameterType="int">
+        SELECT *
+        FROM TF_CALENDAR_EVENT
+        WHERE USER_ID = #{userId}
+          AND START_DATE &gt;= TRUNC(SYSDATE, 'IW')
+          AND END_DATE &lt;= TRUNC(SYSDATE, 'IW') + 6
+        ORDER BY START_DATE
+    </select>
+	
 	
 </mapper>

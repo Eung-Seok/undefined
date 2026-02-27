@@ -13,4 +13,6 @@ public class Project {
 	String status;
 	String createdAt;
 	String updatedAt;
+	Double progress;
+
 }

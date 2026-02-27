@@ -40,8 +40,13 @@ public class CalendarEventServiceImpl implements CalendarEventService{
 	}
 
 	@Override
-	public int modifyCalendarEvent(CalendarEvent calendarEvent) {
-		int result = calendarEventDao.modifyCalendarEvent(calendarEvent);
-		return result;
+    public int modifyCalendarEvent(CalendarEvent calendarEvent) {
+        return calendarEventDao.modifyCalendarEvent(calendarEvent);
+    }
+
+	@Override
+	public List<CalendarEvent> getWeekCalendarEvents(int userId) {
+	    return calendarEventDao.findWeekCalendarEvents(userId);
 	}
+
 }
