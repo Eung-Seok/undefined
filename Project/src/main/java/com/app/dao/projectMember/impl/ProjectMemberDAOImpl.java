@@ -89,5 +89,11 @@ public class ProjectMemberDAOImpl implements ProjectMemberDAO {
 		return result;
 	}
 
+	@Override
+	public int removeProjectMemberByProjectId(int projectId) {
+		int result = sqlSessionTemplate.delete("projectMember_mapper.removeProjectMemberByProjectId", projectId);
+		return result;
+	}
+
 
 }

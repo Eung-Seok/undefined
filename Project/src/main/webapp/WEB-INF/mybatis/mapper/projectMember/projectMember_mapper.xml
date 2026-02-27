@@ -81,6 +81,13 @@
 		ID = #{id}
 	</delete>
 	
+	<delete id="removeProjectMemberByProjectId" parameterType="int">
+		DELETE FROM
+		TF_PROJECT_MEMBER
+		WHERE
+		Project_ID = #{projectId}
+	</delete>
+	
 	<delete id="removeProjectMemberByProjectIdAndUserId" parameterType="map" >
 		DELETE FROM
 		TF_PROJECT_MEMBER

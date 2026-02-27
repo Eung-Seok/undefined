@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const $root = document.getElementById('adminOrgRoot');
   const $status = document.getElementById('adminOrgStatus');
   const $search = document.getElementById('adminOrgSearch');
+  const $totalUsers = document.getElementById('adminOrgTotalUsers');
 
   const $apiLabel = document.getElementById('adminOrgApiLabel');
   const $reload = document.getElementById('adminOrgReload');
@@ -16,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const $expandAll = document.getElementById('adminOrgExpandAll');
 
   // DOM 요소 없으면 조용히 중단(레이아웃/페이지 혼용 대비)
-  if (!$root || !$status || !$search || !$reload || !$collapseAll || !$expandAll) {
+  if (!$root || !$status || !$search || !$reload || !$collapseAll || !$expandAll || !$totalUsers) {
     console.error('[ORG] required DOM not found');
     return;
   }
@@ -43,10 +44,14 @@ document.addEventListener('DOMContentLoaded', () => {
       for (const n of adminOrg.data) adminOrg.expanded.add(n.id);
 
       $status.textContent = '정상';
+	  const total = countTotalUsersUnique(adminOrg.data);
+	  $totalUsers.textContent = String(total);
+	  
       render();
     } catch (e) {
       console.error('[ORG] loadOrg error', e);
       $status.textContent = '오류';
+	  $totalUsers.textContent = '0';
       $root.innerHTML = '<div class="admin-org-error">조직도 로딩 실패: ' + escapeHtml(String(e)) + '</div>';
     }
   }
@@ -62,6 +67,17 @@ document.addEventListener('DOMContentLoaded', () => {
       fn(n);
       if (n.children && n.children.length) walk(n.children, fn);
     }
+  }
+  
+  function countTotalUsersUnique(nodes) {
+    const set = new Set();
+    walk(nodes, (n) => {
+      for (const u of (n.users || [])) {
+        const empno = (u.empno != null) ? u.empno : u.EMPNO;
+        if (empno != null) set.add(String(empno));
+      }
+    });
+    return set.size;
   }
 
   function render() {
@@ -144,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const deptMeta = document.createElement('div');
     deptMeta.className = 'admin-org-dept-meta';
-    deptMeta.textContent = 'DEPTNO ' + deptno + ' · ID ' + nodeId;
+    deptMeta.textContent = 'DEPTNO ' + deptno;
 
     deptBox.appendChild(deptName);
     deptBox.appendChild(deptMeta);

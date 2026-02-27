@@ -25,3 +25,34 @@
 		btn.addEventListener('click', () => toast(btn.getAttribute('data-action') + ' (데모)'));
 	});
 })();
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const startDate = document.getElementById("startDate");
+    const endDate = document.getElementById("endDate");
+
+    // 시작일 선택 시 → 종료일 최소값 제한
+    startDate.addEventListener("change", function () {
+        if (startDate.value) {
+            endDate.min = startDate.value;
+
+            // 이미 선택된 종료일이 시작일보다 이전이면 초기화
+            if (endDate.value && endDate.value < startDate.value) {
+                endDate.value = "";
+            }
+        }
+    });
+
+    // 종료일 선택 시 → 시작일 최대값 제한
+    endDate.addEventListener("change", function () {
+        if (endDate.value) {
+            startDate.max = endDate.value;
+
+            // 이미 선택된 시작일이 종료일보다 이후이면 초기화
+            if (startDate.value && startDate.value > endDate.value) {
+                startDate.value = "";
+            }
+        }
+    });
+
+});

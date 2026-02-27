@@ -44,8 +44,12 @@
 
 					<div class="admin-org-card">
 						<div class="admin-org-toolbar">
-							<div>
+							<div class="admin-org-toolbar-left">
 								데이터: <span id="adminOrgStatus">로딩중…</span>
+							</div>
+
+							<div class="admin-org-toolbar-right">
+								총원: <span id="adminOrgTotalUsers">0</span>명
 							</div>
 						</div>
 						<div id="adminOrgRoot" class="admin-org-tree">

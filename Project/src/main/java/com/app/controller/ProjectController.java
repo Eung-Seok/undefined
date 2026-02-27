@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.app.dto.department.Department;
 import com.app.dto.project.Project;
 import com.app.dto.projectMember.ProjectMember;
 import com.app.dto.report.Report;
@@ -24,6 +25,7 @@ import com.app.dto.taskAssignee.TaskAssignee;
 import com.app.dto.user.User;
 import com.app.service.board.BoardService;
 import com.app.service.comment.CommentService;
+import com.app.service.department.DepartmentService;
 import com.app.service.notification.NotificationService;
 import com.app.service.project.ProjectService;
 import com.app.service.projectMember.ProjectMemberService;
@@ -54,6 +56,8 @@ public class ProjectController {
 	TaskService taskService;
 	@Autowired
 	TaskAssigneeService taskAssigneeService;
+	@Autowired
+	DepartmentService departmentService;
 
 	@GetMapping("/report")
 	public String list(@RequestParam("projectId") int projectId, HttpSession session, Model model) {
@@ -427,8 +431,43 @@ public class ProjectController {
 	@GetMapping("/settings")
 	public String settings(@RequestParam("projectId") int projectId, Model model) {
 		Project project = projectService.findProjectById(projectId);
+		List<Department> departmentList = departmentService.findDepartmentList();
+		List<User> userList = userService.findUserList();
+		Map<Integer, String> deptName = new HashMap<Integer, String>();
+		
+		for(Department d: departmentList) {
+			deptName.put(d.getDeptno(), d.getName());
+		}
+		
+		model.addAttribute("deptName", deptName);
 		model.addAttribute("project", project);
+		model.addAttribute("userList", userList);
 		return "project/settings";
+	}
+	
+	@PostMapping("update")
+	public String updateProject(Project project, @RequestParam("projectId") int projectId, @RequestParam String action ) {
+		project.setId(projectId);
+		if("save".equals(action)) {
+			projectService.modifyProject(project);
+			return "redirect:/project/overview?projectId=" + projectId;
+		} else if("delete".equals(action)) {
+			reportService.removeReportByProjectId(projectId);
+			List<Task> taskList = taskService.findTaskListByProjectId(projectId);
+			for(Task t: taskList) {
+				taskAssigneeService.removeTaskAssigneeByTaskId(t.getId());
+				taskService.removeTask(t.getId());
+			}
+			projectMemberService.removeProjectMemberByProjectId(projectId);
+			projectService.removeProject(projectId);
+			
+			return "redirect:/projects";
+		}else {
+			return "redirect:/project/settings?projectId=" + projectId;
+		}
+		
+		
+		
 	}
 
 	@GetMapping("/create")

@@ -175,7 +175,7 @@
 								style="display: inline;" onsubmit="return confirm('정말 삭제할까요?');">
 								<input type="hidden" name="projectId" value="${project.id}" />
 								<input type="hidden" name="taskId" value="${task.id}" />
-								<button type="submit" class="btn">삭제</button>
+								<button type="submit" class="btn" style="background-color:red; color:white">삭제</button>
 							</form>
 						</c:if>
 					</div>

@@ -14,6 +14,8 @@ public interface ReportDAO {
 	Report findReportById(int id);
 
 	int removeReport(int id);
+	
+	int removeReportByProjectId(int projectId);
 
 	int modifyReport(Report report);
 

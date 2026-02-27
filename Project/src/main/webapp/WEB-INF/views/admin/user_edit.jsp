@@ -64,8 +64,20 @@
 							</div>
 
 							<div class="field">
-								<label>직급</label> <input type="text" name="position"
-									value="${user.position}" />
+								<label>직급</label> <select name="position">
+									<option value="부장"
+										<c:if test="${user.position == '부장'}">selected</c:if>>부장</option>
+									<option value="차장"
+										<c:if test="${user.position == '차장'}">selected</c:if>>차장</option>
+									<option value="과장"
+										<c:if test="${user.position == '과장'}">selected</c:if>>과장</option>
+									<option value="대리"
+										<c:if test="${user.position == '대리'}">selected</c:if>>대리</option>
+									<option value="주임"
+										<c:if test="${user.position == '주임'}">selected</c:if>>주임</option>
+									<option value="사원"
+										<c:if test="${user.position == '사원'}">selected</c:if>>사원</option>
+								</select>
 							</div>
 
 							<div class="field">
@@ -94,10 +106,9 @@
 							<label>권한</label>
 							<div class="chips">
 								<c:forEach var="r" items="${roleList}">
-									<label class="chip"> <input type="radio"
-										name="role" value="${r.name}"
-										<c:if test="${userRole == r.name}">checked</c:if>>
-										<span>${r.name}</span></label>
+									<label class="chip"> <input type="radio" name="role"
+										value="${r.name}"
+										<c:if test="${userRole == r.name}">checked</c:if>> <span>${r.name}</span></label>
 								</c:forEach>
 							</div>
 							<div class="help">체크된 권한으로 덮어쓰기(저장 시 기존 권한은 교체)</div>
