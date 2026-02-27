@@ -18,6 +18,13 @@
 		FROM TF_CALENDAR_EVENT
 		WHERE e_id = #{eId}
 	</select>
+	
+	<select id="findCalendarEventByTaskId" resultType="CalendarEvent"
+		parameterType="int">
+		SELECT *
+		FROM TF_CALENDAR_EVENT
+		WHERE task_id = #{taskId}
+	</select>
 
 	<insert id="saveCalendarEvent" parameterType="CalendarEvent">
 		INSERT INTO
@@ -47,11 +54,11 @@
 		)
 	</insert>
 
-	<delete id="removeCalendarEvent" parameterType="int">
+	<delete id="deleteCalendarEventByEId" parameterType="String">
 		DELETE FROM
 		TF_CALENDAR_EVENT
 		WHERE
-		ID = #{id}
+		E_ID = #{eId}
 	</delete>
 
 	<update id="modifyCalendarEvent" parameterType="CalendarEvent">

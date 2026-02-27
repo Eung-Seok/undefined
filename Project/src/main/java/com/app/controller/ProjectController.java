@@ -229,18 +229,6 @@ public class ProjectController {
 		}
 
 		return "redirect:/project/tasks?projectId=" + projectId;
-	public String addTaskAction(@RequestParam("projectId") int projectId, Task task) {
-
-		task.setProjectId(projectId);
-		taskService.saveTask(task);
-
-		TaskAssignee taskAssignee = new TaskAssignee();
-		taskAssignee.setTaskId(task.getId());
-		taskAssignee.setUserId(task.getOwnerUserId());
-		taskAssignee.setStatus("ONGOING");
-
-		taskAssigneeService.saveTaskAssignee(taskAssignee);
-		return "redirect:/project/tasks?projectId=" + projectId;
 	}
 
 	@GetMapping("/tasks/view")
@@ -276,11 +264,16 @@ public class ProjectController {
 
 	@PostMapping("/tasks/delete")
 	public String deleteTask(@RequestParam("taskId") int taskId, @RequestParam("projectId") int projectId) {
+		
+		try {
+	        // 복잡한 과정은 서비스가 처리
+	        taskService.deleteTaskWithGoogleSync(taskId);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        // 필요 시 에러 메시지 처리
+	    }
 
-		taskAssigneeService.removeTaskAssigneeByTaskId(taskId);
-		taskService.removeTask(taskId);
-
-		return "redirect:/project/tasks?projectId=" + projectId;
+	    return "redirect:/project/tasks?projectId=" + projectId;
 	}
 	
 	@PostMapping("/tasks/assignees/add")
@@ -322,18 +315,12 @@ public class ProjectController {
 	@PostMapping("/tasks/edit")
 	public String editTaskAction(Task task, @RequestParam("projectId") int projectId, @RequestParam("id") int taskId) {
 		
-		int result = taskService.modifyTask(task);
-		TaskAssignee taskAssignee = new TaskAssignee();
-		List<TaskAssignee> taList = taskAssigneeService.findTaskAssigneeListByTaskId(taskId);
-		for(TaskAssignee ta: taList) {
-			if(ta.getUserId() == task.getOwnerUserId()) {
-				return "redirect:/project/tasks/view?projectId=" + projectId + "&taskId=" + taskId;
-			}
-		}
-		taskAssignee.setTaskId(taskId);
-		taskAssignee.setUserId(task.getOwnerUserId());
-		taskAssignee.setStatus("ONGOING");
-		taskAssigneeService.saveTaskAssignee(taskAssignee);
+		try {
+	        // 비즈니스 로직은 서비스에서 한 번에!
+	        taskService.modifyTaskWithGoogleSync(task, taskId);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
 		
 		return "redirect:/project/tasks/view?projectId=" + projectId + "&taskId=" + taskId;
 	}

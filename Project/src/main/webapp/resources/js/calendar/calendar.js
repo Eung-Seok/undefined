@@ -25,7 +25,7 @@
 		initFullCalendar(EVENTS_API);
 
 		// 페이지 로드 시 동기화 실행 (자동)
-		autoSync(SYNC_API, EVENTS_API);
+//		autoSync(SYNC_API, EVENTS_API);
 	});
 
 	// FullCalendar 초기화 및 필드 매핑

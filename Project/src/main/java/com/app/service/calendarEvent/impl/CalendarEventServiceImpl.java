@@ -36,14 +36,20 @@ public class CalendarEventServiceImpl implements CalendarEventService {
 	}
 
 	@Override
+	public CalendarEvent findCalendarEventByTaskId(int taskId) {
+		CalendarEvent calendarEvent = calendarEventDao.findCalendarEventByTaskId(taskId);
+		return calendarEvent;
+	}
+
+	@Override
 	public CalendarEvent findCalendarEventByEId(String eId) {
 		CalendarEvent calendarEvent = calendarEventDao.findCalendarEventByEId(eId);
 		return calendarEvent;
 	}
 
 	@Override
-	public int removeCalendarEvent(int id) {
-		int result = calendarEventDao.removeCalendarEvent(id);
+	public int deleteCalendarEventByEId(String eId) {
+		int result = calendarEventDao.deleteCalendarEventByEId(eId);
 		return result;
 	}
 
@@ -71,8 +77,10 @@ public class CalendarEventServiceImpl implements CalendarEventService {
 		if (googleEventList == null) return;
 		
 		List<String> eIdList = new ArrayList<>();
+		int count = 0;
 
 		for (Event event : googleEventList) {
+			count++;
 			String summary = event.getSummary();
 			String eId = event.getId();
 			String eTag = event.getEtag();
@@ -88,10 +96,7 @@ public class CalendarEventServiceImpl implements CalendarEventService {
 			// 2. OffsetDateTime으로 파싱 후 LocalDateTime으로 변환
 			LocalDateTime startLdt = OffsetDateTime.parse(startStr).toLocalDateTime();
 			LocalDateTime endLdt = OffsetDateTime.parse(endStr).toLocalDateTime();
-
-			System.out.println(event.getId());
-			System.out.println(event.getEtag());
-
+			
 			CalendarEvent existing = calendarEventDao.findCalendarEventByEId(eId);
 			if (existing != null && eTag.equals(existing.getETag())) {
 				continue;
@@ -106,7 +111,7 @@ public class CalendarEventServiceImpl implements CalendarEventService {
 			ce.setETag(eTag);
 
 			calendarEventDao.upsertCalendarEvent(ce);
-			System.out.println("일정 수정/저장 완료: " + summary);
+			System.out.println("구글에서 수정/저장된 일정 : " + summary);
 		}
 		if (!eIdList.isEmpty()) {
 			int deletedCount = calendarEventDao.deleteRemovedEvents(eIdList);

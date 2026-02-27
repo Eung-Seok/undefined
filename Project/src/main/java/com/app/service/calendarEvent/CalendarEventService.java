@@ -8,11 +8,13 @@ import com.google.api.services.calendar.model.Event;
 public interface CalendarEventService {
 	List<CalendarEvent> findCalendarEventListByUserId(int userId);
 
+	CalendarEvent findCalendarEventByTaskId(int taskId);
+	
+	CalendarEvent findCalendarEventByEId(String eId);
+	
 	int saveCalendarEvent(CalendarEvent calendarEvent);
 
-	CalendarEvent findCalendarEventByEId(String eId);
-
-	int removeCalendarEvent(int id);
+	int deleteCalendarEventByEId(String eId);
 
 	int modifyCalendarEvent(CalendarEvent calendarEvent);
 	

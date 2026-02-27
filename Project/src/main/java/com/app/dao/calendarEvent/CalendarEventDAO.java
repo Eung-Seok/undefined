@@ -6,12 +6,14 @@ import com.app.dto.calendarEvent.CalendarEvent;
 
 public interface CalendarEventDAO {
 	List<CalendarEvent> findCalendarEventListByUserId(int userId);
-
-	int saveCalendarEvent(CalendarEvent calendarEvent);
+	
+	CalendarEvent findCalendarEventByTaskId(int taskId);
 
 	CalendarEvent findCalendarEventByEId(String eId);
 
-	int removeCalendarEvent(int id);
+	int saveCalendarEvent(CalendarEvent calendarEvent);
+
+	int deleteCalendarEventByEId(String eId);
 
 	int modifyCalendarEvent(CalendarEvent calendarEvent);
 	

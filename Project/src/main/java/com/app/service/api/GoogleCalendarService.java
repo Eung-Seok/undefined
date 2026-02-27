@@ -99,4 +99,44 @@ public class GoogleCalendarService {
         // 4. 구글로 전송 및 결과 반환
         return service.events().insert(CALENDAR_ID, event).execute();
     }
+    
+    public Event updateEvent(CalendarEvent ce) throws IOException, GeneralSecurityException {
+        final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+        Calendar service = new Calendar.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+                .setApplicationName("Calendar")
+                .build();
+        
+        String eId = ce.getEId();
+        // 1. 기존 이벤트 가져오기
+        Event event = service.events().get(CALENDAR_ID, eId).execute();
+
+        // 2. 내용 변경
+        event.setSummary(ce.getName());
+        event.setDescription("업무 관리 시스템에서 수정됨");
+
+        // 시작 시간 설정
+        long startMillis = ce.getStartDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        event.setStart(new EventDateTime()
+                .setDateTime(new DateTime(startMillis))
+                .setTimeZone("Asia/Seoul"));
+
+        // 종료 시간 설정
+        long endMillis = ce.getEndDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        event.setEnd(new EventDateTime()
+                .setDateTime(new DateTime(endMillis))
+                .setTimeZone("Asia/Seoul"));
+
+        // 3. 구글로 업데이트 전송
+		return service.events().update(CALENDAR_ID, eId, event).execute();
+	}
+    
+    public void deleteEvent(String eventId) throws IOException, GeneralSecurityException {
+        final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+        Calendar service = new Calendar.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+                .setApplicationName("Calendar")
+                .build();
+
+        // 구글 서버에서 삭제 실행
+        service.events().delete(CALENDAR_ID, eventId).execute();
+    }
 }
