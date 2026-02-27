@@ -8,8 +8,9 @@
 		SELECT *
 		FROM TF_TASK
 	</select>
-	
-	<select id="findTaskListByProjectId" resultType="Task" parameterType="int">
+
+	<select id="findTaskListByProjectId" resultType="Task"
+		parameterType="int">
 		SELECT *
 		FROM TF_TASK
 		WHERE PROJECT_ID = #{projectId}
@@ -23,7 +24,8 @@
 
 	<insert id="saveTask" parameterType="Task">
 		<selectKey keyProperty="id" resultType="int" order="BEFORE">
-			SELECT SEQ_TF_TASK_PK.nextval FROM dual
+			SELECT
+			SEQ_TF_TASK_PK.nextval FROM dual
 		</selectKey>
 		INSERT INTO TF_TASK(
 		ID,
@@ -64,8 +66,6 @@
 	<update id="modifyTask" parameterType="Task">
 		UPDATE TF_TASK
 		SET
-		PROJECT_ID = #{projectId},
-		PARENT_TASK_ID = #{parentTaskId},
 		NAME =
 		#{name},
 		DESCRIPTION = #{description},
@@ -75,9 +75,9 @@
 		START_DATE = #{startDate},
 		DUE_DATE = #{dueDate},
 		PROGRESS_PERCENT = #{progressPercent},
-		CREATED_AT = #{createdAt},
-		UPDATED_AT = #{updatedAt}
-		WHERE ID = #{id}
+		UPDATED_AT = SYSDATE
+		WHERE ID =
+		#{id}
 	</update>
 
 </mapper>

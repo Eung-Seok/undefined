@@ -83,7 +83,8 @@
 					<tbody>
 						<c:if test="${notManageMembers}">
 							<c:forEach var="task" items="${userTaskList}">
-								<tr>
+								<tr class="clickable-row"
+    onclick="location.href='${pageContext.request.contextPath}/project/tasks/view?projectId=${project.id}&taskId=${task.id}'">
 									<td>${task.name}</td>
 									<td>${userName[task.ownerUserId] }</td>
 									<td><span
@@ -109,7 +110,8 @@
 						</c:if>
 						<c:if test="${canManageMembers}">
 							<c:forEach var="task" items="${taskList}">
-								<tr>
+								<tr class="clickable-row"
+    onclick="location.href='${pageContext.request.contextPath}/project/tasks/view?projectId=${project.id}&taskId=${task.id}'">
 									<td>${task.name}</td>
 									<td>${userName[task.ownerUserId] }</td>
 									<td><span

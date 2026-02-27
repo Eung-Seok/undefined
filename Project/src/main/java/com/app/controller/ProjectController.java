@@ -225,18 +225,124 @@ public class ProjectController {
 	}
 
 	@PostMapping("tasks/add")
-	public String addTaskAction(@RequestParam("projectId") int projectId, Task task) {
+	public String addTaskAction(@RequestParam("projectId") int projectId, Task task, HttpSession session) {
+		// 1. 로그인 정보 확인 (구글 연동 시 userId 필요)
+		User loginUser = (User) session.getAttribute("loginUser");
+		if (loginUser == null)
+			return "redirect:/login"; // 예외 처리
 
-		task.setProjectId(projectId);
-		taskService.saveTask(task);
+		try {
+			// 2. 업무 저장 + 구글 전송 + 일정 연동을 하나의 서비스 메서드에서 처리
+			taskService.saveTaskWithGoogleSync(projectId, task, loginUser.getEmpno());
+		} catch (Exception e) {
+			e.printStackTrace();
+			// 실패 시 에러 메시지를 들고 이동 (선택 사항)
+			return "redirect:/project/tasks?projectId=" + projectId + "&error=sync_fail";
+		}
 
-		TaskAssignee taskAssignee = new TaskAssignee();
-		taskAssignee.setTaskId(task.getId());
-		taskAssignee.setUserId(task.getOwnerUserId());
-		taskAssignee.setStatus("ONGOING");
-
-		taskAssigneeService.saveTaskAssignee(taskAssignee);
 		return "redirect:/project/tasks?projectId=" + projectId;
+	}
+
+	@GetMapping("/tasks/view")
+	public String view(@RequestParam("projectId") int projectId, @RequestParam("taskId") int taskId,
+			HttpSession session, Model model) {
+		User loginUser = (User) session.getAttribute("loginUser");
+		Project project = projectService.findProjectById(projectId);
+		Task task = taskService.findTaskById(taskId);
+		Map<Integer, String> userName = new HashMap<>();
+		List<User> userList = userService.findUserList();
+		List<User> ul = new ArrayList<User>();
+		List<ProjectMember> pmList = projectMemberService.findProjectMemberListByProjectId(projectId);
+		for(ProjectMember pm: pmList) {
+			ul.add(userService.findUserByEmpno(pm.getUserId()));
+		}
+		for (User u : userList) {
+			userName.put(u.getEmpno(), u.getName());
+		}
+		List<User> taskUserList = new ArrayList<User>();
+		List<TaskAssignee> taskAssigneeList = taskAssigneeService.findTaskAssigneeListByTaskId(taskId);
+		for(TaskAssignee ta: taskAssigneeList) {
+			taskUserList.add(userService.findUserByEmpno(ta.getUserId()));
+		}
+
+		model.addAttribute("taskUserList", taskUserList);
+		model.addAttribute("userList", ul);
+		model.addAttribute("userName", userName);
+		model.addAttribute("project", project);
+		model.addAttribute("task", task);
+
+		return "project/task_view";
+	}
+
+	@PostMapping("/tasks/delete")
+	public String deleteTask(@RequestParam("taskId") int taskId, @RequestParam("projectId") int projectId) {
+		
+		try {
+	        // 복잡한 과정은 서비스가 처리
+	        taskService.deleteTaskWithGoogleSync(taskId);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        // 필요 시 에러 메시지 처리
+	    }
+
+	    return "redirect:/project/tasks?projectId=" + projectId;
+	}
+	
+	@PostMapping("/tasks/assignees/add")
+	public String addAssignee(@RequestParam("taskId") int taskId, @RequestParam("projectId") int projectId, @RequestParam("empno") int empno) {
+		
+		List<TaskAssignee> taList = taskAssigneeService.findTaskAssigneeListByTaskId(taskId);
+		for(TaskAssignee ta: taList) {
+			if(ta.getUserId() == empno) {
+				return "redirect:/project/tasks/view?projectId=" + projectId + "&taskId=" + taskId;
+			}
+		}
+		TaskAssignee ta = new TaskAssignee();
+		ta.setTaskId(taskId);
+		ta.setUserId(empno);
+		ta.setStatus("ONGOING");
+		taskAssigneeService.saveTaskAssignee(ta);
+		
+		
+		return "redirect:/project/tasks/view?projectId=" + projectId + " &taskId=" + taskId;
+	}
+
+	@GetMapping("/tasks/edit")
+	public String editTask(@RequestParam("projectId") int projectId, @RequestParam("taskId") int taskId, HttpSession session, Model model) {
+		Task task = taskService.findTaskById(taskId);
+		Project project = projectService.findProjectById(projectId);
+		List<User> userList = new ArrayList<User>();
+		List<TaskAssignee> taskAssigneeList = taskAssigneeService.findTaskAssigneeListByTaskId(taskId);
+		for(TaskAssignee ta: taskAssigneeList) {
+			userList.add(userService.findUserByEmpno(ta.getUserId()));
+		}
+
+		model.addAttribute("userList", userList);
+		model.addAttribute("project", project);
+		model.addAttribute("task", task);
+
+		return "/project/task_edit";
+	}
+	
+	@PostMapping("/tasks/edit")
+	public String editTaskAction(Task task, @RequestParam("projectId") int projectId, @RequestParam("id") int taskId) {
+		
+		try {
+	        // 비즈니스 로직은 서비스에서 한 번에!
+	        taskService.modifyTaskWithGoogleSync(task, taskId);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+		
+		return "redirect:/project/tasks/view?projectId=" + projectId + "&taskId=" + taskId;
+	}
+	
+	@PostMapping("/tasks/assignees/delete")
+	public String deleteAssignees(@RequestParam("projectId") int projectId, @RequestParam("taskId") int taskId, @RequestParam("empno") int empno) {
+		
+		taskAssigneeService.removeTaskAssigneeByTaskIdAndUserId(taskId, empno);
+		
+		return "redirect:/project/tasks/view?projectId=" + projectId + "&taskId=" + taskId;
 	}
 
 	@GetMapping("/calendar")

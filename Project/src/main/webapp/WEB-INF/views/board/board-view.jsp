@@ -6,6 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>게시글 보기</title>
+
+<link rel="stylesheet" href="/css/common/sidebar.css">
 <link href="${pageContext.request.contextPath}/css/board/board-view.css"
 	rel="stylesheet">
 <style>
@@ -60,7 +62,6 @@
 	cursor: pointer;
 }
 </style>
-<link rel="stylesheet" href="/css/common/sidebar.css">
 </head>
 <body>
 	<div class="app">

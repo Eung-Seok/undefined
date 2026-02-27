@@ -47,22 +47,7 @@
 								<th>프로젝트</th>
 							</tr>
 						</thead>
-						<tbody>
-							<tr>
-								<td>2/13</td>
-								<td>킥오프 회의</td>
-								<td>신규 웹사이트 구축</td>
-							</tr>
-							<tr>
-								<td>2/15</td>
-								<td>API 연동 점검</td>
-								<td>ERP 연동</td>
-							</tr>
-							<tr>
-								<td>2/18</td>
-								<td>디자인 리뷰</td>
-								<td>모바일 앱 개선</td>
-							</tr>
+						<tbody id="calendar-data-body">
 						</tbody>
 					</table>
 				</div>
@@ -72,9 +57,9 @@
 					<div id='calendar-container'
 						style="background: white; padding: 10px; border-radius: 8px;">
 						<div id='google-calendar'></div>
+					</div>
 				</div>
 			</div>
-
 		</main>
 	</div>
 	<script>

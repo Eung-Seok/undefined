@@ -52,6 +52,27 @@ public class TaskAssigneeDAOImpl implements TaskAssigneeDAO {
 		List<TaskAssignee> taskAssignees = sqlSessionTemplate.selectList("taskAssignee_mapper.findTaskAssigneeListByUserId",userId);
 		return taskAssignees;
 	}
+
+	@Override
+	public int removeTaskAssigneeByTaskId(int taskId) {
+		int result = sqlSessionTemplate.delete("taskAssignee_mapper.removeTaskAssigneeByTaskId", taskId);
+		return result;
+	}
+
+	@Override
+	public List<TaskAssignee> findTaskAssigneeListByTaskId(int taskId) {
+		List<TaskAssignee> taskAssignees = sqlSessionTemplate.selectList("taskAssignee_mapper.findTaskAssigneeListByTaskId", taskId);
+		return taskAssignees;
+	}
+
+	@Override
+	public int removeTaskAssigneeByTaskIdAndUserId(int taskId, int userId) {
+		Map<String, Object> param = new HashMap<>();
+	    param.put("taskId", taskId);
+	    param.put("userId", userId);
+		int result = sqlSessionTemplate.delete("taskAssignee_mapper.removeTaskAssigneeByTaskIdAndUserId", param);
+		return result;
+	}
 	
 }
 

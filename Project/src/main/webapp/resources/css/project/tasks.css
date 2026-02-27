@@ -362,3 +362,34 @@ hr.line {
     background-color: #0dcaf0;   /* 하늘 */
     color: #fff;
 }
+.clickable-row { cursor: pointer; }
+.clickable-row:hover { background: #f8fafc; }
+
+.progress-wrapper{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.progress-bar{
+  width:220px;
+  height:10px;
+  background:#e5e7eb;
+  border-radius:999px;
+  overflow:hidden;
+}
+
+.progress-fill{
+  height:100%;
+  background:linear-gradient(90deg,#3b82f6,#2563eb);
+  transition:width 0.4s ease;
+}
+
+.progress-text{
+  font-size:13px;
+  color:#374151;
+  font-weight:600;
+}
+.low-progress { background:#ef4444; }   /* 빨강 */
+.mid-progress { background:#f59e0b; }   /* 주황 */
+.high-progress{ background:#10b981; }   /* 초록 */

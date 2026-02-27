@@ -4,10 +4,12 @@
 		   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="calendarEvent_mapper">
 
-	<select id="findCalendarEventList" resultType="CalendarEvent">
+	<select id="findCalendarEventListByUserId" resultType="CalendarEvent" parameterType="int">
 		SELECT *
 		FROM
 		TF_CALENDAR_EVENT
+		WHERE 
+        USER_ID = #{userId}
 	</select>
 
 	<select id="findCalendarEventByEId" resultType="CalendarEvent"
@@ -15,6 +17,13 @@
 		SELECT *
 		FROM TF_CALENDAR_EVENT
 		WHERE e_id = #{eId}
+	</select>
+	
+	<select id="findCalendarEventByTaskId" resultType="CalendarEvent"
+		parameterType="int">
+		SELECT *
+		FROM TF_CALENDAR_EVENT
+		WHERE task_id = #{taskId}
 	</select>
 
 	<insert id="saveCalendarEvent" parameterType="CalendarEvent">
@@ -45,11 +54,11 @@
 		)
 	</insert>
 
-	<delete id="removeCalendarEvent" parameterType="int">
+	<delete id="deleteCalendarEventByEId" parameterType="String">
 		DELETE FROM
 		TF_CALENDAR_EVENT
 		WHERE
-		ID = #{id}
+		E_ID = #{eId}
 	</delete>
 
 	<update id="modifyCalendarEvent" parameterType="CalendarEvent">
@@ -109,4 +118,12 @@
 		#{eTag}
 		)
 	</update>
+	
+	<delete id="deleteRemovedEvents" parameterType="list">
+    DELETE FROM TF_CALENDAR_EVENT
+    WHERE E_ID NOT IN 
+    <foreach collection="list" item="eId" open="(" separator="," close=")">
+        #{eId}
+    </foreach>
+</delete>
 </mapper>
