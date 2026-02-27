@@ -89,4 +89,10 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
 		int result = projectMemberDao.updateMemberRole(projectId, empno, projectRole);
 		return result;
 	}
+
+	@Override
+	public int removeProjectMemberByProjectId(int projectId) {
+		int result = projectMemberDao.removeProjectMemberByProjectId(projectId);
+		return result;
+	}
 }

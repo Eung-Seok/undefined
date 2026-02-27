@@ -53,6 +53,12 @@
 		WHERE
 		ID = #{id}
 	</delete>
+	
+	<delete id="removeReportByProjectId" parameterType="int">
+		DELETE FROM TF_REPORT
+		WHERE
+		PROJECT_ID = #{projectId}
+	</delete>
 
 	<update id="modifyReport" parameterType="Report">
 		UPDATE TF_REPORT

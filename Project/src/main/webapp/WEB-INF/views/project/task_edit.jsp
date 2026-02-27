@@ -167,13 +167,13 @@
 						</div>
 
 						<div class="field">
-							<label>시작일</label> <input type="date" name="startDate"
-								value="${task.startDate}" required>
+							<label>시작일</label> <input type="date" id="startDate" name="startDate"
+								value="${task.startDate}" max="${task.dueDate}" required>
 						</div>
 
 						<div class="field">
-							<label>마감일</label> <input type="date" name="dueDate"
-								value="${task.dueDate}" required>
+							<label>마감일</label> <input type="date" id="endDate" name="dueDate"
+								value="${task.dueDate}" min="${task.startDate}" required>
 						</div>
 
 						<div class="field" style="grid-column: 1/span 2;">
@@ -202,5 +202,6 @@
     r.addEventListener('input', () => t.textContent = r.value + '%');
   }
 </script>
+<script src="/js/projects/projects.js"></script>
 </body>
 </html>

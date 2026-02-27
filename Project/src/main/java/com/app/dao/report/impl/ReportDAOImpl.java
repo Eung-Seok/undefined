@@ -50,5 +50,11 @@ public class ReportDAOImpl implements ReportDAO {
 		List<Report> reportList = sqlSessionTemplate.selectList("report_mapper.findReportByProjectId", projectId);
 		return reportList;
 	}
+
+	@Override
+	public int removeReportByProjectId(int projectId) {
+		int result = sqlSessionTemplate.delete("report_mapper.removeReportByProjectId", projectId);
+		return result;
+	}
 	
 }

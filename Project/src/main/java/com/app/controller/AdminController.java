@@ -44,12 +44,18 @@ public class AdminController {
     	
     	List<User> userList = userService.findUserList();
     	List<UserRole> userRoleList = userRoleService.findUserRoleList();
-    	Map<Integer, String> userMap = new HashMap<>();
+    	List<Department> departmentList = departmentService.findDepartmentList();
+    	Map<Integer, String> userMap = new HashMap<Integer, String>();
+    	Map<Integer, String> departmentMap = new HashMap<Integer, String>();
     	
     	for(UserRole u: userRoleList) {
     		userMap.put(u.getUserId(), roleService.findRoleById(u.getRoleId()).getName());
     	}
+    	for(Department d: departmentList) {
+    		departmentMap.put(d.getDeptno(), d.getName());
+    	}
     	
+    	model.addAttribute("departmentMap", departmentMap);
     	model.addAttribute("userList", userList);
     	model.addAttribute("userMap", userMap);
     	

@@ -55,11 +55,11 @@
 					</div>
 					<div class="form-row">
 						<div class="form-group">
-							<label>시작일</label> <input type="date" name="startDate">
+							<label>시작일</label> <input type="date" id="startDate" name="startDate">
 						</div>
 
 						<div class="form-group">
-							<label>종료일</label> <input type="date" name="endDate">
+							<label>종료일</label> <input type="date" id="endDate" name="endDate">
 						</div>
 					</div>
 
@@ -67,7 +67,6 @@
 						<label>상태</label> <select name="status">
 							<option value="READY">준비</option>
 							<option value="PROGRESS">진행중</option>
-							<option value="lisk">리스크</option>
 							<option value="DONE">완료</option>
 						</select>
 					</div>

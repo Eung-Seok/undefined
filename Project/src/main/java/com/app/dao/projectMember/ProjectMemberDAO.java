@@ -22,5 +22,7 @@ public interface ProjectMemberDAO {
 	
 	int removeProjectMemberByProjectIdAndUserId(Long projectId, Long empno);
 	
+	int removeProjectMemberByProjectId(int projectId);
+	
 	 int updateMemberRole(int projectId, int empno, String projectRole);
 }

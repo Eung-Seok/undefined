@@ -77,11 +77,11 @@
 					</div>
 					<div class="form-row">
 						<div class="form-group">
-							<label>시작일</label> <input type="date" name="startDate">
+							<label>시작일</label> <input type="date" id="startDate" name="startDate">
 						</div>
 
 						<div class="form-group">
-							<label>종료일</label> <input type="date" name="dueDate">
+							<label>종료일</label> <input type="date" id="endDate" name="dueDate">
 						</div>
 					</div>
 

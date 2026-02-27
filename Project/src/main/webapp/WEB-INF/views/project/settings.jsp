@@ -9,7 +9,7 @@
 <title>프로젝트 설정</title>
 <style>
 </style>
-<link rel="stylesheet" href="/css/project/settings.css">
+<link rel="stylesheet" href="/css/projects/projects.css">
 <link rel="stylesheet" href="/css/common/sidebar.css">
 </head>
 <body>
@@ -55,18 +55,68 @@
 
 			<div class="card">
 				<h3>프로젝트 설정</h3>
-				<div class="small">PM/ADMIN만 접근(데모)</div>
-				<div style="height: 12px"></div>
-				<div class="notice" data-requires="PM,ADMIN">설정 변경은 데모이며, 서버단
-					권한 체크를 꼭 추가하세요.</div>
-				<div style="height: 12px"></div>
-				<button class="btn primary" data-requires="PM,ADMIN"
-					data-action="설정 저장">저장</button>
+				<div style="height: 16px;"></div>
+
+				<form
+					action="${pageContext.request.contextPath}/project/update?projectId=${project.id}"
+					method="post" class="form">
+
+					<div class="form-group">
+						<label>프로젝트명</label> <input type="text" name="name"
+							value="${project.name}" required>
+					</div>
+
+					<div class="form-group">
+						<label>설명</label>
+						<textarea name="description" rows="4">${project.description}</textarea>
+					</div>
+					<div class="form-group">
+						<label>프로젝트 매니저 (PM)</label> <select name="ownerUserId" required>
+							<option value="">선택하세요</option>
+							<c:forEach var="user" items="${userList}">
+								<option value="${user.empno}"
+									<c:if test="${project.ownerUserId == user.empno}">selected</c:if>>${user.name}
+									(${deptName[user.deptno]} ${user.position})</option>
+							</c:forEach>
+						</select>
+					</div>
+					<div class="form-row">
+						<div class="form-group">
+							<label>시작일</label> <input type="date" id="startDate"
+								name="startDate" max="${project.endDate}"
+								value="${project.startDate}">
+						</div>
+
+						<div class="form-group">
+							<label>종료일</label> <input type="date" id="endDate" name="endDate"
+								min="${project.startDate}" value="${project.endDate}">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label>상태</label> <select name="status">
+							<option value="READY"
+								<c:if test="${project.status eq 'READY'}">selected</c:if>>준비</option>
+							<option value="PROGRESS"
+								<c:if test="${project.status eq 'PROGRESS'}">selected</c:if>>진행중</option>
+							<option value="DONE"
+								<c:if test="${project.status eq 'DONE'}">selected</c:if>>완료</option>
+						</select>
+					</div>
+
+					<div style="text-align: right; margin-top: 20px;">
+						<button type="submit" class="btn" name="action" value="delete"
+							style="background-color: red; color: white"  onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
+						<button type="submit" name="action" value="save"
+							class="btn primary">저장</button>
+					</div>
+
+				</form>
 			</div>
 
 		</main>
 	</div>
-	<script src="/js/project/settings.js"></script>
+	<script src="/js/projects/projects.js"></script>
 	<script>
 		
 	</script>

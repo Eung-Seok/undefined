@@ -531,3 +531,14 @@ hr.line {
 .admin-org-hidden {
 	display: none !important;
 }
+
+.admin-org-toolbar{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.admin-org-toolbar-right{
+  font-weight: 600;
+}

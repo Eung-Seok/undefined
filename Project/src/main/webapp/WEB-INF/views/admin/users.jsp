@@ -46,8 +46,10 @@
 				<table class="table">
 					<thead>
 						<tr>
-							<th>아이디</th>
+							<th>사원번호</th>
 							<th>이름</th>
+							<th>부서</th>
+							<th>직급</th>
 							<th>권한</th>
 							<th></th>
 						</tr>
@@ -57,6 +59,8 @@
 							<tr>
 								<td>${user.empno }</td>
 								<td>${user.name }</td>
+								<td>${departmentMap[user.deptno]}</td>
+								<td>${user.position}</td>
 								<td>${userMap[user.empno]}</td>
 								<td><a class="btn"
 									href="<%=request.getContextPath()%>/admin/users/edit?empno=${user.empno}">변경</a></td>

@@ -50,4 +50,10 @@ public class ReportServiceImpl implements ReportService{
 		List<Report> reportList = reportDao.findReportByProjectId(projectId);
 		return reportList;
 	}
+
+	@Override
+	public int removeReportByProjectId(int projectId) {
+		int result = reportDao.removeReportByProjectId(projectId);
+		return result;
+	}
 }
