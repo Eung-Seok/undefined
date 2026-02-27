@@ -3,8 +3,12 @@ package com.app.service.attachment;
 import java.util.List;
 
 import com.app.dto.attachment.Attachment;
+import com.app.vo.attachment.AttachmentVO;
 
 public interface AttachmentService {
+
+	List<Attachment> findAttachmentListByProject(int projectId);
+
 	List<Attachment> findAttachmentList();
 
 	int saveAttachment(Attachment attachment);
@@ -14,4 +18,6 @@ public interface AttachmentService {
 	int removeAttachment(int id);
 
 	int modifyAttachment(Attachment attachment);
+	
+	void insertAttachment(AttachmentVO attachment);
 }

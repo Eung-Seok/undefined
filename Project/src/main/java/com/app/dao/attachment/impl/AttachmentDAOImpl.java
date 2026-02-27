@@ -8,12 +8,23 @@ import org.springframework.stereotype.Repository;
 
 import com.app.dao.attachment.AttachmentDAO;
 import com.app.dto.attachment.Attachment;
+import com.app.vo.attachment.AttachmentVO;
 
 @Repository
 public class AttachmentDAOImpl implements AttachmentDAO {
-	
+
 	@Autowired
 	SqlSessionTemplate sqlSessionTemplate;
+
+	@Override
+	public void insertAttachment(AttachmentVO attachment) {
+		sqlSessionTemplate.insert("attachment_mapper.insertAttachment", attachment);
+	}
+	
+	@Override
+	public List<Attachment> findAttachmentListByProject(int projectId) {
+	    return sqlSessionTemplate.selectList("attachment_mapper.findAttachmentListByProject", projectId);
+	}
 
 	@Override
 	public List<Attachment> findAttachmentList() {
@@ -44,5 +55,5 @@ public class AttachmentDAOImpl implements AttachmentDAO {
 		int result = sqlSessionTemplate.update("attachment_mapper.modifyAttachment", attachment);
 		return result;
 	}
-	
+
 }

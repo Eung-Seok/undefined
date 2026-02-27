@@ -1,27 +1,36 @@
 package com.app.controller;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.UriUtils;
 
+import com.app.dto.attachment.Attachment;
 import com.app.dto.project.Project;
 import com.app.dto.projectMember.ProjectMember;
 import com.app.dto.report.Report;
 import com.app.dto.task.Task;
 import com.app.dto.taskAssignee.TaskAssignee;
 import com.app.dto.user.User;
+import com.app.service.attachment.AttachmentService;
 import com.app.service.board.BoardService;
 import com.app.service.comment.CommentService;
 import com.app.service.notification.NotificationService;
@@ -31,6 +40,7 @@ import com.app.service.report.ReportService;
 import com.app.service.task.TaskService;
 import com.app.service.taskAssignee.TaskAssigneeService;
 import com.app.service.user.UserService;
+import com.app.vo.attachment.AttachmentVO;
 
 @Controller
 @RequestMapping("/project")
@@ -54,52 +64,56 @@ public class ProjectController {
 	TaskService taskService;
 	@Autowired
 	TaskAssigneeService taskAssigneeService;
+	@Autowired
+    private AttachmentService attachmentService;
 
 	@GetMapping("/report")
-    public String list(@RequestParam("projectId") int projectId, HttpSession session, Model model) {
+	public String list(@RequestParam("projectId") int projectId, HttpSession session, Model model) {
 		User user = (User) session.getAttribute("loginUser");
 		Project project = projectService.findProjectById(projectId);
 		List<Report> reportList = reportService.findReportByProjectId(projectId);
 		List<Report> userReportList = new ArrayList<Report>();
 		List<User> userList = userService.findUserList();
 		Map<Integer, String> userName = new HashMap<Integer, String>();
-		
-		for(User u: userList) {
+
+		for (User u : userList) {
 			userName.put(u.getEmpno(), u.getName());
 		}
-		for(Report r: reportList) {
-			if(r.getAuthorUserId() == user.getEmpno()) {
+		for (Report r : reportList) {
+			if (r.getAuthorUserId() == user.getEmpno()) {
 				userReportList.add(r);
 			}
 		}
-		
-		model.addAttribute("userName", userName);
-        model.addAttribute("project", project);
-        model.addAttribute("reportList", reportList);
-        model.addAttribute("userReportList", userReportList);
 
-        return "project/report_list"; 
-    }
-	
+		model.addAttribute("userName", userName);
+		model.addAttribute("project", project);
+		model.addAttribute("reportList", reportList);
+		model.addAttribute("userReportList", userReportList);
+
+		return "project/report_list";
+	}
+
 	@GetMapping("/report/view")
-	public String viewReport(@RequestParam("projectId") int projectId, @RequestParam("reportId") int reportId, Model model, HttpSession session) {
+	public String viewReport(@RequestParam("projectId") int projectId, @RequestParam("reportId") int reportId,
+			Model model, HttpSession session) {
 		Report report = reportService.findReportById(reportId);
 		Project project = projectService.findProjectById(projectId);
 		User user = (User) session.getAttribute("loginUser");
 		List<User> userList = userService.findUserList();
 		Map<Integer, String> userName = new HashMap<Integer, String>();
-		
-		for(User u: userList) {
+
+		for (User u : userList) {
 			userName.put(u.getEmpno(), u.getName());
 		}
 
-		model.addAttribute("user",user);
+		model.addAttribute("user", user);
 		model.addAttribute("userName", userName);
 		model.addAttribute("project", project);
 		model.addAttribute("report", report);
-		
+
 		return "/project/report_view";
 	}
+
 	@PostMapping("/report/write")
 	public String writeSubmit(@RequestParam("projectId") int projectId, Report report, HttpSession session) {
 		User loginUser = (User) session.getAttribute("loginUser");
@@ -234,9 +248,68 @@ public class ProjectController {
 
 	@GetMapping("/docs")
 	public String docs(@RequestParam("projectId") int projectId, Model model) {
-		Project project = projectService.findProjectById(projectId);
-		model.addAttribute("project", project);
-		return "project/docs";
+	    Project project = projectService.findProjectById(projectId);
+	    
+	    List<Attachment> documentList = attachmentService.findAttachmentListByProject(projectId);
+	    
+	    model.addAttribute("project", project);
+	    model.addAttribute("documentList", documentList); // JSP에서 사용될 리스트명
+	    
+	    return "project/docs";
+	}
+
+	@PostMapping("/docs/upload")
+	public String uploadDoc(@RequestParam("file") MultipartFile file, 
+	                        @RequestParam("category") String category,
+	                        @RequestParam("projectId") int projectId,
+	                        HttpSession session) throws Exception { // 세션에서 로그인 유저 ID를 가져오기 위해 추가
+
+	    if (!file.isEmpty()) {
+	        String uploadDir = "D:/upload/";
+	        File dir = new File(uploadDir);
+	        if (!dir.exists()) dir.mkdirs();
+
+	        String originalFileName = file.getOriginalFilename();
+	        // 실제 저장할 때는 파일명이 겹치지 않게 UUID 등을 쓰는 게 좋지만, 일단 현재 로직 유지
+	        File dest = new File(uploadDir + originalFileName);
+	        file.transferTo(dest);
+
+	        // [중요] DB에 저장할 객체(VO) 생성
+	        AttachmentVO attachment = new AttachmentVO();
+	        attachment.setProjectId(projectId);
+	        attachment.setCategory(category);
+	        attachment.setOriginalFileName(originalFileName);
+	        attachment.setFileName(originalFileName); 
+	        attachment.setFileUrl(uploadDir + originalFileName);
+	        
+	        attachment.setUploaderUserId(1000); 
+
+	        attachmentService.insertAttachment(attachment); 
+	    }
+
+	    return "redirect:/project/docs?projectId=" + projectId;
+	}
+	
+	@GetMapping("/download")
+	public void downloadFile(@RequestParam("fileId") int fileId, HttpServletResponse response) throws Exception {
+	    // 1. DB에서 파일 정보 가져오기 (원본 파일명, 저장된 경로 등)
+	    Attachment fileInfo = attachmentService.findAttachmentById(fileId);
+	    
+	    if (fileInfo != null) {
+	        File file = new File(fileInfo.getFileUrl()); // 파일이 저장된 실제 경로 (D:/upload/파일명)
+
+	        if (file.exists()) {
+	            // 2. 브라우저에게 "이건 다운로드용 파일이야"라고 알려주는 설정
+	            String encodedName = UriUtils.encode(fileInfo.getOriginalFileName(), "UTF-8");
+	            response.setHeader("Content-Disposition", "attachment; filename=\"" + encodedName + "\"");
+	            response.setContentType("application/octet-stream");
+	            response.setContentLength((int) file.length());
+
+	            // 3. 실제 파일을 읽어서 브라우저로 복사 (FileCopyUtils는 스프링 제공 툴)
+	            InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+	            FileCopyUtils.copy(inputStream, response.getOutputStream());
+	        }
+	    }
 	}
 
 	@GetMapping("/members")

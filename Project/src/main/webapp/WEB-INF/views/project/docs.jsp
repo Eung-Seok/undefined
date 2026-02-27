@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -57,36 +58,71 @@
 				<h3>문서</h3>
 				<div class="small">요구사항/회의록/설계서 업로드(데모)</div>
 				<div style="height: 12px"></div>
-				<button class="btn" data-action="문서 업로드">문서 업로드</button>
+				<button type="button" class="btn" id="openUploadModal">문서
+					업로드</button>
 				<div style="height: 12px"></div>
 				<table class="table">
 					<thead>
 						<tr>
 							<th>문서명</th>
 							<th>분류</th>
-							<th>업로드</th>
+							<th>업로드 일시</th>
+							<th>관리</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>요구사항_v1.pdf</td>
-							<td>요구사항</td>
-							<td>2026-02-12</td>
-						</tr>
-						<tr>
-							<td>회의록_0212.md</td>
-							<td>회의록</td>
-							<td>2026-02-12</td>
-						</tr>
+						<c:if test="${empty documentList}">
+							<tr>
+								<td colspan="4" style="text-align: center;">등록된 문서가 없습니다.</td>
+							</tr>
+						</c:if>
+						<c:forEach var="doc" items="${documentList}">
+							<tr>
+								<td>📄 ${doc.originalFileName}</td>
+								<td><span class="badge">${doc.category}</span></td>
+								<td><fmt:formatDate value="${doc.createdAt}"
+										pattern="yyyy-MM-dd" /></td>
+								<td><a
+									href="${pageContext.request.contextPath}/project/download?fileId=${doc.id}"
+									class="btn btn-sm btn-primary"> 다운로드 </a></td>
+							</tr>
+						</c:forEach>
 					</tbody>
 				</table>
 			</div>
 
 		</main>
 	</div>
+	<!-- 문서 업로드 모달 -->
+	<div id="uploadModal" class="modal hidden">
+		<div class="modal-content">
+			<h3>문서 업로드</h3>
+
+			<form id="uploadForm"
+				action="${pageContext.request.contextPath}/project/docs/upload"
+				method="post" enctype="multipart/form-data">
+
+				<input type="hidden" name="projectId" value="${project.id}" />
+
+				<div class="form-group">
+					<label>문서 분류</label> <select name="category">
+						<option value="요구사항">요구사항</option>
+						<option value="회의록">회의록</option>
+						<option value="설계서">설계서</option>
+					</select>
+				</div>
+
+				<div class="form-group">
+					<label>파일 선택</label> <input type="file" name="file" required />
+				</div>
+
+				<div class="modal-actions">
+					<button type="submit" class="btn primary">업로드</button>
+					<button type="button" class="btn" id="closeModal">취소</button>
+				</div>
+			</form>
+		</div>
+	</div>
 	<script src="/js/project/docs.js"></script>
-	<script>
-		
-	</script>
 </body>
 </html>

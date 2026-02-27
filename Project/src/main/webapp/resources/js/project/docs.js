@@ -1,32 +1,32 @@
-(function() {
-	// Simple toast
-	function toast(msg) {
-		const t = document.createElement('div');
-		t.textContent = msg;
-		t.style.position = 'fixed';
-		t.style.right = '18px';
-		t.style.bottom = '18px';
-		t.style.padding = '10px 12px';
-		t.style.background = '#111827';
-		t.style.color = 'white';
-		t.style.borderRadius = '12px';
-		t.style.boxShadow = '0 10px 24px rgba(0,0,0,.18)';
-		t.style.zIndex = '9999';
-		document.body.appendChild(t);
-		setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity .2s'; }, 1400);
-		setTimeout(() => { t.remove(); }, 1700);
+document.addEventListener("DOMContentLoaded", function () {
+
+	console.log("docs.js 정상 실행");
+
+	const openBtn = document.getElementById("openUploadModal");
+	const modal = document.getElementById("uploadModal");
+	const closeBtn = document.getElementById("closeModal");
+
+	console.log(openBtn, modal, closeBtn);
+
+	if (!openBtn || !modal || !closeBtn) {
+		console.log("모달 요소 못찾음");
+		return;
 	}
-	window.__toast = toast;
 
-	// Role-based UI (front demo only)
-	const role = document.body.getAttribute('data-role') || 'MEMBER';
-	document.querySelectorAll('[data-requires]').forEach(el => {
-		const need = el.getAttribute('data-requires').split(',').map(s => s.trim());
-		if (!need.includes(role)) el.style.display = 'none';
+	openBtn.addEventListener("click", () => {
+		console.log("업로드 클릭됨");
+		modal.style.display = "flex";
+		modal.classList.remove("hidden");
 	});
 
-	// Quick action buttons
-	document.querySelectorAll('[data-action]').forEach(btn => {
-		btn.addEventListener('click', () => toast(btn.getAttribute('data-action') + ' (데모)'));
+	closeBtn.addEventListener("click", () => {
+		modal.classList.add("hidden");
 	});
-})();
+
+	modal.addEventListener("click", (e) => {
+		if (e.target === modal) {
+			modal.classList.add("hidden");
+		}
+	});
+
+});
