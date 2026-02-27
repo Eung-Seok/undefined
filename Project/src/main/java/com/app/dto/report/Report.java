@@ -1,5 +1,7 @@
 package com.app.dto.report;
 
+import java.sql.Date;
+
 import lombok.Data;
 
 @Data
@@ -8,8 +10,9 @@ public class Report {
 	int projectId;
 	int authorUserId;
 	String periodType;
-	String periodStart;
-	String periodEnd;
+	Date periodStart;
+	Date periodEnd;
 	String summary;
-	String createdAt;
+	String issue;
+	Date createdAt;
 }

@@ -3,10 +3,18 @@
 		   "-//mybatis.org//DTD Mapper 3.0//EN" 
 		   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="report_mapper">
+
+
 	
 	<select id="findReportList" resultType="Report">
 		SELECT *
 		FROM TF_REPORT
+	</select>
+	
+	<select id="findReportByProjectId" resultType="Report" parameterType="int">
+		SELECT *
+		FROM TF_REPORT
+		WHERE PROJECT_ID = #{projectId}
 	</select>
 	
 	<select id="findReportById" resultType="Report" parameterType="int">
@@ -24,7 +32,8 @@
 			PERIOD_START,
 			PERIOD_END,
 			SUMMARY,
-			CREATED_AT
+			CREATED_AT,
+			ISSUE
 		)
 		VALUES(
 		SEQ_TF_REPORT_PK.nextval,
@@ -34,7 +43,8 @@
 		#{periodStart},
 		#{periodEnd},
 		#{summary},
-		#{createdAt}
+		SYSDATE,
+		#{issue}
 		)
 	</insert>
 	

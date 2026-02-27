@@ -44,4 +44,10 @@ public class ReportServiceImpl implements ReportService{
 		int result = reportDao.modifyReport(report);
 		return result;
 	}
+
+	@Override
+	public List<Report> findReportByProjectId(int projectId) {
+		List<Report> reportList = reportDao.findReportByProjectId(projectId);
+		return reportList;
+	}
 }

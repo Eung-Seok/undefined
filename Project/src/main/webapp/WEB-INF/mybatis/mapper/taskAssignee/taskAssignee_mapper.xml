@@ -15,6 +15,12 @@
 		WHERE USER_ID = #{userId}
 	</select>
 	
+	<select id="findTaskAssigneeListByTaskId" resultType="TaskAssignee" parameterType="int">
+		SELECT *
+		FROM TF_TASK_ASSIGNEE
+		WHERE TASK_ID = #{taskId}
+	</select>
+	
 	<select id="findTaskAssigneeById" resultType="TaskAssignee" parameterType="int">
 		SELECT *
 		FROM TF_TASK_ASSIGNEE
@@ -43,6 +49,19 @@
 		DELETE FROM TF_TASK_ASSIGNEE
 		WHERE
 		ID = #{id}
+	</delete>
+	
+	<delete id="removeTaskAssigneeByTaskId" parameterType="int">
+		DELETE FROM TF_TASK_ASSIGNEE
+		WHERE
+		TASK_ID = #{taskId}
+	</delete>
+	
+	<delete id="removeTaskAssigneeByTaskIdAndUserId" parameterType="map">
+		DELETE FROM TF_TASK_ASSIGNEE
+		WHERE
+		TASK_ID = #{taskId} AND
+		USER_ID = #{userId}
 	</delete>
 
 	<update id="modifyTaskAssignee" parameterType="TaskAssignee">

@@ -6,10 +6,11 @@
 <head>
 <meta charset="UTF-8">
 <title>게시글 수정</title>
+
+<link rel="stylesheet" href="/css/common/sidebar.css">
 <link
 	href="${pageContext.request.contextPath}/css/board/board-write.css"
 	rel="stylesheet">
-	<link rel="stylesheet" href="/css/common/sidebar.css">
 </head>
 <body>
 	<div class="app">

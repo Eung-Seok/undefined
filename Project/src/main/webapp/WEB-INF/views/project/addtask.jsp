@@ -29,7 +29,27 @@
 				</div>
 			</div>
 
+			<div class="tabs">
+				<a class="tab"
+					href="${pageContext.request.contextPath}/project/overview?projectId=${project.id}">
+					개요 </a> <a class="tab active"
+					href="${pageContext.request.contextPath}/project/tasks?projectId=${project.id}">업무</a><a
+					class="tab"
+					href="${pageContext.request.contextPath}/project/calendar?projectId=${project.id}">프로젝트
+					캘린더</a><a class="tab"
+					href="${pageContext.request.contextPath}/project/docs?projectId=${project.id}">문서</a><a
+					class="tab"
+					href="${pageContext.request.contextPath}/project/members?projectId=${project.id}">참여자</a><a
+					class="tab"
+					href="${pageContext.request.contextPath}/project/report?projectId=${project.id}">보고서</a>
+				<c:if test="${canManageMembers}">
+					<a class="tab"
+						href="${pageContext.request.contextPath}/project/settings?projectId=${project.id}">설정</a>
+				</c:if>
+			</div>
+
 			<div class="card">
+
 				<h3>업무 생성</h3>
 				<div class="small">새로운 업무 정보를 입력하세요.</div>
 				<div style="height: 16px;"></div>
@@ -72,7 +92,7 @@
 							<option value="LOW">하</option>
 						</select>
 					</div>
-					
+
 					<div class="form-group">
 						<label>상태</label> <select name="status">
 							<option value="READY">대기</option>

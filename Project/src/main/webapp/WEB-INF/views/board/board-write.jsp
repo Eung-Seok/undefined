@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>게시글 작성</title>
 
+<link rel="stylesheet" href="/css/common/sidebar.css">
 <link href="${pageContext.request.contextPath}/css/board/board-view.css"
 	rel="stylesheet">
 
@@ -55,7 +56,6 @@ textarea {
 	border: none;
 }
 </style>
-<link rel="stylesheet" href="/css/common/sidebar.css">
 </head>
 
 <body>
