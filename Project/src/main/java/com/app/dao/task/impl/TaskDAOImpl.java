@@ -47,32 +47,8 @@ public class TaskDAOImpl implements TaskDAO {
 		return result;
 	}
 
-	@Override
-	public List<Task> findTodayTaskByUser(int empno) {
-	    return sqlSessionTemplate.selectList("task_mapper.findTodayTaskByUser", empno);
-	}
-	@Override
-	public int updateTaskStatus(int taskId, String status) {
-	    Map<String, Object> params = new HashMap<>();
-	    params.put("taskId", taskId);
-	    params.put("status", status);
-	    return sqlSessionTemplate.update("task_mapper.updateStatus", params);
-	}
-	@Override
-    public double calculateProjectProgress(int projectId) {
-        return sqlSessionTemplate.selectOne("task_mapper.calculateProjectProgress", projectId);
-    }
-	 @Override
-	    public void completeTask(int taskId) {
-	        sqlSessionTemplate.update("task_mapper.completeTask", taskId);
-	    }
 
-	 @Override
-	 public int updateProjectProgress(int projectId) {
-	     return sqlSessionTemplate.update("task_mapper.updateProjectProgress", projectId);
-	 }
-	 
-
+	@Override
 	public List<Task> findTaskListByProjectId(int porjectId) {
 		List<Task> taskList = sqlSessionTemplate.selectList("task_mapper.findTaskListByProjectId", porjectId);
 		return taskList;

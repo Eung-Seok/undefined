@@ -45,11 +45,6 @@ public class ReportDAOImpl implements ReportDAO {
 		int result = sqlSessionTemplate.update("report_mapper.modifyReport", report);
 		return result;
 	}
-	 @Override
-	    public double calculateWeeklyProgress(int userId) {
-	        return sqlSessionTemplate.selectOne(NAMESPACE + "calculateWeeklyProgress", userId);
-	    }
-
 
 	@Override
 	public List<Report> findReportByProjectId(int projectId) {

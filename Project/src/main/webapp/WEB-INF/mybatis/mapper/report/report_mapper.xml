@@ -11,8 +11,7 @@
 		FROM TF_REPORT
 	</select>
 
-	<select id="findReportById" resultType="Report"
-		parameterType="int">
+	
 	
 	<select id="findReportByProjectId" resultType="Report" parameterType="int">
 		SELECT *

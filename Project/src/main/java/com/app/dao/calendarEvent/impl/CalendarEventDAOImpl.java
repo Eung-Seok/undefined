@@ -44,17 +44,5 @@ public class CalendarEventDAOImpl implements CalendarEventDAO {
 		int result = sqlSessionTemplate.update("calendarEvent_mapper.modifyCalendarEvent", calendarEvent);
 		return result;
 	}
-	@Override
-	public List<CalendarEvent> findWeekCalendarEvents(int userId) {
-	    return sqlSessionTemplate.selectList("calendarEvent_mapper.findWeekCalendarEvents", userId);
-	}
 
-
-
-	@Override
-	public int upsertCalendarEvent(CalendarEvent calendarEvent) {
-		int result = sqlSessionTemplate.update("calendarEvent_mapper.upsertCalendarEvent", calendarEvent);
-		return result;
-	}
-	
 }

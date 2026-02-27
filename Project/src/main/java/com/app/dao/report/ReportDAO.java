@@ -16,7 +16,6 @@ public interface ReportDAO {
 	int removeReport(int id);
 
 	int modifyReport(Report report);
-	 // ✅ 주간 공정율 계산 메서드 추가
-    double calculateWeeklyProgress(int userId);
+
 
 }

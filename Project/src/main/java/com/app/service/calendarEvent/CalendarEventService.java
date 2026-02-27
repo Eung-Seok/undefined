@@ -13,13 +13,5 @@ public interface CalendarEventService {
 
 	int removeCalendarEvent(int id);
 
-	// ✅ 주간 일정 조회 추가
-    List<CalendarEvent> getWeekCalendarEvents(int userId);
-    // ✅ 인터페이스에 추가
-    int modifyCalendarEvent(CalendarEvent calendarEvent);
-
-	int modifyCalendarEvent(CalendarEvent calendarEvent);
-	
-	int upsertCalendarEvent(CalendarEvent calendarEvent);
 }
 

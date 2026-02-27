@@ -2,122 +2,54 @@
 <!DOCTYPE mapper PUBLIC
 		   "-//mybatis.org//DTD Mapper 3.0//EN" 
 		   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
 <mapper namespace="calendarEvent_mapper">
 
-	<select id="findCalendarEventList" resultType="CalendarEvent">
-		SELECT *
-		FROM
-		TF_CALENDAR_EVENT
-	</select>
+    <!-- 일정 전체 조회 -->
+    <select id="findCalendarEventList" resultType="CalendarEvent">
+        SELECT * FROM TF_CALENDAR_EVENT
+    </select>
 
-	<select id="findCalendarEventByEId" resultType="CalendarEvent"
-		parameterType="String">
-		SELECT *
-		FROM TF_CALENDAR_EVENT
-		WHERE e_id = #{eId}
-	</select>
-	
-	<insert id="saveCalendarEvent" parameterType="CalendarEvent">
-		INSERT INTO
-		TF_CALENDAR_EVENT(
-		ID,
-		USER_ID,
-		PROJECT_ID,
-		TASK_ID,
-		NAME,
-		START_DATE,
-		END_DATE,
-		TYPE,
-		CREATED_AT,
-		UPDATED_AT
-		)
-		VALUES(
-		SEQ_TF_CALENDAR_EVENT_PK.nextval,
-		#{userId},
-		#{projectId},
-		#{taskId},
-		#{name},
-		#{startDate},
-		#{endDate},
-		#{type},
-		SYSDATE,
-		SYSDATE
-		)
-	</insert>
+    <!-- 일정 저장 -->
+    <insert id="saveCalendarEvent" parameterType="CalendarEvent">
+        INSERT INTO TF_CALENDAR_EVENT (
+            ID, USER_ID, PROJECT_ID, TASK_ID, NAME,
+            START_DATE, END_DATE, TYPE, CREATED_AT, UPDATED_AT, EID, ETAG
+        ) VALUES (
+            SEQ_TF_CALENDAR_EVENT_PK.nextval,
+            #{userId}, #{projectId}, #{taskId}, #{name},
+            #{startDate}, #{endDate}, #{type}, SYSDATE, SYSDATE, #{eId}, #{eTag}
+        )
+    </insert>
 
-	<delete id="removeCalendarEvent" parameterType="int">
-		DELETE FROM
-		TF_CALENDAR_EVENT
-		WHERE
-		ID = #{id}
-	</delete>
+    <!-- 일정 단건 조회 -->
+    <select id="findCalendarEventByEId" resultType="CalendarEvent" parameterType="string">
+        SELECT * FROM TF_CALENDAR_EVENT WHERE EID = #{eId}
+    </select>
 
-	<update id="modifyCalendarEvent" parameterType="CalendarEvent">
-		UPDATE
-		TF_CALENDAR_EVENT
-		SET
-		USER_ID = #{userId},
-		PROJECT_ID = #{projectId},
-		TASK_ID = #{taskId},
-		NAME = #{name},
-		START_DATE = #{startDate},
-		END_DATE
-		= #{endDate},
-		TYPE = #{type},
-		CREATED_AT = #{createdAt},
-		UPDATED_AT =
-		#{updatedAt}
-		WHERE ID = #{id}
-	</update>
-	<!-- ✅ 주간 일정 조회 -->
+    <!-- 일정 삭제 -->
+    <delete id="removeCalendarEvent" parameterType="int">
+        DELETE FROM TF_CALENDAR_EVENT WHERE ID = #{id}
+    </delete>
+
+    <!-- 일정 수정 -->
+    <update id="modifyCalendarEvent" parameterType="CalendarEvent">
+        UPDATE TF_CALENDAR_EVENT
+        SET NAME = #{name},
+            START_DATE = #{startDate},
+            END_DATE = #{endDate},
+            TYPE = #{type},
+            UPDATED_AT = SYSDATE
+        WHERE ID = #{id}
+    </update>
+
+    <!-- 특정 사용자 주간 일정 조회 -->
     <select id="findWeekCalendarEvents" resultType="CalendarEvent" parameterType="int">
         SELECT *
         FROM TF_CALENDAR_EVENT
         WHERE USER_ID = #{userId}
-          AND START_DATE &gt;= TRUNC(SYSDATE, 'IW')
-          AND END_DATE &lt;= TRUNC(SYSDATE, 'IW') + 6
-        ORDER BY START_DATE
+          AND START_DATE BETWEEN TRUNC(SYSDATE, 'IW') AND TRUNC(SYSDATE, 'IW') + 7
     </select>
-	
-	
 
-	<update id="upsertCalendarEvent" parameterType="CalendarEvent">
-		MERGE INTO tf_calendar_event t
-		USING DUAL
-		ON (t.e_id = #{eId})
-
-		WHEN MATCHED THEN
-		UPDATE SET
-		t.name = #{name},
-		t.start_date = #{startDate},
-		t.end_date = #{endDate},
-		t.e_tag = #{eTag}, t.updated_at = SYSDATE
-		WHERE (t.e_tag IS NULL OR t.e_tag != #{eTag}) WHEN NOT MATCHED THEN
-		INSERT (
-		ID,
-		USER_ID,
-		PROJECT_ID,
-		TASK_ID,
-		NAME,
-		START_DATE,
-		END_DATE,
-		TYPE,
-		CREATED_AT,
-		UPDATED_AT, E_ID, E_TAG
-		)
-		VALUES(
-		SEQ_TF_CALENDAR_EVENT_PK.nextval,
-		#{userId},
-		#{projectId},
-		#{taskId},
-		#{name},
-		#{startDate},
-		#{endDate},
-		#{type},
-		SYSDATE,
-		SYSDATE,
-		#{eId},
-		#{eTag}
-		)
-	</update>
 </mapper>

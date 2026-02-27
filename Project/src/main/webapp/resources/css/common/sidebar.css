@@ -57,6 +57,7 @@ button, input, select {
 	position: sticky;
 	top: 0;
 	height: 100vh;
+	  z-index: 10;
 }
 
 .brand {
@@ -158,6 +159,7 @@ button, input, select {
 .main {
 	flex: 1;
 	padding: 22px 22px 40px
+	
 }
 
 .topbar {
