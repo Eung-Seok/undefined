@@ -82,9 +82,9 @@
 								<td><span class="badge">${doc.category}</span></td>
 								<td><fmt:formatDate value="${doc.createdAt}"
 										pattern="yyyy-MM-dd" /></td>
-								<td><a
-									href="${pageContext.request.contextPath}/project/download?fileId=${doc.id}"
-									class="btn btn-sm btn-primary"> 다운로드 </a></td>
+								<td><a href="${doc.fileUrl}"
+									download="${doc.originalFileName}"
+									class="btn btn-sm btn-success"> 다운로드 </a></td>
 							</tr>
 						</c:forEach>
 					</tbody>
