@@ -149,7 +149,7 @@
 									<th>기간</th>
 									<th>작성자</th>
 									<th>상세보기</th>
-									<th>주말 공정율</th>
+									<th>주간 공정율</th>
 								</tr>
 							</thead>
 							<tbody>
