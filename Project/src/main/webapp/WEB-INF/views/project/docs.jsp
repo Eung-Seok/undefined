@@ -56,7 +56,7 @@
 
 			<div class="card">
 				<h3>문서</h3>
-				<div class="small">요구사항/회의록/설계서 업로드(데모)</div>
+				<div class="small">요구사항/회의록/설계서 업로드</div>
 				<div style="height: 12px"></div>
 				<button type="button" class="btn" id="openUploadModal">문서
 					업로드</button>
@@ -100,12 +100,13 @@
 
 			<form id="uploadForm"
 				action="${pageContext.request.contextPath}/project/docs/upload"
-				method="post" enctype="multipart/form-data">
+				method="post" enctype="multipart/form-data" class="upload-form">
 
 				<input type="hidden" name="projectId" value="${project.id}" />
 
 				<div class="form-group">
-					<label>문서 분류</label> <select name="category">
+					<label class="form-label">문서 분류</label> <select name="category"
+						class="form-control">
 						<option value="요구사항">요구사항</option>
 						<option value="회의록">회의록</option>
 						<option value="설계서">설계서</option>
@@ -113,16 +114,37 @@
 				</div>
 
 				<div class="form-group">
-					<label>파일 선택</label> <input type="file" name="file" required />
+					<label class="form-label">파일 선택</label> <input type="file"
+						name="file" class="form-control file-input" required />
 				</div>
 
 				<div class="modal-actions">
 					<button type="submit" class="btn primary">업로드</button>
-					<button type="button" class="btn" id="closeModal">취소</button>
+					<button type="button" class="btn secondary" id="closeModal">취소</button>
 				</div>
+
 			</form>
 		</div>
 	</div>
 	<script src="/js/project/docs.js"></script>
+	<script>
+		document.addEventListener("DOMContentLoaded", () => {
+		
+		 
+		    document.querySelectorAll("select").forEach(select => {
+		        select.addEventListener("change", function () {
+		            this.blur();
+		        });
+		    });
+		
+		
+		    document.querySelectorAll('input[type="file"]').forEach(file => {
+		        file.addEventListener("change", function () {
+		            this.blur();
+		        });
+		    });
+		
+		});
+	</script>
 </body>
 </html>
