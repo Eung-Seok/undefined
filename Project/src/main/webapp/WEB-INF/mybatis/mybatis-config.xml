@@ -28,6 +28,7 @@
 		<typeAlias type="com.app.dto.calendarEvent.CalendarEvent" alias="CalendarEvent" />
 		<typeAlias type="com.app.dto.board.Board" alias="Board" />
 		<typeAlias type="com.app.dto.attachment.Attachment" alias="Attachment" />
-	</typeAliases>
+        <typeAlias type="com.app.dto.dashboard.Dashboard" alias="Dashboard"/>
+    </typeAliases>
 
 </configuration>

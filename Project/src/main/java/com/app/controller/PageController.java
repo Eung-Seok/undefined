@@ -78,13 +78,6 @@ public class PageController {
 	    model.addAttribute("userNameMap", userNameMap);
 	    return "projects";
 	}
-	
-	@GetMapping("/dashboard")
-	public String dashboard(HttpSession session) {
-		if (session.getAttribute("loginUser") == null)
-			return "redirect:/login";
-		return "dashboard";
-	}
 
 	@GetMapping("/calendar")
 	public String calendar() {
