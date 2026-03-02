@@ -30,3 +30,18 @@
 		btn.addEventListener('click', () => toast(btn.getAttribute('data-action') + ' (데모)'));
 	});
 })();
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll("tr.clickable-row").forEach((row) => {
+    row.style.cursor = "pointer";
+
+    row.addEventListener("click", (e) => {
+      // 행 안에 버튼/링크 클릭했을 때는 row 이동 막기 (있을 경우 대비)
+      const tag = e.target.tagName;
+      if (tag === "A" || tag === "BUTTON" || e.target.closest("a, button")) return;
+
+      const href = row.dataset.href;
+      if (href) window.location.href = href;
+    });
+  });
+});

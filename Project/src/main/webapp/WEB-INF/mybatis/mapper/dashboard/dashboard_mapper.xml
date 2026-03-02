@@ -8,7 +8,7 @@
 	<select id="countActiveProjects" resultType="int">
 		SELECT COUNT(*)
 		FROM TF_PROJECT
-		WHERE STATUS = 'ONGOING'
+		WHERE STATUS = 'PROGRESS'
 	</select>
 
 	<select id="countTodayTasks" resultType="int">

@@ -39,7 +39,6 @@
             </div>
             <button type="submit" class="btn btn-login w-100 mb-3">로그인</button>
             <div class="text-center small">
-                계정이 없으신가요? <a href="${pageContext.request.contextPath}/signup" class="text-decoration-none">회원가입</a><br>
                 <a href="javascript:void(0)" onclick="toggleSection('findPw')" class="text-secondary mt-2 d-inline-block">비밀번호 찾기</a>
             </div>
         </form>

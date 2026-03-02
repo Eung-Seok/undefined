@@ -333,3 +333,36 @@ hr.line {
 	color: #1e3a8a;
 	font-size: 13px
 }
+
+.badge.ready {
+    background-color: #e9ecef;
+    color: #333;
+}
+
+.badge.progress {
+    background-color: #0d6efd;
+    color: #fff;
+}
+
+.badge.done {
+    background-color: #198754;
+    color: #fff;
+}
+.badge.high {
+    background-color: #dc3545;   /* 빨강 */
+    color: #fff;
+}
+
+.badge.medium {
+    background-color: #fd7e14;   /* 주황 */
+    color: #fff;
+}
+
+.badge.low {
+    background-color: #0dcaf0;   /* 하늘 */
+    color: #fff;
+}
+
+.clickable-row:hover {
+  background: rgba(0,0,0,0.04);
+}
