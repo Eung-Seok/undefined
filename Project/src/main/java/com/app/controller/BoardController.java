@@ -1,12 +1,16 @@
 package com.app.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import com.app.dto.board.Board;
 import com.app.dto.user.User;
 import com.app.service.board.BoardService;
@@ -19,11 +23,27 @@ public class BoardController {
 
     // 1. 게시판 목록
     @GetMapping("/board")
-    public String boardList(Model model, HttpSession session) {
-        if (session.getAttribute("loginUser") == null) return "redirect:/login";
-        model.addAttribute("postList", boardService.findBoardList());
-        return "board/board";
-    }
+    public String boardList(
+    	    @RequestParam(value="boardId", required=false) Integer boardId, // 👈 여기서 1, 2, 3번을 받습니다.
+    	    Model model, 
+    	    HttpSession session) {
+    	    
+    	    if (session.getAttribute("loginUser") == null) return "redirect:/login";
+
+    	    List<Board> list;
+
+    	    // 파라미터가 없거나 0이면 '전체보기', 있으면 '해당 게시판' 조회
+    	    if (boardId == null || boardId == 0) {
+    	        list = boardService.findBoardList();
+    	    } else {
+    	        list = boardService.findBoardListByBoardId(boardId);
+    	    }
+    	    
+    	    model.addAttribute("postList", list);
+    	    model.addAttribute("selectedBoardId", boardId); // 어떤 탭이 눌렸는지 기억하기 위함
+    	    
+    	    return "board/board";
+    	}
 
     // 2. 글쓰기 폼
     @GetMapping("/board/write")
