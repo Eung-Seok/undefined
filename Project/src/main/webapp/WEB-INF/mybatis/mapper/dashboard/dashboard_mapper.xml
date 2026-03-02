@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.app.mapper.dashboard.DashboardMapper">
+
+	<select id="countActiveProjects" resultType="int">
+		SELECT COUNT(*)
+		FROM TF_PROJECT
+		WHERE STATUS = 'ONGOING'
+	</select>
+
+	<select id="countTodayTasks" resultType="int">
+		SELECT COUNT(*)
+		FROM TF_TASK
+		WHERE TRUNC(DUE_DATE) = TRUNC(SYSDATE)
+		AND STATUS != 'DONE'
+	</select>
+
+	<select id="countDelayedTasks" resultType="int">
+		SELECT COUNT(*)
+		FROM TF_TASK
+		WHERE DUE_DATE &lt; SYSDATE
+		AND STATUS != 'DONE'
+	</select>
+
+	<select id="findDashboardProjects" resultType="Dashboard">
+		SELECT
+		p.ID,
+		p.NAME AS projectName,
+		u.NAME AS pmName,
+		COUNT(DISTINCT pm.USER_ID) AS memberCount,
+		COUNT(t.ID) AS remainTaskCount,
+		p.END_DATE
+		FROM TF_PROJECT p
+		JOIN TF_USER u
+		ON p.OWNER_USER_ID = u.EMPNO
+		LEFT JOIN TF_PROJECT_MEMBER pm
+		ON p.ID = pm.PROJECT_ID
+		LEFT JOIN TF_TASK t
+		ON p.ID = t.PROJECT_ID
+		AND t.STATUS != 'DONE'
+		GROUP BY p.ID, p.NAME, u.NAME, p.END_DATE
+		ORDER BY p.ID DESC
+	</select>
+
+</mapper>

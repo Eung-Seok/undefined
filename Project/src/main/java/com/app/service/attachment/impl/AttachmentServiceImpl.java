@@ -8,13 +8,24 @@ import org.springframework.stereotype.Service;
 import com.app.dao.attachment.AttachmentDAO;
 import com.app.dto.attachment.Attachment;
 import com.app.service.attachment.AttachmentService;
+import com.app.vo.attachment.AttachmentVO;
 
 @Service
 public class AttachmentServiceImpl implements AttachmentService{
 
 	@Autowired
 	AttachmentDAO attachmentDao;
+	
+	@Override
+	public void insertAttachment(AttachmentVO attachment) {
+	    attachmentDao.insertAttachment(attachment); // DAO를 호출합니다.
+	}
 
+	@Override
+	public List<Attachment> findAttachmentListByProject(int projectId) {
+	    return attachmentDao.findAttachmentListByProject(projectId);
+	}
+	
 	@Override
 	public List<Attachment> findAttachmentList() {
 		List<Attachment> attachmentList = attachmentDao.findAttachmentList();

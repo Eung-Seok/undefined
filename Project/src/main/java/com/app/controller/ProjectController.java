@@ -1,28 +1,37 @@
 package com.app.controller;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.UriUtils;
 
 import com.app.dto.department.Department;
+import com.app.dto.attachment.Attachment;
 import com.app.dto.project.Project;
 import com.app.dto.projectMember.ProjectMember;
 import com.app.dto.report.Report;
 import com.app.dto.task.Task;
 import com.app.dto.taskAssignee.TaskAssignee;
 import com.app.dto.user.User;
+import com.app.service.attachment.AttachmentService;
 import com.app.service.board.BoardService;
 import com.app.service.comment.CommentService;
 import com.app.service.department.DepartmentService;
@@ -33,6 +42,7 @@ import com.app.service.report.ReportService;
 import com.app.service.task.TaskService;
 import com.app.service.taskAssignee.TaskAssigneeService;
 import com.app.service.user.UserService;
+import com.app.vo.attachment.AttachmentVO;
 
 @Controller
 @RequestMapping("/project")
@@ -58,6 +68,8 @@ public class ProjectController {
 	TaskAssigneeService taskAssigneeService;
 	@Autowired
 	DepartmentService departmentService;
+	@Autowired
+	private AttachmentService attachmentService;
 
 	@GetMapping("/report")
 	public String list(@RequestParam("projectId") int projectId, HttpSession session, Model model) {
@@ -245,7 +257,7 @@ public class ProjectController {
 		List<User> userList = userService.findUserList();
 		List<User> ul = new ArrayList<User>();
 		List<ProjectMember> pmList = projectMemberService.findProjectMemberListByProjectId(projectId);
-		for(ProjectMember pm: pmList) {
+		for (ProjectMember pm : pmList) {
 			ul.add(userService.findUserByEmpno(pm.getUserId()));
 		}
 		for (User u : userList) {
@@ -253,7 +265,7 @@ public class ProjectController {
 		}
 		List<User> taskUserList = new ArrayList<User>();
 		List<TaskAssignee> taskAssigneeList = taskAssigneeService.findTaskAssigneeListByTaskId(taskId);
-		for(TaskAssignee ta: taskAssigneeList) {
+		for (TaskAssignee ta : taskAssigneeList) {
 			taskUserList.add(userService.findUserByEmpno(ta.getUserId()));
 		}
 
@@ -268,24 +280,25 @@ public class ProjectController {
 
 	@PostMapping("/tasks/delete")
 	public String deleteTask(@RequestParam("taskId") int taskId, @RequestParam("projectId") int projectId) {
-		
-		try {
-	        // 복잡한 과정은 서비스가 처리
-	        taskService.deleteTaskWithGoogleSync(taskId);
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        // 필요 시 에러 메시지 처리
-	    }
 
-	    return "redirect:/project/tasks?projectId=" + projectId;
+		try {
+			// 복잡한 과정은 서비스가 처리
+			taskService.deleteTaskWithGoogleSync(taskId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			// 필요 시 에러 메시지 처리
+		}
+
+		return "redirect:/project/tasks?projectId=" + projectId;
 	}
-	
+
 	@PostMapping("/tasks/assignees/add")
-	public String addAssignee(@RequestParam("taskId") int taskId, @RequestParam("projectId") int projectId, @RequestParam("empno") int empno) {
-		
+	public String addAssignee(@RequestParam("taskId") int taskId, @RequestParam("projectId") int projectId,
+			@RequestParam("empno") int empno) {
+
 		List<TaskAssignee> taList = taskAssigneeService.findTaskAssigneeListByTaskId(taskId);
-		for(TaskAssignee ta: taList) {
-			if(ta.getUserId() == empno) {
+		for (TaskAssignee ta : taList) {
+			if (ta.getUserId() == empno) {
 				return "redirect:/project/tasks/view?projectId=" + projectId + "&taskId=" + taskId;
 			}
 		}
@@ -294,18 +307,18 @@ public class ProjectController {
 		ta.setUserId(empno);
 		ta.setStatus("ONGOING");
 		taskAssigneeService.saveTaskAssignee(ta);
-		
-		
+
 		return "redirect:/project/tasks/view?projectId=" + projectId + " &taskId=" + taskId;
 	}
 
 	@GetMapping("/tasks/edit")
-	public String editTask(@RequestParam("projectId") int projectId, @RequestParam("taskId") int taskId, HttpSession session, Model model) {
+	public String editTask(@RequestParam("projectId") int projectId, @RequestParam("taskId") int taskId,
+			HttpSession session, Model model) {
 		Task task = taskService.findTaskById(taskId);
 		Project project = projectService.findProjectById(projectId);
 		List<User> userList = new ArrayList<User>();
 		List<TaskAssignee> taskAssigneeList = taskAssigneeService.findTaskAssigneeListByTaskId(taskId);
-		for(TaskAssignee ta: taskAssigneeList) {
+		for (TaskAssignee ta : taskAssigneeList) {
 			userList.add(userService.findUserByEmpno(ta.getUserId()));
 		}
 
@@ -315,25 +328,26 @@ public class ProjectController {
 
 		return "/project/task_edit";
 	}
-	
+
 	@PostMapping("/tasks/edit")
 	public String editTaskAction(Task task, @RequestParam("projectId") int projectId, @RequestParam("id") int taskId) {
-		
+
 		try {
-	        // 비즈니스 로직은 서비스에서 한 번에!
-	        taskService.modifyTaskWithGoogleSync(task, taskId);
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-		
+			// 비즈니스 로직은 서비스에서 한 번에!
+			taskService.modifyTaskWithGoogleSync(task, taskId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		return "redirect:/project/tasks/view?projectId=" + projectId + "&taskId=" + taskId;
 	}
-	
+
 	@PostMapping("/tasks/assignees/delete")
-	public String deleteAssignees(@RequestParam("projectId") int projectId, @RequestParam("taskId") int taskId, @RequestParam("empno") int empno) {
-		
+	public String deleteAssignees(@RequestParam("projectId") int projectId, @RequestParam("taskId") int taskId,
+			@RequestParam("empno") int empno) {
+
 		taskAssigneeService.removeTaskAssigneeByTaskIdAndUserId(taskId, empno);
-		
+
 		return "redirect:/project/tasks/view?projectId=" + projectId + "&taskId=" + taskId;
 	}
 
@@ -347,8 +361,70 @@ public class ProjectController {
 	@GetMapping("/docs")
 	public String docs(@RequestParam("projectId") int projectId, Model model) {
 		Project project = projectService.findProjectById(projectId);
+
+		List<Attachment> documentList = attachmentService.findAttachmentListByProject(projectId);
+
 		model.addAttribute("project", project);
+		model.addAttribute("documentList", documentList); // JSP에서 사용될 리스트명
+
 		return "project/docs";
+	}
+
+	@PostMapping("/docs/upload")
+	public String uploadDoc(@RequestParam("file") MultipartFile file, @RequestParam("category") String category,
+			@RequestParam("projectId") int projectId, HttpSession session) throws Exception { // 세션에서 로그인 유저 ID를 가져오기 위해
+																								// 추가
+
+		if (!file.isEmpty()) {
+			String uploadDir = "D:/upload/";
+			File dir = new File(uploadDir);
+			if (!dir.exists())
+				dir.mkdirs();
+
+			String originalFileName = file.getOriginalFilename();
+			// 실제 저장할 때는 파일명이 겹치지 않게 UUID 등을 쓰는 게 좋지만, 일단 현재 로직 유지
+			File dest = new File(uploadDir + originalFileName);
+			file.transferTo(dest);
+
+			// [중요] DB에 저장할 객체(VO) 생성
+			AttachmentVO attachment = new AttachmentVO();
+			attachment.setProjectId(projectId);
+			attachment.setCategory(category);
+			attachment.setOriginalFileName(originalFileName);
+			attachment.setFileName(originalFileName);
+			String webUrl = session.getServletContext().getContextPath() + "/storage/" + originalFileName;
+			attachment.setFileUrl(webUrl);
+
+			attachment.setUploaderUserId(1000);
+
+			attachmentService.insertAttachment(attachment);
+		}
+
+		return "redirect:/project/docs?projectId=" + projectId;
+	}
+
+	@GetMapping("/download")
+	public void downloadFile(@RequestParam("fileId") int fileId, HttpServletResponse response) throws Exception {
+		// 1. DB에서 파일 정보 가져오기 (원본 파일명, 저장된 경로 등)
+		Attachment fileInfo = attachmentService.findAttachmentById(fileId);
+
+		if (fileInfo != null) {
+			String uploadDir = "D:/upload/";
+			String fileName = fileInfo.getFileName(); // DB의 FILE_NAME 컬럼 (저장된 파일명)
+
+			File file = new File(uploadDir + fileName);
+			if (file.exists()) {
+				// 2. 브라우저에게 "이건 다운로드용 파일이야"라고 알려주는 설정
+				String encodedName = UriUtils.encode(fileInfo.getOriginalFileName(), "UTF-8");
+				response.setHeader("Content-Disposition", "attachment; filename=\"" + encodedName + "\"");
+				response.setContentType("application/octet-stream");
+				response.setContentLength((int) file.length());
+
+				// 3. 실제 파일을 읽어서 브라우저로 복사 (FileCopyUtils는 스프링 제공 툴)
+				InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+				FileCopyUtils.copy(inputStream, response.getOutputStream());
+			}
+		}
 	}
 
 	@GetMapping("/members")

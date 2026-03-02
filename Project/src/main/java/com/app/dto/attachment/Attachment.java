@@ -1,15 +1,18 @@
 package com.app.dto.attachment;
 
+import java.util.Date;
 import lombok.Data;
 
 @Data
 public class Attachment {
-	int id;
-	int uploaderUserId;
-	Integer postId;
-	Integer taskId;
-	String fileName;
-	String originalFileName;
-	String fileUrl;
-	String createdAt;
+    private int id;
+    private int uploaderUserId;
+    private Integer postId; 
+    private Integer taskId;
+    private Integer projectId; 
+    private String fileName;
+    private String originalFileName;
+    private String fileUrl;
+    private String category;
+    private Date createdAt;
 }
