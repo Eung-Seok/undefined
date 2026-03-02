@@ -6,32 +6,39 @@
 
 <mapper namespace="calendarEvent_mapper">
 
-    <!-- 일정 전체 조회 -->
-    <select id="findCalendarEventList" resultType="CalendarEvent">
-        SELECT * FROM TF_CALENDAR_EVENT
-    </select>
+	<select id="findCalendarEventListByUserId" resultType="CalendarEvent" parameterType="int">
+		SELECT *
+		FROM
+		TF_CALENDAR_EVENT
+		WHERE 
+        USER_ID = #{userId}
+	</select>
 
-    <!-- 일정 저장 -->
-    <insert id="saveCalendarEvent" parameterType="CalendarEvent">
-        INSERT INTO TF_CALENDAR_EVENT (
-            ID, USER_ID, PROJECT_ID, TASK_ID, NAME,
-            START_DATE, END_DATE, TYPE, CREATED_AT, UPDATED_AT, EID, ETAG
-        ) VALUES (
-            SEQ_TF_CALENDAR_EVENT_PK.nextval,
-            #{userId}, #{projectId}, #{taskId}, #{name},
-            #{startDate}, #{endDate}, #{type}, SYSDATE, SYSDATE, #{eId}, #{eTag}
-        )
-    </insert>
+	<select id="findCalendarEventByEId" resultType="CalendarEvent"
+		parameterType="String">
+		SELECT *
+		FROM TF_CALENDAR_EVENT
+		WHERE e_id = #{eId}
+	</select>
+	
+	<select id="findCalendarEventByTaskId" resultType="CalendarEvent"
+		parameterType="int">
+		SELECT *
+		FROM TF_CALENDAR_EVENT
+		WHERE task_id = #{taskId}
+	</select>
 
     <!-- 일정 단건 조회 -->
     <select id="findCalendarEventByEId" resultType="CalendarEvent" parameterType="string">
         SELECT * FROM TF_CALENDAR_EVENT WHERE EID = #{eId}
     </select>
 
-    <!-- 일정 삭제 -->
-    <delete id="removeCalendarEvent" parameterType="int">
-        DELETE FROM TF_CALENDAR_EVENT WHERE ID = #{id}
-    </delete>
+	<delete id="deleteCalendarEventByEId" parameterType="String">
+		DELETE FROM
+		TF_CALENDAR_EVENT
+		WHERE
+		E_ID = #{eId}
+	</delete>
 
     <!-- 일정 수정 -->
     <update id="modifyCalendarEvent" parameterType="CalendarEvent">
@@ -52,4 +59,46 @@
           AND START_DATE BETWEEN TRUNC(SYSDATE, 'IW') AND TRUNC(SYSDATE, 'IW') + 7
     </select>
 
+		WHEN MATCHED THEN
+		UPDATE SET
+		t.name = #{name},
+		t.start_date = #{startDate},
+		t.end_date = #{endDate},
+		t.e_tag = #{eTag}, t.updated_at = SYSDATE
+		WHERE (t.e_tag IS NULL OR t.e_tag != #{eTag}) WHEN NOT MATCHED THEN
+		INSERT (
+		ID,
+		USER_ID,
+		PROJECT_ID,
+		TASK_ID,
+		NAME,
+		START_DATE,
+		END_DATE,
+		TYPE,
+		CREATED_AT,
+		UPDATED_AT, E_ID, E_TAG
+		)
+		VALUES(
+		SEQ_TF_CALENDAR_EVENT_PK.nextval,
+		#{userId},
+		#{projectId},
+		#{taskId},
+		#{name},
+		#{startDate},
+		#{endDate},
+		#{type},
+		SYSDATE,
+		SYSDATE,
+		#{eId},
+		#{eTag}
+		)
+	</update>
+	
+	<delete id="deleteRemovedEvents" parameterType="list">
+    DELETE FROM TF_CALENDAR_EVENT
+    WHERE E_ID NOT IN 
+    <foreach collection="list" item="eId" open="(" separator="," close=")">
+        #{eId}
+    </foreach>
+</delete>
 </mapper>

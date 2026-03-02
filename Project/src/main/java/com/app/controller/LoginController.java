@@ -1,5 +1,9 @@
 package com.app.controller;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.util.List;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -11,9 +15,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.app.dto.user.User;
+import com.app.service.api.GoogleCalendarService;
+import com.app.service.calendarEvent.CalendarEventService;
 import com.app.service.role.RoleService;
 import com.app.service.user.UserService;
 import com.app.service.userRole.UserRoleService;
+import com.google.api.services.calendar.model.Event;
 
 @Controller
 public class LoginController {
@@ -24,6 +31,10 @@ public class LoginController {
     RoleService roleService;
     @Autowired
     UserRoleService userRoleService;
+    @Autowired
+    GoogleCalendarService googleCalendarService;
+    @Autowired
+    CalendarEventService calendarEventService;
 
     // [1] 로그인 페이지
     @GetMapping("/login")
@@ -35,11 +46,22 @@ public class LoginController {
     @PostMapping("/login")
 	public String loginProcess(User user, HttpSession session, Model model) {
 
-		User dbUser = userService.findUserByEmpno(user.getEmpno());
+		User loginUser = userService.findUserByEmpno(user.getEmpno());
 
-		if (dbUser != null && dbUser.getPassword().equals(user.getPassword())) {
-			session.setAttribute("loginUser", dbUser);
+		if (loginUser != null && loginUser.getPassword().equals(user.getPassword())) {
+			session.setAttribute("loginUser", loginUser);
 			session.setAttribute("loginUserRole", roleService.findRoleById(userRoleService.findUserRoleByUserId(user.getEmpno()).getRoleId()).getName());
+			
+			try {
+	            List<Event> googleEventList = googleCalendarService.getUpcomingEvents();
+	            calendarEventService.syncWithGoogle(loginUser.getEmpno(), googleEventList);
+	            System.out.println("구글 캘린더 동기화 성공");
+	        } catch (IOException | GeneralSecurityException e) {
+	            // 동기화 실패 시 로그만 남기고 로그인은 계속 진행
+	            System.err.println("구글 동기화 중 오류 발생: " + e.getMessage());
+	            // 필요한 경우 사용자에게 "동기화 실패" 메시지를 세션에 살짝 담아둘 수 있습니다.
+	        }
+			
 			return "redirect:/dashboard";
 		} else {
 
