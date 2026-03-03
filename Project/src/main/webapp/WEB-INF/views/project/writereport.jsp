@@ -74,7 +74,7 @@
 					<div class="btn-row">
 						<button type="submit" class="btn primary">등록</button>
 						<a class="btn"
-							href="${pageContext.request.contextPath}/project/reports?projectId=${project.id}">
+							href="${pageContext.request.contextPath}/project/overview?projectId=${project.id}">
 							취소 </a>
 					</div>
 				</form>
