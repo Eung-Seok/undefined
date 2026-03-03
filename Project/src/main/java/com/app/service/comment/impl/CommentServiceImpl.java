@@ -1,6 +1,7 @@
 package com.app.service.comment.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,38 +11,38 @@ import com.app.dto.comment.Comment;
 import com.app.service.comment.CommentService;
 
 @Service
-public class CommentServiceImpl implements CommentService{
+public class CommentServiceImpl implements CommentService {
 
-	@Autowired
-	CommentDAO commentDao;
+    @Autowired
+    private CommentDAO commentDAO;
 
-	@Override
-	public List<Comment> findCommentList() {
-		List<Comment> commentList = commentDao.findCommentList();
-		return commentList;
-	}
+    @Override
+    public void saveComment(Comment comment) {
+        commentDAO.saveComment(comment);
+    }
 
-	@Override
-	public int saveComment(Comment comment) {
-		int result = commentDao.saveComment(comment);
-		return result;
-	}
+    @Override
+    public void removeComment(int id) {
+        commentDAO.removeComment(id);
+    }
 
-	@Override
-	public Comment findCommentById(int id) {
-		Comment comment = commentDao.findCommentById(id);
-		return comment;
-	}
+    @Override
+    public void modifyComment(Comment comment) {
+        commentDAO.modifyComment(comment);
+    }
 
-	@Override
-	public int removeComment(int id) {
-		int result = commentDao.removeComment(id);
-		return result;
-	}
+    @Override
+    public List<Comment> findCommentListByPostId(Map<String, Object> param) {
+        return commentDAO.findCommentListByPostId(param);
+    }
 
-	@Override
-	public int modifyComment(Comment comment) {
-		int result = commentDao.modifyComment(comment);
-		return result;
-	}
+    @Override
+    public int getTotalCommentCount(int postId) {
+        return commentDAO.getTotalCommentCount(postId);
+    }
+
+    @Override
+    public void removeCommentsByPostId(int postId) {
+        commentDAO.deleteByPostId(postId);
+    }
 }

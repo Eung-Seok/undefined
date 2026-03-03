@@ -1,6 +1,7 @@
 package com.app.dao.comment.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,38 +12,37 @@ import com.app.dto.comment.Comment;
 
 @Repository
 public class CommentDAOImpl implements CommentDAO {
-	
-	@Autowired
-	SqlSessionTemplate sqlSessionTemplate;
 
-	@Override
-	public List<Comment> findCommentList() {
-		List<Comment> commentList = sqlSessionTemplate.selectList("comment_mapper.findCommentList");
-		return commentList;
-	}
+    @Autowired
+    private SqlSessionTemplate sqlSessionTemplate;
 
-	@Override
-	public int saveComment(Comment comment) {
-		int result = sqlSessionTemplate.insert("comment_mapper.saveComment", comment);
-		return result;
-	}
+    @Override
+    public void saveComment(Comment comment) {
+        sqlSessionTemplate.insert("comment_mapper.saveComment", comment);
+    }
 
-	@Override
-	public Comment findCommentById(int id) {
-		Comment comment = sqlSessionTemplate.selectOne("comment_mapper.findCommentById",id);
-		return comment;
-	}
+    @Override
+    public void removeComment(int id) {
+        sqlSessionTemplate.delete("comment_mapper.removeComment", id);
+    }
 
-	@Override
-	public int removeComment(int id) {
-		int result = sqlSessionTemplate.delete("comment_mapper.removeComment", id);
-		return result;
-	}
+    @Override
+    public void modifyComment(Comment comment) {
+        sqlSessionTemplate.update("comment_mapper.modifyComment", comment);
+    }
 
-	@Override
-	public int modifyComment(Comment comment) {
-		int result = sqlSessionTemplate.update("comment_mapper.modifyComment", comment);
-		return result;
-	}
-	
+    @Override
+    public List<Comment> findCommentListByPostId(Map<String, Object> param) {
+        return sqlSessionTemplate.selectList("comment_mapper.findCommentListByPostId", param);
+    }
+
+    @Override
+    public int getTotalCommentCount(int postId) {
+        return sqlSessionTemplate.selectOne("comment_mapper.getTotalCommentCount", postId);
+    }
+
+    @Override
+    public void deleteByPostId(int postId) {
+        sqlSessionTemplate.delete("comment_mapper.deleteByPostId", postId);
+    }
 }
