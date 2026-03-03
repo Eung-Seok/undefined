@@ -11,4 +11,5 @@ public class Comment {
 	String content;
 	String createdAt;
 	String updatedAt;
+	private String authorName;
 }

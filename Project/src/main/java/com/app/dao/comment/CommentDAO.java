@@ -1,17 +1,20 @@
 package com.app.dao.comment;
 
-import java.util.List;
-
 import com.app.dto.comment.Comment;
+import java.util.List;
+import java.util.Map;
 
 public interface CommentDAO {
-	List<Comment> findCommentList();
-	
-	int saveComment(Comment comment);
 
-	Comment findCommentById(int id);
+    void saveComment(Comment comment);
 
-	int removeComment(int id);
+    void removeComment(int id);
 
-	int modifyComment(Comment comment);
+    void modifyComment(Comment comment);
+
+    List<Comment> findCommentListByPostId(Map<String, Object> param);
+
+    int getTotalCommentCount(int postId);
+
+    void deleteByPostId(int postId);
 }

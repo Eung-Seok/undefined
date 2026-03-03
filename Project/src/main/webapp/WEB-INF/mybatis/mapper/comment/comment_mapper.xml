@@ -1,58 +1,70 @@
-<?xml version="1.0" encoding="UTF-8"?> 
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC
-		   "-//mybatis.org//DTD Mapper 3.0//EN" 
-		   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="comment_mapper">
 
-	<select id="findCommentList" resultType="Comment">
-		SELECT *
-		FROM TF_COMMENT
-	</select>
-	
-	<select id="findCommentById" resultType="Comment" parameterType="int">
-		SELECT *
-		FROM TF_COMMENT
-		WHERE id = #{id}
-	</select>
+    <resultMap id="commentMap" type="com.app.dto.comment.Comment">
+        <id property="id" column="id"/>
+        <result property="postId" column="post_id"/>
+        <result property="content" column="content"/>
+        <result property="authorUserId" column="author_user_id"/>
+        <result property="authorName" column="authorName"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
 
-	<insert id="saveComment" parameterType="Comment">
-		INSERT INTO TF_COMMENT(
-			ID,
-			POST_ID,
-			AUTHOR_USER_ID,
-			PARENT_COMMENT_ID,
-			CONTENT,
-			CREATED_AT,
-			UPDATED_AT
-			
-		)
-		VALUES(
-		SEQ_TF_COMMENT_PK.nextval,
-		#{postId},
-		#{authorUserId},
-		#{parentCommentId},
-		#{content},
-		#{createdAt},
-		#{updatedAt}
-		)
-	</insert>
-	
-	<delete id="removeComment" parameterType="int">
-		DELETE FROM TF_COMMENT
-		WHERE
-		ID = #{id}
-	</delete>
+   <select id="findCommentListByPostId" parameterType="map" resultType="comment">
+    SELECT * FROM (
+        SELECT ROWNUM rn, c.* FROM (
+            SELECT * FROM TF_COMMENT
+            WHERE POST_ID = #{postId}
+            ORDER BY CREATED_AT DESC
+        ) c
+        WHERE ROWNUM &lt;= #{endRow}
+    )
+    WHERE rn &gt;= #{startRow}
+</select>
 
-	<update id="modifyComment" parameterType="Comment">
-		UPDATE TF_COMMENT
-		SET
-		POST_ID = #{postId},
-		AUTHOR_USER_ID = #{authorUserId},
-		PARENT_COMMENT_ID = #{parentCommentId},
-		CONTENT = #{content},
-		CREATED_AT = #{createdAt},
-		UPDATED_AT = #{updatedAt}
-		WHERE ID = #{id}
-	</update>
+    <select id="getTotalCommentCount" parameterType="int" resultType="int">
+        SELECT COUNT(*) FROM TF_COMMENT WHERE POST_ID = #{postId}
+    </select>
+
+    <insert id="saveComment" parameterType="com.app.dto.comment.Comment">
+        INSERT INTO TF_COMMENT (
+            ID,
+            POST_ID,
+            AUTHOR_USER_ID,
+            CONTENT,
+            CREATED_AT,
+            UPDATED_AT
+        )
+        VALUES (
+            SEQ_TF_COMMENT_PK.nextval,
+            #{postId},
+            #{authorUserId},
+            #{content},
+            SYSDATE,
+            SYSDATE
+        )
+    </insert>
+
+    <delete id="removeComment" parameterType="int">
+    DELETE FROM TF_COMMENT
+    WHERE ID = #{value}
+</delete>
+
+<delete id="deleteByPostId" parameterType="int">
+    DELETE FROM TF_COMMENT
+    WHERE POST_ID = #{value}
+</delete>
+
+    <update id="modifyComment" parameterType="com.app.dto.comment.Comment">
+        UPDATE TF_COMMENT
+        SET CONTENT = #{content},
+            UPDATED_AT = SYSDATE
+        WHERE ID = #{id}
+    </update>
 
 </mapper>

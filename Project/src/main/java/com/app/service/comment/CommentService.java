@@ -1,17 +1,20 @@
 package com.app.service.comment;
 
-import java.util.List;
-
 import com.app.dto.comment.Comment;
+import java.util.List;
+import java.util.Map;
 
 public interface CommentService {
-	List<Comment> findCommentList();
 
-	int saveComment(Comment comment);
+    void saveComment(Comment comment);
 
-	Comment findCommentById(int id);
+    void removeComment(int id);
 
-	int removeComment(int id);
+    void modifyComment(Comment comment);
 
-	int modifyComment(Comment comment);
+    List<Comment> findCommentListByPostId(Map<String, Object> param);
+
+    int getTotalCommentCount(int postId);
+
+    void removeCommentsByPostId(int postId);
 }
