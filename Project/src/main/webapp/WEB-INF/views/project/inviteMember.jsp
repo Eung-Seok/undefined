@@ -21,19 +21,6 @@
 		</jsp:include>
 
 		<main class="main">
-			<div class="topbar">
-				<div class="search">
-					🔎 <input id="pmSearch" placeholder="이름/사번/이메일 검색" />
-				</div>
-				<div class="actions">
-					<a class="btn"
-						href="<%=request.getContextPath()%>/project/members?projectId=${project.id}">←
-						프로젝트</a>
-					<button class="btn primary" type="button" id="pmSubmitTop">선택
-						추가</button>
-				</div>
-			</div>
-
 			<div class="card">
 				<div class="card-head">
 					<div>

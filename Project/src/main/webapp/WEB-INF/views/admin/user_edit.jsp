@@ -19,19 +19,6 @@
 		</jsp:include>
 
 		<main class="main">
-			<div class="topbar">
-				<div class="search">
-					🔎 <input placeholder="프로젝트, 업무, 사용자 검색(데모)" />
-				</div>
-				<div class="actions">
-					<button class="btn" data-action="알림">🔔</button>
-					<button class="btn primary" data-action="빠른 생성">＋</button>
-				</div>
-			</div>
-
-
-
-
 			<div class="card">
 				<div class="admin-card">
 					<div class="admin-card-head">

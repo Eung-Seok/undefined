@@ -48,9 +48,10 @@ public class GoogleCalendarService {
                 HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
                 .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
                 .setAccessType("offline")
+                .setApprovalPrompt("force")
                 .build();
         LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
-        return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
+        return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user2");
     }
 
     public List<Event> getUpcomingEvents() throws IOException, GeneralSecurityException {
@@ -61,8 +62,8 @@ public class GoogleCalendarService {
 
         DateTime now = new DateTime(System.currentTimeMillis());
         Events events = service.events().list(CALENDAR_ID)
-                .setMaxResults(20)
-//                .setTimeMin(now)
+                .setMaxResults(250)
+//               .setTimeMin(now)
                 .setOrderBy("startTime")
                 .setSingleEvents(true)
                 .execute();
