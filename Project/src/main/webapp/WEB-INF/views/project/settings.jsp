@@ -29,8 +29,6 @@
 					개요 </a> <a class="tab"
 					href="${pageContext.request.contextPath}/project/tasks?projectId=${project.id}">업무</a><a
 					class="tab"
-					href="${pageContext.request.contextPath}/project/calendar?projectId=${project.id}">프로젝트
-					캘린더</a><a class="tab"
 					href="${pageContext.request.contextPath}/project/docs?projectId=${project.id}">문서</a><a
 					class="tab"
 					href="${pageContext.request.contextPath}/project/members?projectId=${project.id}">참여자</a><a
@@ -96,7 +94,8 @@
 
 					<div style="text-align: right; margin-top: 20px;">
 						<button type="submit" class="btn" name="action" value="delete"
-							style="background-color: red; color: white"  onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
+							style="background-color: red; color: white"
+							onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
 						<button type="submit" name="action" value="save"
 							class="btn primary">저장</button>
 					</div>

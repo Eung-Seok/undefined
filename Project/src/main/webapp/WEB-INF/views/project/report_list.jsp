@@ -29,8 +29,6 @@
 					개요 </a> <a class="tab"
 					href="${pageContext.request.contextPath}/project/tasks?projectId=${project.id}">업무</a><a
 					class="tab"
-					href="${pageContext.request.contextPath}/project/calendar?projectId=${project.id}">프로젝트
-					캘린더</a><a class="tab"
 					href="${pageContext.request.contextPath}/project/docs?projectId=${project.id}">문서</a><a
 					class="tab"
 					href="${pageContext.request.contextPath}/project/members?projectId=${project.id}">참여자</a>
@@ -117,7 +115,7 @@
 								<c:otherwise>
 									<c:forEach var="r" items="${userReportList}">
 										<tr class="clickable-row"
-										onclick="location.href='${pageContext.request.contextPath}/project/report/view?projectId=${project.id}&reportId=${r.id}'">
+											onclick="location.href='${pageContext.request.contextPath}/project/report/view?projectId=${project.id}&reportId=${r.id}'">
 											<td>${userName[r.authorUserId]}</td>
 											<td><c:out value="${r.summary}" /></td>
 											<td><c:choose>

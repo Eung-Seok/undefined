@@ -29,16 +29,15 @@
 					개요 </a> <a class="tab active"
 					href="${pageContext.request.contextPath}/project/tasks?projectId=${project.id}">업무</a><a
 					class="tab"
-					href="${pageContext.request.contextPath}/project/calendar?projectId=${project.id}">프로젝트
-					캘린더</a><a class="tab"
 					href="${pageContext.request.contextPath}/project/docs?projectId=${project.id}">문서</a><a
 					class="tab"
-					href="${pageContext.request.contextPath}/project/members?projectId=${project.id}">참여자</a
-					><a class="tab"
-					href="${pageContext.request.contextPath}/project/report?projectId=${project.id}">보고서</a>
-					<c:if test="${canManageMembers}"><a
+					href="${pageContext.request.contextPath}/project/members?projectId=${project.id}">참여자</a><a
 					class="tab"
-					href="${pageContext.request.contextPath}/project/settings?projectId=${project.id}">설정</a></c:if>
+					href="${pageContext.request.contextPath}/project/report?projectId=${project.id}">보고서</a>
+				<c:if test="${canManageMembers}">
+					<a class="tab"
+						href="${pageContext.request.contextPath}/project/settings?projectId=${project.id}">설정</a>
+				</c:if>
 			</div>
 
 
@@ -74,7 +73,7 @@
 						<c:if test="${notManageMembers}">
 							<c:forEach var="task" items="${userTaskList}">
 								<tr class="clickable-row"
-    onclick="location.href='${pageContext.request.contextPath}/project/tasks/view?projectId=${project.id}&taskId=${task.id}'">
+									onclick="location.href='${pageContext.request.contextPath}/project/tasks/view?projectId=${project.id}&taskId=${task.id}'">
 									<td>${task.name}</td>
 									<td>${userName[task.ownerUserId] }</td>
 									<td><span
@@ -101,7 +100,7 @@
 						<c:if test="${canManageMembers}">
 							<c:forEach var="task" items="${taskList}">
 								<tr class="clickable-row"
-    onclick="location.href='${pageContext.request.contextPath}/project/tasks/view?projectId=${project.id}&taskId=${task.id}'">
+									onclick="location.href='${pageContext.request.contextPath}/project/tasks/view?projectId=${project.id}&taskId=${task.id}'">
 									<td>${task.name}</td>
 									<td>${userName[task.ownerUserId] }</td>
 									<td><span

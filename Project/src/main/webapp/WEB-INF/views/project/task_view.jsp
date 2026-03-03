@@ -132,8 +132,6 @@
 					개요 </a> <a class="tab active"
 					href="${pageContext.request.contextPath}/project/tasks?projectId=${project.id}">업무</a><a
 					class="tab"
-					href="${pageContext.request.contextPath}/project/calendar?projectId=${project.id}">프로젝트
-					캘린더</a><a class="tab"
 					href="${pageContext.request.contextPath}/project/docs?projectId=${project.id}">문서</a><a
 					class="tab"
 					href="${pageContext.request.contextPath}/project/members?projectId=${project.id}">참여자</a><a
@@ -148,7 +146,7 @@
 				<div class="card-head">
 					<h3 class="card-title">업무 상세</h3>
 					<div>
-					<h3>${task.name}</h3>
+						<h3>${task.name}</h3>
 					</div>
 					<div class="btn-row">
 						<a class="btn"
@@ -164,7 +162,8 @@
 								style="display: inline;" onsubmit="return confirm('정말 삭제할까요?');">
 								<input type="hidden" name="projectId" value="${project.id}" />
 								<input type="hidden" name="taskId" value="${task.id}" />
-								<button type="submit" class="btn" style="background-color:red; color:white">삭제</button>
+								<button type="submit" class="btn"
+									style="background-color: red; color: white">삭제</button>
 							</form>
 						</c:if>
 					</div>

@@ -7,7 +7,7 @@ import com.app.dto.calendarEvent.CalendarEvent;
 public interface CalendarEventDAO {
 	List<CalendarEvent> findCalendarEventListByUserId(int userId);
 	
-	CalendarEvent findCalendarEventByTaskId(int taskId);
+	List<CalendarEvent> findCalendarEventByTaskId(int taskId);
 
 	CalendarEvent findCalendarEventByEId(String eId);
 

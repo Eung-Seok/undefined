@@ -78,8 +78,6 @@
 					개요 </a> <a class="tab active"
 					href="${pageContext.request.contextPath}/project/tasks?projectId=${project.id}">업무</a><a
 					class="tab"
-					href="${pageContext.request.contextPath}/project/calendar?projectId=${project.id}">프로젝트
-					캘린더</a><a class="tab"
 					href="${pageContext.request.contextPath}/project/docs?projectId=${project.id}">문서</a><a
 					class="tab"
 					href="${pageContext.request.contextPath}/project/members?projectId=${project.id}">참여자</a><a
@@ -147,8 +145,8 @@
 						<div class="field">
 							<label>진행도</label>
 							<div class="progress-row">
-								<input id="progressRange" type="range" name="progressPercent" min="0"
-									max="100"
+								<input id="progressRange" type="range" name="progressPercent"
+									min="0" max="100"
 									value="${task.progressPercent != null ? task.progressPercent : 0}">
 								<span id="progressText"
 									style="min-width: 42px; text-align: right;">
@@ -157,8 +155,9 @@
 						</div>
 
 						<div class="field">
-							<label>시작일</label> <input type="date" id="startDate" name="startDate"
-								value="${task.startDate}" max="${task.dueDate}" required>
+							<label>시작일</label> <input type="date" id="startDate"
+								name="startDate" value="${task.startDate}" max="${task.dueDate}"
+								required>
 						</div>
 
 						<div class="field">
@@ -192,6 +191,6 @@
     r.addEventListener('input', () => t.textContent = r.value + '%');
   }
 </script>
-<script src="/js/projects/projects.js"></script>
+	<script src="/js/projects/projects.js"></script>
 </body>
 </html>

@@ -36,8 +36,8 @@ public class CalendarEventServiceImpl implements CalendarEventService {
 	}
 
 	@Override
-	public CalendarEvent findCalendarEventByTaskId(int taskId) {
-		CalendarEvent calendarEvent = calendarEventDao.findCalendarEventByTaskId(taskId);
+	public List<CalendarEvent> findCalendarEventByTaskId(int taskId) {
+		List<CalendarEvent> calendarEvent = calendarEventDao.findCalendarEventByTaskId(taskId);
 		return calendarEvent;
 	}
 

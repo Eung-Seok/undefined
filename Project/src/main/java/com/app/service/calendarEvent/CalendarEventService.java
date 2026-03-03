@@ -8,7 +8,7 @@ import com.google.api.services.calendar.model.Event;
 public interface CalendarEventService {
 	List<CalendarEvent> findCalendarEventListByUserId(int userId);
 
-	CalendarEvent findCalendarEventByTaskId(int taskId);
+	List<CalendarEvent> findCalendarEventByTaskId(int taskId);
 	
 	CalendarEvent findCalendarEventByEId(String eId);
 	

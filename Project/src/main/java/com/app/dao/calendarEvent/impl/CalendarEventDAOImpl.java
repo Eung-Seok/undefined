@@ -28,8 +28,8 @@ public class CalendarEventDAOImpl implements CalendarEventDAO {
 	}
 
 	@Override
-	public CalendarEvent findCalendarEventByTaskId(int taskId) {
-		CalendarEvent calendarEvent = sqlSessionTemplate.selectOne("calendarEvent_mapper.findCalendarEventByTaskId", taskId);
+	public List<CalendarEvent> findCalendarEventByTaskId(int taskId) {
+		List<CalendarEvent> calendarEvent = sqlSessionTemplate.selectList("calendarEvent_mapper.findCalendarEventByTaskId", taskId);
 		return calendarEvent;
 	}
 	
