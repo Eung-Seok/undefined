@@ -95,12 +95,10 @@
 					</thead>
 					<tbody>
 						<c:forEach var="post" items="${postList}">
-							<tr>
+							<tr class="clickable-row"
+										data-href="${pageContext.request.contextPath}/board/view?id=${post.id}">
 								<td>${post.name}</td>
-								<td><a
-									href="${pageContext.request.contextPath}/board/view?id=${post.id}">
-										<c:out value="${post.title}" />
-								</a></td>
+								<td>${post.title}</td>
 								<td>${post.authorName}</td>
 								<td>${post.createdAt}</td>
 							</tr>

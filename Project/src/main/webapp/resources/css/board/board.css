@@ -333,3 +333,7 @@ hr.line {
 	color: #1e3a8a;
 	font-size: 13px
 }
+
+.clickable-row:hover {
+  background: rgba(0,0,0,0.04);
+}
