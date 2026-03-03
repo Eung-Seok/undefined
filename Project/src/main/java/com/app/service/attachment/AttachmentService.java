@@ -8,6 +8,8 @@ import com.app.vo.attachment.AttachmentVO;
 public interface AttachmentService {
 
 	List<Attachment> findAttachmentListByProject(int projectId);
+	
+	int removeAttachmentByProjectId(int projectId);
 
 	List<Attachment> findAttachmentList();
 

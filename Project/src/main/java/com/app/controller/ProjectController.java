@@ -69,7 +69,7 @@ public class ProjectController {
 	@Autowired
 	DepartmentService departmentService;
 	@Autowired
-	private AttachmentService attachmentService;
+	AttachmentService attachmentService;
 
 	@GetMapping("/report")
 	public String list(@RequestParam("projectId") int projectId, HttpSession session, Model model) {
@@ -526,13 +526,24 @@ public class ProjectController {
 	
 	@PostMapping("update")
 	public String updateProject(Project project, @RequestParam("projectId") int projectId, @RequestParam String action ) {
+		Project oldProject = projectService.findProjectById(projectId);
 		project.setId(projectId);
 		if("save".equals(action)) {
+			ProjectMember pm = new ProjectMember();
+			pm.setProjectId(projectId);
+			pm.setProjectRole("PM");
+			pm.setStatus("ONGOIN");
+			pm.setUserId(project.getOwnerUserId());
+			projectMemberService.removeProjectMemberByProjectIdAndUserId(Long.valueOf(projectId), Long.valueOf(oldProject.getOwnerUserId()));;
+			projectMemberService.saveProjectMember(pm);
 			projectService.modifyProject(project);
 			return "redirect:/project/overview?projectId=" + projectId;
 		} else if("delete".equals(action)) {
 			reportService.removeReportByProjectId(projectId);
 			List<Task> taskList = taskService.findTaskListByProjectId(projectId);
+			for(Attachment a: attachmentService.findAttachmentList()) {
+				attachmentService.removeAttachment(a.getId());
+			}
 			for(Task t: taskList) {
 				taskAssigneeService.removeTaskAssigneeByTaskId(t.getId());
 				taskService.removeTask(t.getId());

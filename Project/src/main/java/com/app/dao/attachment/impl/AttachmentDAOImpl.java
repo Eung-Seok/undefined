@@ -56,4 +56,10 @@ public class AttachmentDAOImpl implements AttachmentDAO {
 		return result;
 	}
 
+	@Override
+	public int removeAttachmentByProjectId(int projectId) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

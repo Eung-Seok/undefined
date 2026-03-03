@@ -10,6 +10,11 @@
 		WHERE PROJECT_ID =
 		#{projectId}
 	</select>
+	
+	<select id="findAttachmentList" resultType="Attachment">
+		SELECT *
+		FROM TF_ATTACHMENT
+	</select>
 
 	<select id="findAttachmentById" resultType="Attachment"
 		parameterType="int">
@@ -54,5 +59,4 @@
 		TF_ATTACHMENT
 		WHERE ID = #{id}
 	</delete>
-
 </mapper>
