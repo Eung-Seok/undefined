@@ -23,8 +23,7 @@
 		<main class="main">
 			<div class="grid cols-2">
 				<div class="card">
-					<h3>월간 캘린더(데모)</h3>
-					<div class="small">실제 캘린더는 FullCalendar 등으로 교체 가능</div>
+					<h3>월간 캘린더</h3>
 					<div style="height: 12px"></div>
 					<table class="table">
 						<thead>

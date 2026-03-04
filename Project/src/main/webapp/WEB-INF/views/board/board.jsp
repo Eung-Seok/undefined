@@ -61,8 +61,6 @@
 						class="btn ${selectedBoardId == 3 ? 'active' : ''}"
 						style="padding: 10px 20px; border-radius: 20px; border: 1px solid #ddd; text-decoration: none;">자유게시판</a>
 				</div>
-
-				<div class="small">공지/사내소통/부서게시판 (데모)</div>
 				<div style="height: 12px"></div>
 				<div
 					style="display: flex; justify-content: space-between; gap: 10px; align-items: center">

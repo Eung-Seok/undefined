@@ -46,11 +46,12 @@ public class LoginController {
     @PostMapping("/login")
 	public String loginProcess(User user, HttpSession session, Model model) {
 
-		User loginUser = userService.findUserByEmpno(user.getEmpno());
+    	User loginUser = userService.findUserByEmail(user.getEmail());
+//		User loginUser = userService.findUserByEmpno(user.getEmpno());
 
 		if (loginUser != null && loginUser.getPassword().equals(user.getPassword())) {
 			session.setAttribute("loginUser", loginUser);
-			session.setAttribute("loginUserRole", roleService.findRoleById(userRoleService.findUserRoleByUserId(user.getEmpno()).getRoleId()).getName());
+			session.setAttribute("loginUserRole", roleService.findRoleById(userRoleService.findUserRoleByUserId(loginUser.getEmpno()).getRoleId()).getName());
 			
 			try {
 	            List<Event> googleEventList = googleCalendarService.getUpcomingEvents();

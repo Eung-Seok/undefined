@@ -7,7 +7,6 @@
 		<div class="logo">P</div>
 		<div>
 			<div class="brand-title">프로젝트 통합 일정/업무 관리</div>
-			<div class="brand-sub">Project Scheduler · JSP Demo UI</div>
 		</div>
 	</div>
 

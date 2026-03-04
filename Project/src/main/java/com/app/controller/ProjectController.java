@@ -174,8 +174,18 @@ public class ProjectController {
 	@GetMapping("/overview")
 	public String overview(@RequestParam("projectId") int projectId, Model model) {
 		Project project = projectService.findProjectById(projectId);
+		List<Task> task = taskService.findTaskListByProjectId(projectId);
+		double count = 0;
+		double result = 0;
+		if(task.size() != 0) {
+			for(Task t: task) {
+				count += t.getProgressPercent();
+			}
+			result = 100*count/(100*task.size());
+		}
+		
 		model.addAttribute("project", project);
-
+		model.addAttribute("result", String.format("%.2f",result));
 		return "project/overview";
 	}
 

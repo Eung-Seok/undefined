@@ -11,6 +11,8 @@ public interface UserService {
 	int saveUser(User user);
 
 	User findUserByEmpno(int empno);
+	
+	User findUserByEmail(String email);
 
 	int removeUser(int id);
 

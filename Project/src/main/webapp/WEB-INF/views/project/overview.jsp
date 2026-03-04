@@ -51,14 +51,14 @@
 						<div class="kpi">
 							<div>
 								<div class="label">완료</div>
-								<div class="value">49%</div>
+								<div class="value">${result}%</div>
 							</div>
 							<span class="badge good">정상</span>
 						</div>
 						<div style="height: 10px"></div>
 						<div
 							style="height: 10px; background: #e5e7eb; border-radius: 999px; overflow: hidden">
-							<div style="width: 49%; height: 100%; background: var(--pri)"></div>
+							<div style="width: ${result}%; height: 100%; background: var(--pri)"></div>
 						</div>
 					</div>
 					<div class="card" style="box-shadow: none">
@@ -68,7 +68,6 @@
 						<button class="btn primary"
 							onclick="location.href='${pageContext.request.contextPath}/project/report/write?projectId=${project.id}'">
 							보고서 생성</button>
-
 					</div>
 				</div>
 			</div>

@@ -26,8 +26,8 @@
         <h4 class="text-center mb-4">로그인</h4>
         <form action="${pageContext.request.contextPath}/login" method="post">
             <div class="mb-3">
-                <label class="form-label">사원번호</label>
-                <input type="text" name="empno" class="form-control" value="${cookie.savedEmpno.value}" placeholder="사원번호 입력" required>
+                <label class="form-label">이메일</label>
+                <input type="text" name="email" class="form-control" value="${cookie.savedEmpno.value}" placeholder="이메일 입력" required>
             </div>
             <div class="mb-4">
                 <label class="form-label">비밀번호</label>
@@ -35,7 +35,7 @@
             </div>
             <div class="mb-3 form-check">
                 <input type="checkbox" class="form-check-input" id="saveId" name="saveId" ${not empty cookie.savedEmpno.value ? 'checked' : ''}>
-                <label class="form-check-label" for="saveId">사원번호 저장</label>
+                <label class="form-check-label" for="saveId">이메일 저장</label>
             </div>
             <button type="submit" class="btn btn-login w-100 mb-3">로그인</button>
             <div class="text-center small">

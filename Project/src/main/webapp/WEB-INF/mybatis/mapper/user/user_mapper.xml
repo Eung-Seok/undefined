@@ -16,6 +16,13 @@
 		FROM TF_USER
 		WHERE EMPNO = #{empno}
 	</select>
+	
+	<select id="findUserByEmail" resultType="User"
+		parameterType="string">
+		SELECT *
+		FROM TF_USER
+		WHERE EMAIL = #{email}
+	</select>
 
 	<select id="findUsersByDeptnoList" resultType="User"
 		parameterType="java.util.List">
