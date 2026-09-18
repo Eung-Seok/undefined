@@ -114,6 +114,7 @@ mvn clean package
 | `DB_PASSWORD` | Oracle 비밀번호 |
 | `GOOGLE_CALENDAR_ID` | 연동할 Google Calendar ID |
 | `GOOGLE_TOKENS_DIR` | OAuth 토큰 저장 경로(선택) |
+| `UNDEFINED_UPLOAD_DIR` | 프로젝트 첨부파일 저장 경로(선택, 기본값: 시스템 임시 디렉터리) |
 
 Google OAuth의 `credentials.json`은 로컬 환경에만 두고 저장소에는 커밋하지 않습니다.
 
