@@ -1,5 +1,7 @@
 # undefined
 
+[![CI](https://github.com/Eung-Seok/undefined/actions/workflows/ci.yml/badge.svg?branch=portfolio-v2)](https://github.com/Eung-Seok/undefined/actions/workflows/ci.yml?query=branch%3Aportfolio-v2)
+
 > 프로젝트·업무·일정·조직 정보를 통합 관리하는 사내 협업 시스템
 
 ## 프로젝트 소개
