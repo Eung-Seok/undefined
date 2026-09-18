@@ -105,6 +105,18 @@ mvn clean package
 
 생성된 WAR 파일을 Servlet 컨테이너에 배포합니다. 실행 전 Oracle 연결 정보와 Google Calendar OAuth 설정이 필요합니다.
 
+### 환경변수
+
+| 변수 | 용도 |
+|---|---|
+| `DB_URL` | Oracle JDBC URL |
+| `DB_USERNAME` | Oracle 사용자 이름 |
+| `DB_PASSWORD` | Oracle 비밀번호 |
+| `GOOGLE_CALENDAR_ID` | 연동할 Google Calendar ID |
+| `GOOGLE_TOKENS_DIR` | OAuth 토큰 저장 경로(선택) |
+
+Google OAuth의 `credentials.json`은 로컬 환경에만 두고 저장소에는 커밋하지 않습니다.
+
 ## 프로젝트 포인트
 
 - Controller–Service–DAO 계층과 MyBatis Mapper를 분리해 기능별 책임을 명확히 했습니다.
