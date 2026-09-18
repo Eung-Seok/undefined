@@ -47,6 +47,19 @@ import com.app.vo.attachment.AttachmentVO;
 @Controller
 @RequestMapping("/project")
 public class ProjectController {
+	private static final File UPLOAD_DIR = resolveUploadDirectory();
+
+	private static File resolveUploadDirectory() {
+		String configuredPath = System.getenv("UNDEFINED_UPLOAD_DIR");
+		String uploadPath = configuredPath == null || configuredPath.trim().isEmpty()
+				? System.getProperty("java.io.tmpdir") + File.separator + "undefined-uploads"
+				: configuredPath.trim();
+		File directory = new File(uploadPath);
+		if (!directory.exists() && !directory.mkdirs()) {
+			throw new IllegalStateException("업로드 디렉터리를 생성할 수 없습니다: " + directory.getAbsolutePath());
+		}
+		return directory;
+	}
 
 	@Autowired
 	NotificationService notificationService;
@@ -386,14 +399,13 @@ public class ProjectController {
 																								// 추가
 
 		if (!file.isEmpty()) {
-			String uploadDir = "D:/upload/";
-			File dir = new File(uploadDir);
-			if (!dir.exists())
-				dir.mkdirs();
-
-			String originalFileName = file.getOriginalFilename();
+			String submittedFileName = file.getOriginalFilename();
+			if (submittedFileName == null || submittedFileName.trim().isEmpty()) {
+				throw new IllegalArgumentException("업로드할 파일 이름이 없습니다.");
+			}
+			String originalFileName = new File(submittedFileName).getName();
 			// 실제 저장할 때는 파일명이 겹치지 않게 UUID 등을 쓰는 게 좋지만, 일단 현재 로직 유지
-			File dest = new File(uploadDir + originalFileName);
+			File dest = new File(UPLOAD_DIR, originalFileName);
 			file.transferTo(dest);
 
 			// [중요] DB에 저장할 객체(VO) 생성
@@ -419,10 +431,9 @@ public class ProjectController {
 		Attachment fileInfo = attachmentService.findAttachmentById(fileId);
 
 		if (fileInfo != null) {
-			String uploadDir = "D:/upload/";
 			String fileName = fileInfo.getFileName(); // DB의 FILE_NAME 컬럼 (저장된 파일명)
 
-			File file = new File(uploadDir + fileName);
+			File file = new File(UPLOAD_DIR, new File(fileName).getName());
 			if (file.exists()) {
 				// 2. 브라우저에게 "이건 다운로드용 파일이야"라고 알려주는 설정
 				String encodedName = UriUtils.encode(fileInfo.getOriginalFileName(), "UTF-8");
