@@ -32,10 +32,19 @@ import com.google.api.services.calendar.model.Events;
 @Service
 public class GoogleCalendarService {
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
-    private static final String TOKENS_DIRECTORY_PATH = "D:/study/undefined/Project/tokens";
+    private static final String TOKENS_DIRECTORY_PATH = System.getenv().getOrDefault(
+            "GOOGLE_TOKENS_DIR",
+            System.getProperty("user.home") + "/.undefined/tokens");
     private static final List<String> SCOPES = Collections.singletonList(CalendarScopes.CALENDAR);
     private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
-    private static final String CALENDAR_ID = "108bdeccc6e1caae59585e7281d2214533594d143d16892320714d854208503d@group.calendar.google.com";
+
+    private String getCalendarId() {
+        String calendarId = System.getenv("GOOGLE_CALENDAR_ID");
+        if (calendarId == null || calendarId.trim().isEmpty()) {
+            throw new IllegalStateException("GOOGLE_CALENDAR_ID 환경변수가 설정되지 않았습니다.");
+        }
+        return calendarId.trim();
+    }
 
     private Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
         InputStream in = GoogleCalendarService.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
@@ -61,7 +70,7 @@ public class GoogleCalendarService {
                 .build();
 
         DateTime now = new DateTime(System.currentTimeMillis());
-        Events events = service.events().list(CALENDAR_ID)
+        Events events = service.events().list(getCalendarId())
                 .setMaxResults(250)
 //               .setTimeMin(now)
                 .setOrderBy("startTime")
@@ -98,7 +107,7 @@ public class GoogleCalendarService {
         event.setEnd(end);
 
         // 4. 구글로 전송 및 결과 반환
-        return service.events().insert(CALENDAR_ID, event).execute();
+        return service.events().insert(getCalendarId(), event).execute();
     }
     
     public Event updateEvent(CalendarEvent ce) throws IOException, GeneralSecurityException {
@@ -109,7 +118,7 @@ public class GoogleCalendarService {
         
         String eId = ce.getEId();
         // 1. 기존 이벤트 가져오기
-        Event event = service.events().get(CALENDAR_ID, eId).execute();
+        Event event = service.events().get(getCalendarId(), eId).execute();
 
         // 2. 내용 변경
         event.setSummary(ce.getName());
@@ -128,7 +137,7 @@ public class GoogleCalendarService {
                 .setTimeZone("Asia/Seoul"));
 
         // 3. 구글로 업데이트 전송
-		return service.events().update(CALENDAR_ID, eId, event).execute();
+		return service.events().update(getCalendarId(), eId, event).execute();
 	}
     
     public void deleteEvent(String eventId) throws IOException, GeneralSecurityException {
@@ -138,6 +147,6 @@ public class GoogleCalendarService {
                 .build();
 
         // 구글 서버에서 삭제 실행
-        service.events().delete(CALENDAR_ID, eventId).execute();
+        service.events().delete(getCalendarId(), eventId).execute();
     }
 }
