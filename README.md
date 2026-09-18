@@ -19,6 +19,19 @@ undefined는 조직 구성원이 프로젝트 진행 상황과 개인 업무를 
 - **조직 관리:** 부서 트리, 임직원 조회, 관리자용 사용자 생성·수정
 - **알림:** 업무와 프로젝트 활동 기반 알림
 
+## 담당 구현
+
+- 기존 DTO·DAO·Service·Mapper 계층을 활용한 관리자 조직도 화면 구현
+- `/admin/departments/tree?includeUsers=true` API와 계층형 부서·직원 데이터 연결
+- 부서별 인원과 전체 인원을 중복 없이 집계
+- 부서·직원 검색, 개별 접기·펼치기, 전체 접기·펼치기 기능
+
+## 담당 화면
+
+원본 JSP·CSS·JavaScript 구조를 기준으로 포트폴리오용 대표 데이터를 표시했습니다.
+
+![관리자 조직도](docs/images/undefined-organization-chart.svg)
+
 ## 시스템 구조
 
 ~~~mermaid
